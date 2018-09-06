@@ -1,0 +1,299 @@
+label {margin-top: 10px; }
+table.cadastro {
+	/*border: 1px solid black;*/
+	width: 100%;
+}
+
+table.consulta{
+	width: 100%;
+	text-align: center;	
+}
+table.cadastro td{ 
+	/*border: 1px solid black;*/
+	width: 50%;
+	vertical-align: top;
+}
+
+label.scrs{
+	display:inline;
+	color: #237097;
+	font-weight: normal;	
+}
+
+input[type=text], input[type=password], select, textarea{
+	font-size: 10px;
+	font-family: padrao, padraoB;
+	color: #237097;
+	background-color: #EDEDED;
+	border: 1px solid #A0CAF0;
+}
+
+.check{
+	font-size: 9px;
+}
+
+.botao1, .botaoVoltar{
+	font-family: padrao, padraoB;
+	background-color: #0052AD;
+	color: #FFF;
+	border: 0;	
+	font-size: 9px;
+	text-transform: uppercase;
+	padding: 3px;
+	margin: 3px;
+	font-weight: bold;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+label.error { 
+	height:14px;
+	float: none; 
+	color: #ED7676; 
+	margin: 5px .5em 0 0; 
+	vertical-align: top; 
+}
+
+label.mensagem { 
+	height:14px;
+	float: none; 
+	color: #32CD99; 
+	margin: 5px .5em 0 0; 
+	vertical-align: top; 
+}
+
+.tituloPagina h1{						
+	font-family: zurchn, zurchnB;			
+	color: #057DC2;							
+	padding: 0px;  							
+	font-size: 14px; 						
+	border-bottom: 1px solid #057DC2; 		
+	text-transform: uppercase;				
+}
+
+.cadastrar, .lancamentos, .apresentarInformacao, .pesquisa{	
+	padding: 0 10px 10px 20px;
+}
+
+.adicionarComentario{
+	display:none;
+	color: #237097;
+	text-transform:uppercase;
+	font-size:11px;
+	font-family:padrao, padraoB;
+}
+.ajuda{
+	background-color: #E9E9E9;
+	/*color: #FFF;*/
+	width: 300px;
+	float:right;
+	margin-right: 300px;	
+	/*border: 1px solid black;*/
+	padding: 5px 10px;
+}
+
+.erro{
+	background-color: #E9E9E9;
+	/*color: #FFF;*/
+	width: 300px;
+	float:right;
+	margin-right: 300px;	
+	/*border: 1px solid black;*/
+	padding: 5px 10px;
+}
+
+.titulo h2 {							
+	font-family: zurchn, zurchnB;
+	color: #045E7F;							
+	text-align: left;						
+	font-size: 14px;						
+	text-transform: uppercase;	
+	background-color: #E9E9E9;
+	width: 100%;			
+}
+
+.label{															
+	color: #848484;							
+	text-transform: uppercase;
+	display: inline-block;
+}
+
+.apresentar{															
+	color: #848484;							
+	text-transform: uppercase;
+}
+
+.info{															
+	display:block;
+}
+
+.login{
+	top: 10px;
+	width:320px;
+	position: relative; /* propriedade top acima é definida em relação à div anterior (acesso_restrito)*/
+	margin: 0 auto;
+	font-weight: bold;
+}
+
+.login form{
+	float:left;
+}
+  
+.login img{
+	width:180px;
+	height:100px;	
+}
+
+.foto3x4 img{
+	width:120px;
+	height:180px;	
+}
+
+.cadastrar label{
+	font-weight: bold;
+	display: block;
+}
+
+.login label{
+	font-weight: bold;
+	display: block;
+}
+
+.apresentarInformacao label{
+	font-weight: bold;
+}
+
+
+.lancamentos table{
+	text-align: center;	
+}
+
+.opcoes {
+	font-family: zurchn, zurchnB;
+	background-color: #007ac1;
+	margin: 10px;
+	padding: 20px;
+}
+
+.opcoes ul{
+	width: 100%;
+	margin:0;
+	padding: 0;	
+}
+.opcoes li {
+	font-size: 10px;
+	font-weight: bold;
+	display: block;
+	height: 30px;
+	line-height: 30px;
+	text-transform: uppercase;
+}
+
+.opcoes li a:hover {
+	color: #F2CA06;
+	text-decoration: underline;
+}
+
+.opcoes li a {
+	color: #FFFFFF;
+	text-decoration: none;	
+}
+
+#footer img {
+	float: right;
+	margin: 10px;
+}
+
+.negrito {
+	font-weight: bold;	
+}
+
+div.autorais {
+	float:right;
+	color: #002E96;
+	text-align: right;
+	font-size: 11px;
+	margin: 10px 0px 10px 10px;
+	position: relative;
+}
+ 
+#tituloPagina h1 {
+	font-size: 14px;
+	color: #057DC2;	
+	text-transform: uppercase;
+	border-bottom: 2px solid #057DC2;
+	padding: 0;
+}
+
+#msg img, .carregando {
+	width: 20px;
+	height: 15px;
+}
+
+#imgLogin .carregando {
+	width: 40px;
+	height: 30px;
+	margin: 30px;
+}
+
+#acessoRestrito {
+	padding: 20px;
+	text-align: justify;
+}
+
+.auto-complete {
+	text-transform: uppercase;
+}
+
+			/*** PERSONALIZAÇÃO DO INPUT FILE *****/
+.file-wrapper {
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+.file-wrapper input {
+  cursor: pointer;
+  font-size: 100px;
+  height: 100%;
+  filter: alpha(opacity=1);
+  -moz-opacity: 0.01;
+  opacity: 0.01;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.file-wrapper .button {
+	background-image: url("../imagens/upload.png");
+	background-repeat: no-repeat;
+	color: #045E7F;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 9px;
+	font-weight: bold;
+	margin-right: 10px;
+	padding: 4px 35px;
+}	
+
+				/***** MENU ***/
+				
+
+#glb-menu{
+	height: 40px;
+}
+
+#glb-menu ul {
+	list-style: none;
+}
+
+				/**** TABELAS ****/
+.even {
+	background-color: #FFFAD8;	
+}
+
+.odd {
+	background-color: #FFF;
+}

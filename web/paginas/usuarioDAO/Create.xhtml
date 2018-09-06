@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateUsuarioDAOTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateUsuarioDAOLabel_idusuario}" for="idusuario" />
+                    <h:inputText id="idusuario" value="#{usuarioDAOController.selected.idusuario}" title="#{bundle.CreateUsuarioDAOTitle_idusuario}" required="true" requiredMessage="#{bundle.CreateUsuarioDAORequiredMessage_idusuario}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuarioDAOLabel_nmusuario}" for="nmusuario" />
+                    <h:inputText id="nmusuario" value="#{usuarioDAOController.selected.nmusuario}" title="#{bundle.CreateUsuarioDAOTitle_nmusuario}" required="true" requiredMessage="#{bundle.CreateUsuarioDAORequiredMessage_nmusuario}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuarioDAOLabel_deSenha}" for="deSenha" />
+                    <h:inputText id="deSenha" value="#{usuarioDAOController.selected.deSenha}" title="#{bundle.CreateUsuarioDAOTitle_deSenha}" required="true" requiredMessage="#{bundle.CreateUsuarioDAORequiredMessage_deSenha}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuarioDAOLabel_idperfil}" for="idperfil" />
+                    <h:selectOneMenu id="idperfil" value="#{usuarioDAOController.selected.idperfil}" title="#{bundle.CreateUsuarioDAOTitle_idperfil}" required="true" requiredMessage="#{bundle.CreateUsuarioDAORequiredMessage_idperfil}">
+                        <f:selectItems value="#{perfilDAOController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{usuarioDAOController.create}" value="#{bundle.CreateUsuarioDAOSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{usuarioDAOController.prepareList}" value="#{bundle.CreateUsuarioDAOShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateUsuarioDAOIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

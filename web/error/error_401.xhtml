@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui">
+<ui:composition template="errorTemplate.xhtml">
+	<ui:define name="content">
+            <h:form>
+		
+                    <h:outputText value="Sem acesso a página!" escape="false" />
+                    <br/> <br/>
+                    <h:outputText value="Se realizou login, verifique o usuário e senha informados." escape="false" />
+                    <br/> <br/>
+                        
+                    <p:ajaxExceptionHandler 
+                        type="org.springframework.security.core.AuthenticationException" 
+                        update="exceptionDialog"
+                        onexception="PF('exceptionDialog').show();"/>
+                    <p:ajaxExceptionHandler 
+                        type="org.springframework.security.authentication.BadCredentialsException" 
+                        update="exceptionDialog"
+                        onexception="PF('exceptionDialog').show();"/>
+                    <h:outputText id="mensageErro" value="#{pfExceptionHandler.formattedStackTrace}" escape="false" /> <br />
+
+                    <p:dialog id="exceptionDialog" header="Exception '#{pfExceptionHandler.type}' occured!" widgetVar="exceptionDialog"
+                            height="500px">
+                      Message: #{pfExceptionHandler.message} <br/>
+                      StackTrace: <h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" /> <br />
+
+                      <p:button onclick="document.location.href = document.location.href;"
+                                value="Reload!"
+                                rendered="#{pfExceptionHandler.type == 'javax.faces.application.ViewExpiredException'}" />
+                    </p:dialog>
+                           
+            </h:form>
+		
+	</ui:define>
+</ui:composition>
+</html>

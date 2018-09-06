@@ -1,0 +1,78 @@
+/* IMPORTAÇÃO DAS FONTES NECESSÁRIAS */
+
+@font-face { 
+	font-family: padrao;
+	src: url('../fontes/segoeui.ttf');
+}
+
+@font-face { 
+	font-family: padraoB;
+	src: url('../fontes/segoeui.eot');
+}
+
+@font-face { 
+	font-family: zurchn;
+	src: url('../fontes/zurchn.ttf');
+}
+
+@font-face { 
+	font-family: zurchnB;
+	src: url('../fontes/zurchn.eot');
+}
+
+body{
+	margin:0;	/*reset das margem e padding */
+	padding: 0;
+	font-size:11px;
+	font-family: padrao, padraoB;
+	color: #237097;
+	text-transform: uppercase;
+}
+
+div#container{
+	width: 100%;
+	margin:0px auto;
+	/*border:solid 1px #CCC;
+	border-top:none;*/
+}
+
+div#header{
+	height:80px;	
+	background-image: url("../imagens/img_fundo_topo.jpg"); background-repeat: repeat-x;
+	text-align: right;
+	color: #002E96;
+	padding-right:5px;
+	padding-top: 5px;
+}
+
+#header img{
+	float:left;	
+}
+
+
+div#topBar{
+	height: 40px;
+	background-image: url("../imagens/img_fundo_menutopo_horizontal.jpg");
+	background-repeat: repeat-x;
+	border-top:1px solid #F5D40D;
+	*padding-top: 12px;		/* gambiarra (hack) para consertar bug no IE - atenção: O CSS não valida */
+}
+
+div#menu{
+	float:left;
+}
+div#content{
+	float:left;
+	width:742px;
+	width: 95%;
+	min-height: 500px;
+	padding:20px;
+	padding-bottom:0px;
+}
+
+div#footer{
+	background-image: url("../imagens/img_fundo_rodape.jpg");
+	background-repeat: repeat-x;
+	height: 40px;
+	padding: 5px;
+}

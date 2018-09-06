@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateAdministradorDAOTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateAdministradorDAOLabel_cpf}" for="cpf" />
+                    <h:inputText id="cpf" value="#{administradorDAOController.selected.cpf}" title="#{bundle.CreateAdministradorDAOTitle_cpf}" required="true" requiredMessage="#{bundle.CreateAdministradorDAORequiredMessage_cpf}"/>
+                    <h:outputLabel value="#{bundle.CreateAdministradorDAOLabel_nome}" for="nome" />
+                    <h:inputText id="nome" value="#{administradorDAOController.selected.nome}" title="#{bundle.CreateAdministradorDAOTitle_nome}" />
+                    <h:outputLabel value="#{bundle.CreateAdministradorDAOLabel_datanasc}" for="datanasc" />
+                    <h:inputText id="datanasc" value="#{administradorDAOController.selected.datanasc}" title="#{bundle.CreateAdministradorDAOTitle_datanasc}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateAdministradorDAOLabel_cep}" for="cep" />
+                    <h:inputText id="cep" value="#{administradorDAOController.selected.cep}" title="#{bundle.CreateAdministradorDAOTitle_cep}" />
+                    <h:outputLabel value="#{bundle.CreateAdministradorDAOLabel_endereco}" for="endereco" />
+                    <h:inputText id="endereco" value="#{administradorDAOController.selected.endereco}" title="#{bundle.CreateAdministradorDAOTitle_endereco}" />
+                    <h:outputLabel value="#{bundle.CreateAdministradorDAOLabel_sexo}" for="sexo" />
+                    <h:inputText id="sexo" value="#{administradorDAOController.selected.sexo}" title="#{bundle.CreateAdministradorDAOTitle_sexo}" />
+                    <h:outputLabel value="#{bundle.CreateAdministradorDAOLabel_idusuario}" for="idusuario" />
+                    <h:selectOneMenu id="idusuario" value="#{administradorDAOController.selected.idusuario}" title="#{bundle.CreateAdministradorDAOTitle_idusuario}" >
+                        <f:selectItems value="#{usuarioDAOController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{administradorDAOController.create}" value="#{bundle.CreateAdministradorDAOSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{administradorDAOController.prepareList}" value="#{bundle.CreateAdministradorDAOShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateAdministradorDAOIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditOcorrenciaDAOTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditOcorrenciaDAOLabel_idocorrencia}" for="idocorrencia" />
+                    <h:inputText id="idocorrencia" value="#{ocorrenciaDAOController.selected.idocorrencia}" title="#{bundle.EditOcorrenciaDAOTitle_idocorrencia}" required="true" requiredMessage="#{bundle.EditOcorrenciaDAORequiredMessage_idocorrencia}"/>
+                    <h:outputLabel value="#{bundle.EditOcorrenciaDAOLabel_status}" for="status" />
+                    <h:inputTextarea rows="4" cols="30" id="status" value="#{ocorrenciaDAOController.selected.status}" title="#{bundle.EditOcorrenciaDAOTitle_status}" />
+                    <h:outputLabel value="#{bundle.EditOcorrenciaDAOLabel_data}" for="data" />
+                    <h:inputText id="data" value="#{ocorrenciaDAOController.selected.data}" title="#{bundle.EditOcorrenciaDAOTitle_data}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.EditOcorrenciaDAOLabel_descricao}" for="descricao" />
+                    <h:inputText id="descricao" value="#{ocorrenciaDAOController.selected.descricao}" title="#{bundle.EditOcorrenciaDAOTitle_descricao}" />
+                    <h:outputLabel value="#{bundle.EditOcorrenciaDAOLabel_idguarda}" for="idguarda" />
+                    <h:selectOneMenu id="idguarda" value="#{ocorrenciaDAOController.selected.idguarda}" title="#{bundle.EditOcorrenciaDAOTitle_idguarda}" >
+                        <f:selectItems value="#{guardaDAOController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{ocorrenciaDAOController.update}" value="#{bundle.EditOcorrenciaDAOSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditOcorrenciaDAOViewLink}"/>
+                <br />
+                <h:commandLink action="#{ocorrenciaDAOController.prepareList}" value="#{bundle.EditOcorrenciaDAOShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditOcorrenciaDAOIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

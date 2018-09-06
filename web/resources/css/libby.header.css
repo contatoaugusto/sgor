@@ -1,0 +1,12 @@
+#glb-topo {
+    background:url('../imagens/bg_header.png') bottom repeat-x;
+}
+
+#glb-topo .cabecalho-produto {
+    height: 60px;
+    padding-top: 5px;
+}
+
+#glb-cabecalho {
+    background:url('../imagens/bg_header.png') top repeat-x;
+}

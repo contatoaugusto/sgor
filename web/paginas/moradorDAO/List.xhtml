@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListMoradorDAOTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListMoradorDAOEmpty}" rendered="#{moradorDAOController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{moradorDAOController.items.rowCount > 0}">
+                    <h:outputText value="#{moradorDAOController.pagination.pageFirstItem + 1}..#{moradorDAOController.pagination.pageLastItem + 1}/#{moradorDAOController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{moradorDAOController.previous}" value="#{bundle.Previous} #{moradorDAOController.pagination.pageSize}" rendered="#{moradorDAOController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{moradorDAOController.next}" value="#{bundle.Next} #{moradorDAOController.pagination.pageSize}" rendered="#{moradorDAOController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{moradorDAOController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMoradorDAOTitle_cpf}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cpf}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMoradorDAOTitle_fatura}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fatura}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMoradorDAOTitle_email}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.email}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMoradorDAOTitle_telefone}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.telefone}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMoradorDAOTitle_cep}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cep}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMoradorDAOTitle_residencia}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.residencia}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMoradorDAOTitle_datanasc}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.datanasc}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMoradorDAOTitle_sexo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.sexo}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMoradorDAOTitle_nome}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nome}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListMoradorDAOTitle_idusuario}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idusuario}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{moradorDAOController.prepareView}" value="#{bundle.ListMoradorDAOViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{moradorDAOController.prepareEdit}" value="#{bundle.ListMoradorDAOEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{moradorDAOController.destroy}" value="#{bundle.ListMoradorDAODestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{moradorDAOController.prepareCreate}" value="#{bundle.ListMoradorDAOCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListMoradorDAOIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

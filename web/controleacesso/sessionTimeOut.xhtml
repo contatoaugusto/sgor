@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:p="http://primefaces.org/ui"
+   xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition >
+	<script type='text/javascript' src="#{request.contextPath}/controleacesso/date.js"></script>  
+	<h:form prependId="false" >
+      <p:idleMonitor
+         timeout="#{100}"
+         onidle="startIdleMonitor()" rendered="#{(request.remoteUser != null)}"/>
+       #{msg['logoff.soon.1']}
+       <p:toolbar style="height:100px" > 
+           
+<!--            <p:toolbarGroup align="left" > 
+
+                    <p:graphicImage value="/resources/images/topo.jpg" rendered="true" />
+            </p:toolbarGroup> -->
+            <p:toolbarGroup align="left"> 
+                <img src="./resources/images/casa-icone.png" alt="" height="100"/>
+                <center>
+                    <span id="cabecalhotexto" style="position:absolute; left: 15%; top: 35px; font-weight: bold ; font-size:44px; font-family: fantasy;">
+                        Sistema de Gerenciamento de Ocorrências Residenciais
+                    </span>
+                </center>
+                    <!--<p:graphicImage value="/resources/images/topo.jpg" rendered="true" />-->
+            </p:toolbarGroup> 
+            <p:toolbarGroup align="right" style="position:absolute; right:15px; top: 55px">  
+
+                    <span id="usuario" style="font-weight: bold ; font-size:12px;"> #{request.remoteUser == null ? 'Visitante' : request.remoteUser}</span>
+                    <p:separator />
+                    <span id="textosessaoexpira" style="font-weight: bold ; font-size:12px;">#{request.remoteUser == null ? '' : 'Sessão expira em: '} </span>
+                    <span id="dialog-countdown" style="font-weight: bold ; font-size:12px;"></span>
+                    <p:separator />
+                    <p:commandButton type="button" 
+                            value="#{request.remoteUser == null ? 'Login' : 'Sair'}" 
+                            style="width: auto; height: 25px; font-size: 13px;" 
+                            icon="ui-icon-extlink" 
+                            onclick="logout()"/>  
+            </p:toolbarGroup>
+	</p:toolbar>  
+       #{msg['logoff.soon.2']}
+        
+        <p style="font-weight: bold;">#{msg['move.cursor']}</p>
+      	<p:dialog header="Sessão Expirou!" 
+      		resizable="false"  
+            widgetVar="idleDialog" 
+            modal="true" 
+            width="401" 
+            closable="false"
+            draggable="false">  
+		    <h:outputText value="Você será redirecionada para página de login." />  
+			<p:commandButton id="continuar" value="Continuar" onclick="idleDialog.hide();redirecionaPaginaLogin()" type="button" />
+		</p:dialog>
+   </h:form>
+   
+   <script type="text/javascript">
+   	  // Via de regra o tempo informado em sessio-timeout, no web.xml de configuração da aplicação é em minutos.
+   	  // Normalmente 30 minutos	
+      var TIME = #{session.maxInactiveInterval} ; // em segundos 
+      var countTimer = TIME;
+      var processTimer;
+      var timer_is_on = 0;
+      var redirectPage = "#{request.contextPath}/controleacesso/login.xhtml";
+
+      var countDownDiv = "dialog-countdown";
+      var txtCountDown = null;
+      if (!txtCountDown)
+      	txtCountDown = document.getElementById(countDownDiv);
+
+      function startIdleMonitor() {
+          countTimer = TIME;
+          txtCountDown.innerHTML = (new Date).clearTime().addSeconds(countTimer).toString('H:mm:ss');
+          //timeoutDialog.show();
+      	  doTimer();
+      }
+      function timedCount() {
+        txtCountDown.innerHTML = (new Date).clearTime().addSeconds(countTimer).toString('H:mm:ss');
+      	if (countTimer == 0) {
+          	idleDialog.show();
+      		stopCount();
+        }
+      	countTimer = countTimer - 1;
+      	processTimer = setTimeout("timedCount()", 1000);
+      }
+
+	function redirecionaPaginaLogin (){
+		window.location.href = redirectPage;
+  		return;
+	}
+      
+      function doTimer() {
+      	if (!timer_is_on) {
+      		timer_is_on = 1;
+      		timedCount();
+      	}
+      }
+      function stopCount() {
+      	clearTimeout(processTimer);
+      	timer_is_on = 0;
+      	//keepAlive();
+      }
+
+      function logout(){
+    	  	window.location.href = "#{facesContext.externalContext.requestContextPath}/j_spring_security_logout";
+    		return;
+      }
+      </script>
+</ui:composition>
+</html>

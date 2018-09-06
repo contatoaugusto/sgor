@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListAdministradorDAOTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListAdministradorDAOEmpty}" rendered="#{administradorDAOController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{administradorDAOController.items.rowCount > 0}">
+                    <h:outputText value="#{administradorDAOController.pagination.pageFirstItem + 1}..#{administradorDAOController.pagination.pageLastItem + 1}/#{administradorDAOController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{administradorDAOController.previous}" value="#{bundle.Previous} #{administradorDAOController.pagination.pageSize}" rendered="#{administradorDAOController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{administradorDAOController.next}" value="#{bundle.Next} #{administradorDAOController.pagination.pageSize}" rendered="#{administradorDAOController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{administradorDAOController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAdministradorDAOTitle_cpf}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cpf}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAdministradorDAOTitle_nome}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nome}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAdministradorDAOTitle_datanasc}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.datanasc}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAdministradorDAOTitle_cep}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cep}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAdministradorDAOTitle_endereco}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.endereco}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAdministradorDAOTitle_sexo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.sexo}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAdministradorDAOTitle_idusuario}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idusuario}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{administradorDAOController.prepareView}" value="#{bundle.ListAdministradorDAOViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{administradorDAOController.prepareEdit}" value="#{bundle.ListAdministradorDAOEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{administradorDAOController.destroy}" value="#{bundle.ListAdministradorDAODestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{administradorDAOController.prepareCreate}" value="#{bundle.ListAdministradorDAOCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListAdministradorDAOIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

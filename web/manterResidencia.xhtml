@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="content">
+        <!--<link href="../resources/css/layout.css" rel="stylesheet" type="text/css"/>-->
+        <center>
+        <h:form id="form_cadastro">
+<!--            <p:messages id="messages" showDetail="true" closable="true">
+                <p:autoUpdate />
+            </p:messages>-->
+             <p> Campos com * são obrigatórios</p>
+            <h:panelGrid id="pngCadastro" columns="3">
+                
+                <p:outputLabel for="modulo" value="Modulo:" />
+                <p:inputText id="modulo" required="true" value="#{residenciaDAOController.selected.modulo}"/>
+                <p:message for="modulo" />
+                
+                <p:outputLabel for="numero" value="Número:" />
+                <p:inputText id="numero" size="5"  required="true" value="#{residenciaDAOController.selected.numero}"/>
+                <p:message for="numero" />
+                
+                <p:outputLabel for="descricao" value="Descrição:" />
+                <p:inputTextarea id="descricao" cols="100" required="true" value="#{residenciaDAOController.selected.descricao}"/>
+                <p:message for="descricao" />
+                
+            </h:panelGrid>
+             
+                <p:commandButton value="Cadastrar" icon="ui-icon-disk" actionListener="#{residenciaDAOController.create()}"/>
+                <p:commandButton value="Limpar" type="reset"/>
+            
+            <p:autoUpdate />
+        </h:form>
+                
+        <br></br><br></br>
+
+        <p:dataTable    value="#{residenciaDAOController.items}"                      
+                     var="residencia"
+                     style="margin-bottom:20px" 
+                     paginator="false" id="residencia"
+        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+        rowsPerPageTemplate="6,12,16" >
+
+            <f:facet name="header">
+                <h:outputText value="Lista de Residências"/>
+            </f:facet>
+
+            <p:column headerText="Módulo" >
+                <h:outputText value="#{residencia.modulo}"/>
+            </p:column>
+
+            <p:column headerText="Número" >
+                <h:outputText value="#{residencia.numero}" />
+            </p:column>
+
+            <p:column headerText="Descrição" width="50%">
+                 <h:outputText value="#{residencia.descricao}" />
+             </p:column>
+
+        </p:dataTable>
+        
+        </center>
+    </ui:define>
+
+</ui:composition>
+

@@ -1,0 +1,40 @@
+
+.cor-produto-color, .cor-produto-color-hover:hover{
+    color: #0099cc; 
+}
+.cor-produto-border-hover:hover{
+    border-color: #0099cc;
+}
+
+.cor-produto-background{
+    background: #0099cc;
+}
+
+#glb-menu .submenu-aba-n1, #glb-menu .submenu-aba-n2 {
+    background-image: url("../imagens/sprite_menu_item.png");
+}
+
+#glb-menu .menu-item-a:hover {
+    color:#0099cc;
+    text-decoration: none;
+}
+
+#glb-menu .conteudo-subitens ul a:hover {
+    background:none repeat scroll 0 0 transparent;
+    border-style:solid;
+    border-width:0 0 0 5px;
+    text-decoration: none;
+}
+#glb-menu a.menu-item-a:hover, #glb-menu .conteudo-subitens ul a:hover {
+    border-color:#0099cc;  /* Define a cor do cursor nos itens e do item de menu sem filhos*/
+    text-decoration: none;
+} 
+#glb-menu .conteudo-subitens ul a:hover {
+    color:#0099cc;
+    text-decoration: none;
+}
+
+
+
+
+

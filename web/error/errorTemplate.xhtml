@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<!-- Head -->
+<h:head>
+	<title>SGOR</title>
+<!--	<f:facet name="last">
+		<h:outputStylesheet library="css" name="style.css" />
+	</f:facet>-->
+</h:head>
+<!-- Body -->
+<h:body>
+	<!-- Main -->
+	<div id="main">
+		<!-- Topo -->
+		<div id="topo">
+		    <div id="banner">
+                        <div id="nomenclatura">
+                            <h:outputLabel id="titulo" value="Sistema de Gerenciamento de Ocorrências Residenciais" />
+                        </div>
+		    </div>
+		</div>
+		
+                    
+                    <p:toolbar>  
+                        <p:toolbarGroup align="left">  
+                            <img src="WEB-INF/../resources/img/error.png" alt=""/>
+                            				  
+                        </p:toolbarGroup>  
+                    </p:toolbar>    
+                    
+               
+		<!-- Conteúdo -->
+		<div id="conteudo_login_and_error">
+                    
+			<ui:insert name="content" />
+			<div id="clear" />
+                    
+		</div>
+		<!-- Rodapé -->
+		<div id="rodape" >
+                    <br/> <br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<p:button onclick="history.go(-1);return false;" value="Voltar"/>
+                </div>
+                
+	</div>
+</h:body>
+</html>

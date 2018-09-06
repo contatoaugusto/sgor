@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Controle de acesso!</title>
+    </h:head>
+    
+    <h:body style="background-image:url('../resources/images/Tools-icon.png');background-position: 50% -60%;background-repeat: no-repeat">
+
+        <p:dialog header="Login" visible="true" closable="false" draggable="true" resizable="false" width="420">
+
+            <center>
+                <h:outputText value="Usuário ou senha incorretos!" rendered="#{param.erro}" style="color: darkred"/>
+            	<p:growl id="msg" showDetail="true" escape="false" /> 
+          
+            </center>
+            <form action="#{facesContext.externalContext.requestContextPath}/j_spring_security_check" method="post">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputLabel for="j_username" value="Usuário: *" /> 
+                    <h:inputText id="j_username" required="true"/>
+                    <h:outputLabel for="j_password" value="Senha: * " />
+                    <h:inputSecret id="j_password" required="true"/>
+                    <h:commandButton value="Login"/> 
+                </h:panelGrid>
+            </form>
+        </p:dialog>
+    </h:body>
+</html>

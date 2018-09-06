@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateMoradorDAOTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateMoradorDAOLabel_cpf}" for="cpf" />
+                    <h:inputText id="cpf" value="#{moradorDAOController.selected.cpf}" title="#{bundle.CreateMoradorDAOTitle_cpf}" required="true" requiredMessage="#{bundle.CreateMoradorDAORequiredMessage_cpf}"/>
+                    <h:outputLabel value="#{bundle.CreateMoradorDAOLabel_fatura}" for="fatura" />
+                    <h:inputText id="fatura" value="#{moradorDAOController.selected.fatura}" title="#{bundle.CreateMoradorDAOTitle_fatura}" />
+                    <h:outputLabel value="#{bundle.CreateMoradorDAOLabel_email}" for="email" />
+                    <h:inputText id="email" value="#{moradorDAOController.selected.email}" title="#{bundle.CreateMoradorDAOTitle_email}" />
+                    <h:outputLabel value="#{bundle.CreateMoradorDAOLabel_telefone}" for="telefone" />
+                    <h:inputText id="telefone" value="#{moradorDAOController.selected.telefone}" title="#{bundle.CreateMoradorDAOTitle_telefone}" />
+                    <h:outputLabel value="#{bundle.CreateMoradorDAOLabel_cep}" for="cep" />
+                    <h:inputText id="cep" value="#{moradorDAOController.selected.cep}" title="#{bundle.CreateMoradorDAOTitle_cep}" />
+                    <h:outputLabel value="#{bundle.CreateMoradorDAOLabel_residencia}" for="residencia" />
+                    <h:inputText id="residencia" value="#{moradorDAOController.selected.residencia}" title="#{bundle.CreateMoradorDAOTitle_residencia}" />
+                    <h:outputLabel value="#{bundle.CreateMoradorDAOLabel_datanasc}" for="datanasc" />
+                    <h:inputText id="datanasc" value="#{moradorDAOController.selected.datanasc}" title="#{bundle.CreateMoradorDAOTitle_datanasc}" />
+                    <h:outputLabel value="#{bundle.CreateMoradorDAOLabel_sexo}" for="sexo" />
+                    <h:inputText id="sexo" value="#{moradorDAOController.selected.sexo}" title="#{bundle.CreateMoradorDAOTitle_sexo}" />
+                    <h:outputLabel value="#{bundle.CreateMoradorDAOLabel_nome}" for="nome" />
+                    <h:inputText id="nome" value="#{moradorDAOController.selected.nome}" title="#{bundle.CreateMoradorDAOTitle_nome}" />
+                    <h:outputLabel value="#{bundle.CreateMoradorDAOLabel_idusuario}" for="idusuario" />
+                    <h:selectOneMenu id="idusuario" value="#{moradorDAOController.selected.idusuario}" title="#{bundle.CreateMoradorDAOTitle_idusuario}" >
+                        <f:selectItems value="#{usuarioDAOController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{moradorDAOController.create}" value="#{bundle.CreateMoradorDAOSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{moradorDAOController.prepareList}" value="#{bundle.CreateMoradorDAOShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateMoradorDAOIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

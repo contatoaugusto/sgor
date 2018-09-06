@@ -1,0 +1,41 @@
+body {
+    background-image: url(img/img.jpg);
+   background-size: 100vw 100vh; /* //100% de altura e largura quando maximinizar a tela*/
+    background-attachment: fixed; /* //deixa imagem fixa */
+    font-size: 12px;
+    font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    color: #000000;  
+    margin: 10px;
+}
+
+h1 {
+    font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    border-bottom: 1px solid #AFAFAF; 
+    font-size:  16px;
+    font-weight: bold;
+    margin: 0px;
+    padding: 0px;
+    color: #D20005;
+}
+
+a:link, a:visited {
+  color: #990000;
+  text-decoration: none;
+  font-size: 15px;
+  font-family:  sans-serif;
+}
+
+a:link:hover, a:visited:hover  {
+/*  color: #990000;
+  font-weight : bold;*/
+  text-decoration : underline;
+/*  font-size: 18px;
+  font-family:  sans-serif;*/
+}
+
+h2{
+    font-family: fantasy;
+    font-size: 28px;
+    color: white;
+    text-align: center;
+}
