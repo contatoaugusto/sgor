@@ -9,8 +9,9 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,7 +21,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -44,37 +44,27 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "GuardaDAO.findByCpf", query = "SELECT g FROM GuardaDAO g WHERE g.cpf = :cpf")})
 public class GuardaDAO implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "idguarda")
     private Integer idguarda;
     @Size(max = 15)
-    @Column(name = "telefone")
     private String telefone;
     @Size(max = 45)
-    @Column(name = "endereco")
     private String endereco;
     @Size(max = 10)
-    @Column(name = "cep")
     private String cep;
-    @Column(name = "datanasc")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datanasc;
     @Size(max = 10)
-    @Column(name = "sexo")
     private String sexo;
     @Size(max = 45)
-    @Column(name = "nome")
     private String nome;
     @Size(max = 15)
-    @Column(name = "cpf")
     private String cpf;
     @OneToMany(mappedBy = "idguarda")
     private Collection<OcorrenciaDAO> ocorrenciaDAOCollection;
-
-    private static final long serialVersionUID = 1L;
-  
     @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
     @ManyToOne
     private UsuarioDAO idusuario;
@@ -150,6 +140,15 @@ public class GuardaDAO implements Serializable {
         this.cpf = cpf;
     }
 
+    @XmlTransient
+    public Collection<OcorrenciaDAO> getOcorrenciaDAOCollection() {
+        return ocorrenciaDAOCollection;
+    }
+
+    public void setOcorrenciaDAOCollection(Collection<OcorrenciaDAO> ocorrenciaDAOCollection) {
+        this.ocorrenciaDAOCollection = ocorrenciaDAOCollection;
+    }
+
     public UsuarioDAO getIdusuario() {
         return idusuario;
     }
@@ -182,4 +181,5 @@ public class GuardaDAO implements Serializable {
     public String toString() {
         return "br.com.sgor.dao.GuardaDAO[ idguarda=" + idguarda + " ]";
     }
+    
 }

@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -47,22 +46,16 @@ public class AdministradorDAO implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 15)
-    @Column(name = "cpf")
     private String cpf;
     @Size(max = 45)
-    @Column(name = "nome")
     private String nome;
-    @Column(name = "datanasc")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datanasc;
     @Size(max = 10)
-    @Column(name = "cep")
     private String cep;
     @Size(max = 45)
-    @Column(name = "endereco")
     private String endereco;
     @Size(max = 10)
-    @Column(name = "sexo")
     private String sexo;
     @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
     @ManyToOne

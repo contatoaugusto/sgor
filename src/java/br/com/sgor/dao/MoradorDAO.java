@@ -8,8 +8,9 @@ package br.com.sgor.dao;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -32,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "MoradorDAO.findAll", query = "SELECT m FROM MoradorDAO m")
+    , @NamedQuery(name = "MoradorDAO.findByIdmorador", query = "SELECT m FROM MoradorDAO m WHERE m.idmorador = :idmorador")
     , @NamedQuery(name = "MoradorDAO.findByCpf", query = "SELECT m FROM MoradorDAO m WHERE m.cpf = :cpf")
     , @NamedQuery(name = "MoradorDAO.findByFatura", query = "SELECT m FROM MoradorDAO m WHERE m.fatura = :fatura")
     , @NamedQuery(name = "MoradorDAO.findByEmail", query = "SELECT m FROM MoradorDAO m WHERE m.email = :email")
@@ -45,41 +47,38 @@ public class MoradorDAO implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    private Integer idmorador;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 15)
-    @Column(name = "cpf")
     private String cpf;
     @Size(max = 45)
-    @Column(name = "fatura")
     private String fatura;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 45)
-    @Column(name = "email")
     private String email;
     @Size(max = 15)
-    @Column(name = "telefone")
     private String telefone;
     @Size(max = 10)
-    @Column(name = "cep")
     private String cep;
     @Size(max = 45)
-    @Column(name = "residencia")
     private String residencia;
     @Size(max = 10)
-    @Column(name = "datanasc")
     private String datanasc;
     @Size(max = 10)
-    @Column(name = "sexo")
     private String sexo;
     @Size(max = 45)
-    @Column(name = "nome")
     private String nome;
     @JoinTable(name = "gera", joinColumns = {
-        @JoinColumn(name = "cpf", referencedColumnName = "cpf")}, inverseJoinColumns = {
+        @JoinColumn(name = "idmorador", referencedColumnName = "idmorador")}, inverseJoinColumns = {
         @JoinColumn(name = "idocorrencia", referencedColumnName = "idocorrencia")})
     @ManyToMany
     private Collection<OcorrenciaDAO> ocorrenciaDAOCollection;
+    @JoinColumn(name = "idresidencia", referencedColumnName = "idresidencia")
+    @ManyToOne
+    private ResidenciaDAO idresidencia;
     @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
     @ManyToOne
     private UsuarioDAO idusuario;
@@ -87,8 +86,21 @@ public class MoradorDAO implements Serializable {
     public MoradorDAO() {
     }
 
-    public MoradorDAO(String cpf) {
+    public MoradorDAO(Integer idmorador) {
+        this.idmorador = idmorador;
+    }
+
+    public MoradorDAO(Integer idmorador, String cpf) {
+        this.idmorador = idmorador;
         this.cpf = cpf;
+    }
+
+    public Integer getIdmorador() {
+        return idmorador;
+    }
+
+    public void setIdmorador(Integer idmorador) {
+        this.idmorador = idmorador;
     }
 
     public String getCpf() {
@@ -172,6 +184,14 @@ public class MoradorDAO implements Serializable {
         this.ocorrenciaDAOCollection = ocorrenciaDAOCollection;
     }
 
+    public ResidenciaDAO getIdresidencia() {
+        return idresidencia;
+    }
+
+    public void setIdresidencia(ResidenciaDAO idresidencia) {
+        this.idresidencia = idresidencia;
+    }
+
     public UsuarioDAO getIdusuario() {
         return idusuario;
     }
@@ -183,7 +203,7 @@ public class MoradorDAO implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (cpf != null ? cpf.hashCode() : 0);
+        hash += (idmorador != null ? idmorador.hashCode() : 0);
         return hash;
     }
 
@@ -194,7 +214,7 @@ public class MoradorDAO implements Serializable {
             return false;
         }
         MoradorDAO other = (MoradorDAO) object;
-        if ((this.cpf == null && other.cpf != null) || (this.cpf != null && !this.cpf.equals(other.cpf))) {
+        if ((this.idmorador == null && other.idmorador != null) || (this.idmorador != null && !this.idmorador.equals(other.idmorador))) {
             return false;
         }
         return true;
@@ -202,7 +222,7 @@ public class MoradorDAO implements Serializable {
 
     @Override
     public String toString() {
-        return "br.com.sgor.dao.MoradorDAO[ cpf=" + cpf + " ]";
+        return "br.com.sgor.dao.MoradorDAO[ idmorador=" + idmorador + " ]";
     }
     
 }

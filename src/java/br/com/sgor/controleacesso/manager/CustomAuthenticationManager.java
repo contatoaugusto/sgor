@@ -1,10 +1,12 @@
 package br.com.sgor.controleacesso.manager;
 
+import br.com.sgor.bean.util.JsfUtil;
 import br.com.sgor.dao.UsuarioDAO;
 import br.com.sgor.facade.UsuarioDAOFacade;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.ejb.EJB;
 
 import javax.persistence.NoResultException;
@@ -58,13 +60,17 @@ public class CustomAuthenticationManager implements AuthenticationManager {
             //usuario = usuarioJpa.findUsuarioByName(auth.getName());
 
             if (usuario == null) {
-                log.error("Usuário " + auth.getName() + " não encontrado!");
-                throw new BadCredentialsException("Usuário " + auth.getName() + " não encontrado!");
+                String mensagem = "Usuário " + auth.getName() + " não encontrado!";
+                //JsfUtil.addSuccessMessage(mensagem);
+                log.error(mensagem);
+                throw new BadCredentialsException(mensagem);
             }
         } catch (NoResultException e) {
+            //JsfUtil.addSuccessMessage(e.getMessage());
             log.error(e.getMessage());
             throw new BadCredentialsException(e.getMessage());
         } catch (Exception e) {
+            JsfUtil.addSuccessMessage(e.getMessage());
             log.error(e.getMessage());
             throw new BadCredentialsException(e.getMessage());
         }

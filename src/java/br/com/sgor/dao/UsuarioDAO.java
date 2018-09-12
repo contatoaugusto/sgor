@@ -8,7 +8,6 @@ package br.com.sgor.dao;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,28 +37,23 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "UsuarioDAO.findByDeSenha", query = "SELECT u FROM UsuarioDAO u WHERE u.deSenha = :deSenha")})
 public class UsuarioDAO implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idusuario")
     private Integer idusuario;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
-    @Column(name = "nmusuario")
     private String nmusuario;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
-    @Column(name = "deSenha")
     private String deSenha;
     @OneToMany(mappedBy = "idusuario")
     private Collection<AdministradorDAO> administradorDAOCollection;
     @OneToMany(mappedBy = "idusuario")
     private Collection<MoradorDAO> moradorDAOCollection;
-
-    private static final long serialVersionUID = 1L;
-    
     @JoinColumn(name = "idperfil", referencedColumnName = "idperfil")
     @ManyToOne(optional = false)
     private PerfilDAO idperfil;
@@ -103,6 +97,24 @@ public class UsuarioDAO implements Serializable {
         this.deSenha = deSenha;
     }
 
+    @XmlTransient
+    public Collection<AdministradorDAO> getAdministradorDAOCollection() {
+        return administradorDAOCollection;
+    }
+
+    public void setAdministradorDAOCollection(Collection<AdministradorDAO> administradorDAOCollection) {
+        this.administradorDAOCollection = administradorDAOCollection;
+    }
+
+    @XmlTransient
+    public Collection<MoradorDAO> getMoradorDAOCollection() {
+        return moradorDAOCollection;
+    }
+
+    public void setMoradorDAOCollection(Collection<MoradorDAO> moradorDAOCollection) {
+        this.moradorDAOCollection = moradorDAOCollection;
+    }
+
     public PerfilDAO getIdperfil() {
         return idperfil;
     }
@@ -144,22 +156,5 @@ public class UsuarioDAO implements Serializable {
     public String toString() {
         return "br.com.sgor.dao.UsuarioDAO[ idusuario=" + idusuario + " ]";
     }
-
-    @XmlTransient
-    public Collection<AdministradorDAO> getAdministradorDAOCollection() {
-        return administradorDAOCollection;
-    }
-
-    public void setAdministradorDAOCollection(Collection<AdministradorDAO> administradorDAOCollection) {
-        this.administradorDAOCollection = administradorDAOCollection;
-    }
-
-    @XmlTransient
-    public Collection<MoradorDAO> getMoradorDAOCollection() {
-        return moradorDAOCollection;
-    }
-
-    public void setMoradorDAOCollection(Collection<MoradorDAO> moradorDAOCollection) {
-        this.moradorDAOCollection = moradorDAOCollection;
-    }
+    
 }

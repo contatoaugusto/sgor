@@ -29,4 +29,17 @@ public class PerfilDAOFacade extends AbstractFacade<PerfilDAO> {
         super(PerfilDAO.class);
     }
     
+//    public PerfilDAO findByName(String nmUsuario) throws NoResultException{
+//            //log.debug("Obtendo Usuario com o nome: " + nmLogin);
+//
+//        getEntityManager();
+//        UsuarioDAO usuario;
+//        try {
+//                usuario = (UsuarioDAO) em.createNamedQuery("UsuarioDAO.findByNmusuario")
+//                                .setParameter("nmusuario", nmUsuario).getSingleResult();
+//        }catch (NoResultException e){
+//                throw new NoResultException("Usuário "+ nmUsuario + " não encontrado");
+//        }
+//        return usuario;
+//    }
 }

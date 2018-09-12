@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -46,16 +45,12 @@ public class OcorrenciaDAO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idocorrencia")
     private Integer idocorrencia;
     @Lob
-    @Column(name = "status")
     private byte[] status;
-    @Column(name = "data")
     @Temporal(TemporalType.TIMESTAMP)
     private Date data;
     @Size(max = 500)
-    @Column(name = "descricao")
     private String descricao;
     @ManyToMany(mappedBy = "ocorrenciaDAOCollection")
     private Collection<MoradorDAO> moradorDAOCollection;

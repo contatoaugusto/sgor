@@ -7,7 +7,6 @@ package br.com.sgor.dao;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,13 +37,10 @@ public class InfracaoDAO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idinfracao")
     private Integer idinfracao;
     @Size(max = 45)
-    @Column(name = "nivel")
     private String nivel;
     @Size(max = 500)
-    @Column(name = "descricao")
     private String descricao;
     @JoinColumn(name = "cpf", referencedColumnName = "cpf")
     @ManyToOne

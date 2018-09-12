@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="content">
+        <p:panel header="Manter Morador" style="border-style: none"> 
+            <center>
+                <h:form id="form_cadastro">
+                     <p>Os campos destacados são de preenchimento obrigatório.</p>
+                    <h:panelGrid id="pngCadastro" columns="6">
+
+                        <p:outputLabel for="nome" value="Nome Completo:" />
+                        <p:inputText id="nome" required="true" value="#{moradorDAOController.selected.nome}" size="40"/>
+                        <p:message for="nome" />
+
+                        <p:outputLabel for="cpf" value="CPF:" />
+                        <p:inputMask id="cpf" value="#{moradorDAOController.selected.cpf}" mask="999.999.999-99"/>
+                        <p:message for="cpf" />
+                        
+                        <p:outputLabel for="sexo" value="Sexo:" />
+                        <p:selectOneRadio id="sexo" value="#{moradorDAOController.selected.sexo}">
+                            <f:selectItem itemLabel="Masculino" itemValue="Masculino" />
+                            <f:selectItem itemLabel="Feminino" itemValue="Feminino" />
+                        </p:selectOneRadio>
+                        <p:message for="sexo" />
+                        
+                        <p:outputLabel for="datanascimento" value="Nascimento:" />
+                        <p:inputMask id="datanascimento" value="#{moradorDAOController.selected.datanasc}" mask="99/99/9999"/>
+                        <p:message for="datanascimento" />
+                        
+                        <p:outputLabel for="telefone" value="Telefone:" />
+                        <p:inputMask id="telefone" value="#{moradorDAOController.selected.telefone}" mask="(99) 9999-9999"/>
+                        <p:message for="telefone" />
+                        
+                        <p:outputLabel for="residencia" value="Residência:" />
+                        <p:inputText id="residencia" required="true" value="#{moradorDAOController.selected.residencia}" size="60"/>
+                        <p:message for="residencia" />
+                        
+                    </h:panelGrid>   
+                    <br></br>    
+                    <p:panel id="usuario" header="Usuário" style="width: 20%">  
+                        <h:panelGrid id="pngUsuario">
+                            <p:outputLabel for="email" value="Email/Usuário:" />
+                            <p:inputText id="email" required="true" value="#{moradorDAOController.nmUsuario}" size="20"/>
+                            <p:message for="email" />
+
+                            <p:outputLabel for="senha" value="Senha:" />
+                            <p:password id="senha" required="true" value="#{moradorDAOController.deSenha}" size="20"/>
+                            <p:message for="senha" />
+                        </h:panelGrid>
+                    </p:panel>
+                    <br></br>
+                        <p:commandButton value="Cadastrar" icon="ui-icon-disk" actionListener="#{moradorDAOController.create()}"/>
+                        <p:commandButton value="Limpar" type="reset"/>
+
+                    <p:autoUpdate />
+                </h:form>
+
+                <br></br><br></br>
+
+                <p:dataTable 
+                    value="#{guardaDAOController.items}"                      
+                    var="residencia"
+                    style="margin-bottom:20px"
+                    paginator="false" id="guarda"
+                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                    rowsPerPageTemplate="6,12,16" >
+
+                    <f:facet name="header">
+                        <h:outputText value="Lista de Residências"/>
+                    </f:facet>
+
+                    <p:column headerText="Nome" >
+                        <h:outputText value="#{guarda.nome}"/>
+                    </p:column>
+
+                    <p:column headerText="CPF" >
+                        <h:outputText value="#{guarda.cpf}" />
+                    </p:column>
+
+                    <p:column headerText="Telefone">
+                         <h:outputText value="#{guarda.telefone}" />
+                    </p:column>
+                    
+                    <p:column headerText="Endereço">
+                         <h:outputText value="#{guarda.endereco}" />
+                    </p:column>
+                    <p:column headerText="CEP">
+                         <h:outputText value="#{guarda.cep}" />
+                    </p:column>
+
+                </p:dataTable>
+            </center>
+        </p:panel>    
+    </ui:define>
+
+</ui:composition>
+

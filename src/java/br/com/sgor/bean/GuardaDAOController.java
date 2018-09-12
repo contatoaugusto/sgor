@@ -1,9 +1,13 @@
 package br.com.sgor.bean;
 
 import br.com.sgor.dao.GuardaDAO;
+import br.com.sgor.dao.UsuarioDAO;
 import br.com.sgor.bean.util.JsfUtil;
 import br.com.sgor.bean.util.PaginationHelper;
+import br.com.sgor.dao.PerfilDAO;
 import br.com.sgor.facade.GuardaDAOFacade;
+import br.com.sgor.facade.PerfilDAOFacade;
+import br.com.sgor.facade.UsuarioDAOFacade;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -22,13 +26,23 @@ import javax.faces.model.SelectItem;
 @SessionScoped
 public class GuardaDAOController implements Serializable {
 
+    @EJB
+    private UsuarioDAOFacade usuarioDAOFacade;
+    @EJB
+    private PerfilDAOFacade ejbFacadePerfil;
+
     private GuardaDAO current;
     private DataModel items = null;
     @EJB
     private br.com.sgor.facade.GuardaDAOFacade ejbFacade;
+    
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
+    private int idPerfil = 3;
+    private String nmUsuario = "";
+    private String deSenha = "";
+    
     public GuardaDAOController() {
     }
 
@@ -81,11 +95,24 @@ public class GuardaDAOController implements Serializable {
 
     public String create() {
         try {
+            // 3 = Perfil Guarda
+            PerfilDAO currentPerfil = new PerfilDAO();
+            currentPerfil = ejbFacadePerfil.find(idPerfil);
+            
+            // Cria o usuario
+            UsuarioDAO currentUsuario = new UsuarioDAO();
+            currentUsuario = new UsuarioDAO();
+            currentUsuario.setNmusuario(getNmUsuario());
+            currentUsuario.setDeSenha(getDeSenha());
+            currentUsuario.setIdperfil(currentPerfil);
+            usuarioDAOFacade.create(currentUsuario);
+            current.setIdusuario(currentUsuario);
+            
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("GuardaDAOCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
             return prepareCreate();
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
             return null;
         }
     }
@@ -232,4 +259,45 @@ public class GuardaDAOController implements Serializable {
 
     }
 
+       /**
+     * @return the idPerfil
+     */
+    public int getIdPerfil() {
+        return idPerfil;
+    }
+
+    /**
+     * @param idPerfil the idPerfil to set
+     */
+    public void setIdPerfil(int idPerfil) {
+        this.idPerfil = idPerfil;
+    }
+
+    /**
+     * @return the nmUsuario
+     */
+    public String getNmUsuario() {
+        return nmUsuario;
+    }
+
+    /**
+     * @param nmUsuario the nmUsuario to set
+     */
+    public void setNmUsuario(String nmUsuario) {
+        this.nmUsuario = nmUsuario;
+    }
+
+    /**
+     * @return the deSenha
+     */
+    public String getDeSenha() {
+        return deSenha;
+    }
+
+    /**
+     * @param deSenha the deSenha to set
+     */
+    public void setDeSenha(String deSenha) {
+        this.deSenha = deSenha;
+    }
 }

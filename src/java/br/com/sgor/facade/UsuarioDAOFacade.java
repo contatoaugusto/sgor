@@ -12,6 +12,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import org.hibernate.Session;
 
 /**
  *
@@ -26,6 +27,8 @@ public class UsuarioDAOFacade extends AbstractFacade<UsuarioDAO> {
     @Override
     protected EntityManager getEntityManager() {
         if (em == null){
+//            Session session = HibernateUtil.getSessionFactory().openSession();
+//            EntityManager em = session.getEntityManagerFactory().createEntityManager();
             EntityManagerFactory factory = Persistence.createEntityManagerFactory("sgorPU");
             em = factory.createEntityManager();
         }

@@ -32,16 +32,17 @@
 	        		closable="false" style="font-size:small;padding:0px;">
                 
                     <h:form>
-                        <p:menu>
+                        <p:menu style="border-style: none">
                             <p:submenu label="MENU DE ACESSO">
                                 <p:menuitem value="Início" url="/index.xhtml" rendered="#{usuario == null}"/>
                                 <p:menuitem value="Manter Residência" url="./manterResidencia.xhtml"/>
+                                <p:menuitem value="Manter Guarda" url="./manterGuarda.xhtml"/>
                                
-                                <p:menuitem value="Acesse sua conta" url="login.xhtml"/>
+                                <p:menuitem value="Manter Morador" url="./manterMorador.xhtml"/>
                                 <p:menuitem value="Primeiro cadastro" url="manterResidencia.xhtml"/>
                                 <p:menuitem value="Ocorrências" url="pedido.xhtml"/>
                                 <p:menuitem value="Cadastro Infrações" url="cad_funcionario.xhtml" rendered="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}"/>
-                                <p:menuitem value="Guardas" url="meus_dados.xhtml"/>
+                                
                                 <p:menuitem value="Cadastro Usuário" url="pedido.xhtml" rendered="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}"/>
                                 <p:menuitem value="Cadastro Perfil" url="cad_produto.xhtml" rendered="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}"/>
                             </p:submenu>
