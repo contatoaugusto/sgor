@@ -38,9 +38,9 @@
 
                 <p:dataTable 
                     value="#{residenciaDAOController.items}"                      
-                    var="residencia"
+                    var="lista"
                     style="margin-bottom:20px"
-                    paginator="false" id="residencia"
+                    paginator="false" id="lista"
                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                     rowsPerPageTemplate="6,12,16" >
 
@@ -49,15 +49,15 @@
                     </f:facet>
 
                     <p:column headerText="Módulo" >
-                        <h:outputText value="#{residencia.modulo}"/>
+                        <h:outputText value="#{lista.modulo}"/>
                     </p:column>
 
                     <p:column headerText="Número" >
-                        <h:outputText value="#{residencia.numero}" />
+                        <h:outputText value="#{lista.numero}" />
                     </p:column>
 
                     <p:column headerText="Descrição" width="50%">
-                         <h:outputText value="#{residencia.descricao}" />
+                         <h:outputText value="#{lista.descricao}" />
                      </p:column>
 
                 </p:dataTable>

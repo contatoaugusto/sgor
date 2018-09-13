@@ -7,7 +7,9 @@ import br.com.sgor.dao.PerfilDAO;
 import br.com.sgor.dao.UsuarioDAO;
 import br.com.sgor.facade.MoradorDAOFacade;
 import br.com.sgor.facade.PerfilDAOFacade;
+import br.com.sgor.facade.ResidenciaDAOFacade;
 import br.com.sgor.facade.UsuarioDAOFacade;
+import br.com.sgor.dao.ResidenciaDAO;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -21,6 +23,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import java.util.List;
 
 @Named("moradorDAOController")
 @SessionScoped
@@ -42,6 +45,13 @@ public class MoradorDAOController implements Serializable {
     @EJB
     private PerfilDAOFacade ejbFacadePerfil;
     
+    @EJB
+    private ResidenciaDAOFacade ejbFacadeResidencia;
+    
+    private List<ResidenciaDAO> residencias; 
+    private Integer idResidencia; 
+    
+    
     public MoradorDAOController() {
     }
 
@@ -49,6 +59,8 @@ public class MoradorDAOController implements Serializable {
         if (current == null) {
             current = new MoradorDAO();
             selectedItemIndex = -1;
+            
+            residencias = ejbFacadeResidencia.findAll();
         }
         return current;
     }
@@ -77,7 +89,7 @@ public class MoradorDAOController implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        return "List";
+        return "manterMorador";
     }
 
     public String prepareView() {
@@ -95,22 +107,26 @@ public class MoradorDAOController implements Serializable {
     public String create() {
         try {
             
-            // 1 = Perfil Morador
-            PerfilDAO currentPerfil = new PerfilDAO();
-            currentPerfil = ejbFacadePerfil.find(idPerfil);
-            
             // Cria o usuario
             UsuarioDAO currentUsuario = new UsuarioDAO();
             currentUsuario = new UsuarioDAO();
             currentUsuario.setNmusuario(getNmUsuario());
             currentUsuario.setDeSenha(getDeSenha());
-            currentUsuario.setIdperfil(currentPerfil);
+            // 1 = Perfil Morador
+            currentUsuario.setIdperfil(ejbFacadePerfil.find(idPerfil));
             usuarioDAOFacade.create(currentUsuario);
             current.setIdusuario(currentUsuario);
+            current.setIdresidencia(ejbFacadeResidencia.find(idResidencia));
             
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
-            return prepareCreate();
+            
+            current = new MoradorDAO();
+            selectedItemIndex = -1;
+            
+            items = new ListDataModel<MoradorDAO>(ejbFacade.findAll());
+            
+            return "manterMorador";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
             return null;
@@ -198,13 +214,13 @@ public class MoradorDAOController implements Serializable {
     public String next() {
         getPagination().nextPage();
         recreateModel();
-        return "List";
+        return "manterMorador";
     }
 
     public String previous() {
         getPagination().previousPage();
         recreateModel();
-        return "List";
+        return "manterMorador";
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
@@ -299,6 +315,34 @@ public class MoradorDAOController implements Serializable {
      */
     public void setDeSenha(String deSenha) {
         this.deSenha = deSenha;
+    }
+
+    /**
+     * @return the enederecos
+     */
+    public List<ResidenciaDAO> getResidencias() {
+        return residencias;
+    }
+
+    /**
+     * @param enederecos the enederecos to set
+     */
+    public void setResidencias(List<ResidenciaDAO> residencias) {
+        this.residencias = residencias;
+    }
+
+    /**
+     * @return the idResidencia
+     */
+    public Integer getIdResidencia() {
+        return idResidencia;
+    }
+
+    /**
+     * @param idResidencia the idResidencia to set
+     */
+    public void setIdResidencia(Integer idResidencia) {
+        this.idResidencia = idResidencia;
     }
 
 }

@@ -38,7 +38,9 @@
                         <p:message for="telefone" />
                         
                         <p:outputLabel for="residencia" value="Residência:" />
-                        <p:inputText id="residencia" required="true" value="#{moradorDAOController.selected.residencia}" size="60"/>
+                        <p:selectOneMenu id="residencia" value="#{moradorDAOController.idResidencia}">
+                            <f:selectItems value="#{moradorDAOController.residencias}" var="residencia" itemValue="#{residencia.idresidencia}" itemLabel="#{residencia.modulo} - #{residencia.numero}" />
+                        </p:selectOneMenu>
                         <p:message for="residencia" />
                         
                     </h:panelGrid>   
@@ -55,7 +57,7 @@
                         </h:panelGrid>
                     </p:panel>
                     <br></br>
-                        <p:commandButton value="Cadastrar" icon="ui-icon-disk" actionListener="#{moradorDAOController.create()}"/>
+                    <p:commandButton value="Cadastrar" icon="ui-icon-disk" actionListener="#{moradorDAOController.create()}" update="@all"/>
                         <p:commandButton value="Limpar" type="reset"/>
 
                     <p:autoUpdate />
@@ -64,10 +66,10 @@
                 <br></br><br></br>
 
                 <p:dataTable 
-                    value="#{guardaDAOController.items}"                      
-                    var="residencia"
+                    value="#{moradorDAOController.items}"                      
+                    var="lista"
                     style="margin-bottom:20px"
-                    paginator="false" id="guarda"
+                    paginator="false" id="lista"
                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                     rowsPerPageTemplate="6,12,16" >
 
@@ -76,22 +78,26 @@
                     </f:facet>
 
                     <p:column headerText="Nome" >
-                        <h:outputText value="#{guarda.nome}"/>
+                        <h:outputText value="#{lista.nome}"/>
                     </p:column>
 
-                    <p:column headerText="CPF" >
-                        <h:outputText value="#{guarda.cpf}" />
+                    <p:column headerText="E-mail" >
+                        <h:outputText value="#{lista.email}" />
                     </p:column>
 
                     <p:column headerText="Telefone">
-                         <h:outputText value="#{guarda.telefone}" />
+                         <h:outputText value="#{lista.telefone}" />
                     </p:column>
                     
-                    <p:column headerText="Endereço">
-                         <h:outputText value="#{guarda.endereco}" />
-                    </p:column>
                     <p:column headerText="CEP">
-                         <h:outputText value="#{guarda.cep}" />
+                         <h:outputText value="#{lista.cep}" />
+                    </p:column>
+                    
+                    <p:column headerText="Modulo">
+                         <h:outputText value="#{lista.idresidencia.modulo}" />
+                    </p:column>
+                    <p:column headerText="Numero">
+                         <h:outputText value="#{lista.idresidencia.numero}" />
                     </p:column>
 
                 </p:dataTable>
