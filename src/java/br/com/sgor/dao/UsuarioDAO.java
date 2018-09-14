@@ -51,8 +51,6 @@ public class UsuarioDAO implements Serializable {
     @Size(min = 1, max = 20)
     private String deSenha;
     @OneToMany(mappedBy = "idusuario")
-    private Collection<AdministradorDAO> administradorDAOCollection;
-    @OneToMany(mappedBy = "idusuario")
     private Collection<MoradorDAO> moradorDAOCollection;
     @JoinColumn(name = "idperfil", referencedColumnName = "idperfil")
     @ManyToOne(optional = false)
@@ -95,15 +93,6 @@ public class UsuarioDAO implements Serializable {
 
     public void setDeSenha(String deSenha) {
         this.deSenha = deSenha;
-    }
-
-    @XmlTransient
-    public Collection<AdministradorDAO> getAdministradorDAOCollection() {
-        return administradorDAOCollection;
-    }
-
-    public void setAdministradorDAOCollection(Collection<AdministradorDAO> administradorDAOCollection) {
-        this.administradorDAOCollection = administradorDAOCollection;
     }
 
     @XmlTransient

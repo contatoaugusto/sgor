@@ -28,5 +28,18 @@ public class OcorrenciaDAOFacade extends AbstractFacade<OcorrenciaDAO> {
     public OcorrenciaDAOFacade() {
         super(OcorrenciaDAO.class);
     }
-    
+
+//    public OcorrenciaDAO findByUsuario(Integer idUsuario) throws NoResultException {
+//        //log.debug("Obtendo Usuario com o nome: " + nmLogin);
+//
+//        getEntityManager();
+//        OcorrenciaDAO morador;
+//        try {
+//            morador = (OcorrenciaDAO) em.createNamedQuery("OcorrenciaDAO.findByUsuario")
+//                    .setParameter("idusuario", idUsuario).getSingleResult();
+//        } catch (NoResultException e) {
+//            throw new NoResultException("Morador não encontrado");
+//        }
+//        return morador;
+//    }
 }

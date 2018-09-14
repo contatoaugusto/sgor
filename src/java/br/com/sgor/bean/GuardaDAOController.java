@@ -95,16 +95,13 @@ public class GuardaDAOController implements Serializable {
 
     public String create() {
         try {
-            // 3 = Perfil Guarda
-            PerfilDAO currentPerfil = new PerfilDAO();
-            currentPerfil = ejbFacadePerfil.find(idPerfil);
-            
             // Cria o usuario
             UsuarioDAO currentUsuario = new UsuarioDAO();
             currentUsuario = new UsuarioDAO();
             currentUsuario.setNmusuario(getNmUsuario());
             currentUsuario.setDeSenha(getDeSenha());
-            currentUsuario.setIdperfil(currentPerfil);
+            // 3 = Perfil Guarda
+            currentUsuario.setIdperfil(ejbFacadePerfil.find(idPerfil));
             usuarioDAOFacade.create(currentUsuario);
             current.setIdusuario(currentUsuario);
             

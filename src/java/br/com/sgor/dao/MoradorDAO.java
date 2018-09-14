@@ -13,11 +13,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -42,7 +41,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "MoradorDAO.findByResidencia", query = "SELECT m FROM MoradorDAO m WHERE m.residencia = :residencia")
     , @NamedQuery(name = "MoradorDAO.findByDatanasc", query = "SELECT m FROM MoradorDAO m WHERE m.datanasc = :datanasc")
     , @NamedQuery(name = "MoradorDAO.findBySexo", query = "SELECT m FROM MoradorDAO m WHERE m.sexo = :sexo")
-    , @NamedQuery(name = "MoradorDAO.findByNome", query = "SELECT m FROM MoradorDAO m WHERE m.nome = :nome")})
+    , @NamedQuery(name = "MoradorDAO.findByNome", query = "SELECT m FROM MoradorDAO m WHERE m.nome = :nome")
+    , @NamedQuery(name = "MoradorDAO.findByUsuario", query = "SELECT m FROM MoradorDAO m WHERE m.idusuario = :idusuario")})
 public class MoradorDAO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -71,17 +71,14 @@ public class MoradorDAO implements Serializable {
     private String sexo;
     @Size(max = 45)
     private String nome;
-    @JoinTable(name = "gera", joinColumns = {
-        @JoinColumn(name = "idmorador", referencedColumnName = "idmorador")}, inverseJoinColumns = {
-        @JoinColumn(name = "idocorrencia", referencedColumnName = "idocorrencia")})
-    @ManyToMany
-    private Collection<OcorrenciaDAO> ocorrenciaDAOCollection;
     @JoinColumn(name = "idresidencia", referencedColumnName = "idresidencia")
     @ManyToOne
     private ResidenciaDAO idresidencia;
     @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
     @ManyToOne
     private UsuarioDAO idusuario;
+    @OneToMany(mappedBy = "idmorador")
+    private Collection<OcorrenciaDAO> ocorrenciaDAOCollection;
 
     public MoradorDAO() {
     }
@@ -175,15 +172,6 @@ public class MoradorDAO implements Serializable {
         this.nome = nome;
     }
 
-    @XmlTransient
-    public Collection<OcorrenciaDAO> getOcorrenciaDAOCollection() {
-        return ocorrenciaDAOCollection;
-    }
-
-    public void setOcorrenciaDAOCollection(Collection<OcorrenciaDAO> ocorrenciaDAOCollection) {
-        this.ocorrenciaDAOCollection = ocorrenciaDAOCollection;
-    }
-
     public ResidenciaDAO getIdresidencia() {
         return idresidencia;
     }
@@ -198,6 +186,15 @@ public class MoradorDAO implements Serializable {
 
     public void setIdusuario(UsuarioDAO idusuario) {
         this.idusuario = idusuario;
+    }
+
+    @XmlTransient
+    public Collection<OcorrenciaDAO> getOcorrenciaDAOCollection() {
+        return ocorrenciaDAOCollection;
+    }
+
+    public void setOcorrenciaDAOCollection(Collection<OcorrenciaDAO> ocorrenciaDAOCollection) {
+        this.ocorrenciaDAOCollection = ocorrenciaDAOCollection;
     }
 
     @Override

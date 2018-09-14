@@ -3,10 +3,17 @@ package br.com.sgor.bean;
 import br.com.sgor.dao.OcorrenciaDAO;
 import br.com.sgor.bean.util.JsfUtil;
 import br.com.sgor.bean.util.PaginationHelper;
+import br.com.sgor.dao.ResidenciaDAO;
 import br.com.sgor.facade.OcorrenciaDAOFacade;
+import br.com.sgor.facade.ResidenciaDAOFacade;
+import br.com.sgor.dao.MoradorDAO;
+import br.com.sgor.dao.UsuarioDAO;
+import br.com.sgor.facade.MoradorDAOFacade;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.ResourceBundle;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -17,21 +24,45 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Named("ocorrenciaDAOController")
 @SessionScoped
 public class OcorrenciaDAOController implements Serializable {
 
     private OcorrenciaDAO current;
+    private MoradorDAO currentMorador;
+    
     private DataModel items = null;
     @EJB
     private br.com.sgor.facade.OcorrenciaDAOFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
+    @EJB
+    private ResidenciaDAOFacade ejbFacadeResidencia;
+    private ResidenciaDAO residencia; 
+    private Integer idResidencia; 
+    
+    @EJB
+    private MoradorDAOFacade ejbFacadeMorador;
+    
+    
     public OcorrenciaDAOController() {
     }
 
+    
+    @PostConstruct
+    public void init() {        
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        UsuarioDAO usuario = (UsuarioDAO) attr.getRequest().getSession().getAttribute("usuario");
+        currentMorador = ejbFacadeMorador.findByUsuario(usuario);
+
+        // Carregar os dados do morador logado
+        setResidencia(ejbFacadeResidencia.find(currentMorador.getIdresidencia().getIdresidencia()));
+    }
+    
     public OcorrenciaDAO getSelected() {
         if (current == null) {
             current = new OcorrenciaDAO();
@@ -55,6 +86,7 @@ public class OcorrenciaDAOController implements Serializable {
 
                 @Override
                 public DataModel createPageDataModel() {
+//                  return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
                     return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
                 }
             };
@@ -230,6 +262,34 @@ public class OcorrenciaDAOController implements Serializable {
             }
         }
 
+    }
+    
+    /**
+     * @return the residencia
+     */
+    public ResidenciaDAO getResidencia() {
+        return residencia;
+    }
+
+    /**
+     * @param residencia the residencia to set
+     */
+    public void setResidencia(ResidenciaDAO residencia) {
+        this.residencia = residencia;
+    }
+
+    /**
+     * @return the idResidencia
+     */
+    public Integer getIdResidencia() {
+        return idResidencia;
+    }
+
+    /**
+     * @param idResidencia the idResidencia to set
+     */
+    public void setIdResidencia(Integer idResidencia) {
+        this.idResidencia = idResidencia;
     }
 
 }

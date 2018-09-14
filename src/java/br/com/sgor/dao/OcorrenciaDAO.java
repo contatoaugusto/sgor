@@ -6,7 +6,6 @@
 package br.com.sgor.dao;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -15,17 +14,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -52,13 +48,12 @@ public class OcorrenciaDAO implements Serializable {
     private Date data;
     @Size(max = 500)
     private String descricao;
-    @ManyToMany(mappedBy = "ocorrenciaDAOCollection")
-    private Collection<MoradorDAO> moradorDAOCollection;
     @JoinColumn(name = "idguarda", referencedColumnName = "idguarda")
     @ManyToOne
     private GuardaDAO idguarda;
-    @OneToMany(mappedBy = "idocorrencia")
-    private Collection<InfracaoDAO> infracaoDAOCollection;
+    @JoinColumn(name = "idmorador", referencedColumnName = "idmorador")
+    @ManyToOne
+    private MoradorDAO idmorador;
 
     public OcorrenciaDAO() {
     }
@@ -99,15 +94,6 @@ public class OcorrenciaDAO implements Serializable {
         this.descricao = descricao;
     }
 
-    @XmlTransient
-    public Collection<MoradorDAO> getMoradorDAOCollection() {
-        return moradorDAOCollection;
-    }
-
-    public void setMoradorDAOCollection(Collection<MoradorDAO> moradorDAOCollection) {
-        this.moradorDAOCollection = moradorDAOCollection;
-    }
-
     public GuardaDAO getIdguarda() {
         return idguarda;
     }
@@ -116,13 +102,12 @@ public class OcorrenciaDAO implements Serializable {
         this.idguarda = idguarda;
     }
 
-    @XmlTransient
-    public Collection<InfracaoDAO> getInfracaoDAOCollection() {
-        return infracaoDAOCollection;
+    public MoradorDAO getIdmorador() {
+        return idmorador;
     }
 
-    public void setInfracaoDAOCollection(Collection<InfracaoDAO> infracaoDAOCollection) {
-        this.infracaoDAOCollection = infracaoDAOCollection;
+    public void setIdmorador(MoradorDAO idmorador) {
+        this.idmorador = idmorador;
     }
 
     @Override

@@ -6,8 +6,10 @@
 package br.com.sgor.facade;
 
 import br.com.sgor.dao.MoradorDAO;
+import br.com.sgor.dao.UsuarioDAO;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -28,5 +30,18 @@ public class MoradorDAOFacade extends AbstractFacade<MoradorDAO> {
     public MoradorDAOFacade() {
         super(MoradorDAO.class);
     }
-    
+ 
+    public MoradorDAO findByUsuario(UsuarioDAO usuario) throws NoResultException{
+            //log.debug("Obtendo Usuario com o nome: " + nmLogin);
+
+        getEntityManager();
+        MoradorDAO morador;
+        try {
+                morador = (MoradorDAO) em.createNamedQuery("MoradorDAO.findByUsuario")
+                                .setParameter("idusuario", usuario).getSingleResult();
+        }catch (NoResultException e){
+                throw new NoResultException("Morador não encontrado");
+        }
+        return morador;
+    }
 }

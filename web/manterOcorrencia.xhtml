@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="content">
+        <p:panel header="Ocorrência Morador" style="border-style: none"> 
+            <center>
+                <h:form id="form_cadastro">
+                     <p>Os campos destacados são de preenchimento obrigatório.</p>
+                    <p:panel id="usuario" header="Residência" style="width: 40%" >  
+                        <h:panelGrid id="pngUsuario" columns="4">
+                            <p:outputLabel value="Modulo:" />
+                            <p:outputLabel value="#{ocorrenciaDAOController.residencia.modulo}"/>
+                            <p:outputLabel value="Casa:"/>
+                            <p:outputLabel value="#{ocorrenciaDAOController.residencia.numero}"/>
+                        </h:panelGrid>
+                    </p:panel>
+                    <h:panelGrid id="pngCadastro" columns="1">
+                       
+                        <p:outputLabel for="descricao" value="Descrição da Ocorrência:" />
+                       <p:inputTextarea id="descricao" required="true" value="#{ocorrenciaDAOController.selected.descricao}" cols="93"/>
+                       <p:message for="descricao" />
+                    </h:panelGrid> 
+                    <br></br>    
+
+                    <br></br>
+                        <p:commandButton value="Cadastrar" icon="ui-icon-disk" actionListener="#{guardaDAOController.create()}"/>
+                        <p:commandButton value="Limpar" type="reset"/>
+
+                    <p:autoUpdate />
+                </h:form>
+
+                <br></br><br></br>
+
+
+            </center>
+        </p:panel>    
+    </ui:define>
+
+</ui:composition>
+

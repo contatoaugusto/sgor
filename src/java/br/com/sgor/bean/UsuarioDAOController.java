@@ -32,6 +32,9 @@ public class UsuarioDAOController implements Serializable {
     public UsuarioDAOController() {
     }
 
+    
+    
+    
     public UsuarioDAO getSelected() {
         if (current == null) {
             current = new UsuarioDAO();
