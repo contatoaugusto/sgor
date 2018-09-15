@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,7 +35,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "OcorrenciaDAO.findAll", query = "SELECT o FROM OcorrenciaDAO o")
     , @NamedQuery(name = "OcorrenciaDAO.findByIdocorrencia", query = "SELECT o FROM OcorrenciaDAO o WHERE o.idocorrencia = :idocorrencia")
     , @NamedQuery(name = "OcorrenciaDAO.findByData", query = "SELECT o FROM OcorrenciaDAO o WHERE o.data = :data")
-    , @NamedQuery(name = "OcorrenciaDAO.findByDescricao", query = "SELECT o FROM OcorrenciaDAO o WHERE o.descricao = :descricao")})
+    , @NamedQuery(name = "OcorrenciaDAO.findByDescricao", query = "SELECT o FROM OcorrenciaDAO o WHERE o.descricao = :descricao")
+    , @NamedQuery(name = "OcorrenciaDAO.findByMorador", query = "SELECT o FROM OcorrenciaDAO o WHERE o.idmorador = :morador")
+    , @NamedQuery(name = "OcorrenciaDAO.findByGuarda", query = "SELECT o FROM OcorrenciaDAO o WHERE o.idguarda = :guarda")})
 public class OcorrenciaDAO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,18 +46,18 @@ public class OcorrenciaDAO implements Serializable {
     @Basic(optional = false)
     private Integer idocorrencia;
     @Lob
-    private byte[] status;
+    private String status;
     @Temporal(TemporalType.TIMESTAMP)
     private Date data;
     @Size(max = 500)
     private String descricao;
     @JoinColumn(name = "idguarda", referencedColumnName = "idguarda")
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.EAGER)
     private GuardaDAO idguarda;
     @JoinColumn(name = "idmorador", referencedColumnName = "idmorador")
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.EAGER)
     private MoradorDAO idmorador;
-
+    
     public OcorrenciaDAO() {
     }
 
@@ -70,11 +73,11 @@ public class OcorrenciaDAO implements Serializable {
         this.idocorrencia = idocorrencia;
     }
 
-    public byte[] getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(byte[] status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

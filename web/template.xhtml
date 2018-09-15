@@ -35,13 +35,14 @@
                         <p:menu style="border-style: none">
                             
                             <p:submenu label="MENU DE ACESSO">
+                                <p:menuitem value="" url="" disabled="true"/>  
                                 <p:menuitem value="Início" url="/index.xhtml" rendered="#{usuario == null}"/>   
-                                <p:menuitem value="Ocorrência" url="./manterOcorrencia.xhtml" rendered="#{usuario.getIdperfil().getNmperfil() == 'Morador'}"/>
-                                <p:menuitem value="Manter Residência" url="./manterResidencia.xhtml" rendered="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}"/>
-                                <p:menuitem value="Manter Guarda" url="./manterGuarda.xhtml" rendered="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}"/>
-                                <p:menuitem value="Manter Morador" url="./manterMorador.xhtml" rendered="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}"/>
-                                <p:menuitem value="Cadastro Usuário" url="./manterUsuario.xhtml" rendered="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}"/>
-                                <p:menuitem value="Cadastro Perfil" url="./manterPerfil.xhtml" rendered="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}"/>
+                                <p:menuitem value="Ocorrência" url="./manterOcorrencia.xhtml" rendered="true" disabled="#{!(usuario.getIdperfil().getNmperfil() == 'Morador')}"/>
+                                <p:menuitem value="Manter Residência" url="./manterResidencia.xhtml" rendered="true" disabled="#{!(usuario.getIdperfil().getNmperfil() == 'Administrador')}"/>
+                                <p:menuitem value="Manter Guarda" url="./manterGuarda.xhtml" rendered="true" disabled="#{!(usuario.getIdperfil().getNmperfil() == 'Administrador')}"/>
+                                <p:menuitem value="Manter Morador" url="./manterMorador.xhtml" rendered="true" disabled="#{!(usuario.getIdperfil().getNmperfil() == 'Administrador')}"/>
+                                <p:menuitem value="Cadastro Usuário" url="./manterUsuario.xhtml" rendered="true" disabled="#{!(usuario.getIdperfil().getNmperfil() == 'Administrador')}"/>
+                                <p:menuitem value="Cadastro Perfil" url="./manterPerfil.xhtml" rendered="true" disabled="#{!(usuario.getIdperfil().getNmperfil() == 'Administrador')}"/>
                             </p:submenu>
                         </p:menu>
                     </h:form>
@@ -55,7 +56,13 @@
                     </h:panelGroup>
                 </p:layoutUnit>
                 
-                
+     <!--                                <p:menuitem value="Início" url="/index.xhtml" rendered="#{usuario == null}"/>   
+                                <p:menuitem value="Ocorrência" url="./manterOcorrencia.xhtml" rendered="#{usuario.getIdperfil().getNmperfil() == 'Morador'}"/>
+                                <p:menuitem value="Manter Residência" url="./manterResidencia.xhtml" rendered="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}"/>
+                                <p:menuitem value="Manter Guarda" url="./manterGuarda.xhtml" rendered="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}"/>
+                                <p:menuitem value="Manter Morador" url="./manterMorador.xhtml" rendered="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}"/>
+                                <p:menuitem value="Cadastro Usuário" url="./manterUsuario.xhtml" rendered="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}"/>
+                                <p:menuitem value="Cadastro Perfil" url="./manterPerfil.xhtml" rendered="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}"/>-->           
                 <p:layoutUnit position="south" id="bottom">
                     <center>
                         <ui:insert name="bottom">© SGOR - 2018 - Jonathan Zhi Rong Kuang / Vitor Sienna Alves / Nathália Araujo Pierri de Almeida </ui:insert>

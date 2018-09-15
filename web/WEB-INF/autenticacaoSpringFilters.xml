@@ -15,7 +15,10 @@
         <custom-filter ref="authenticationFilter" position="FORM_LOGIN_FILTER"/>
         <logout logout-success-url="/controleacesso/login.xhtml" />
         <intercept-url pattern="/manterResidencia.xhtml" access="hasRole('Administrador')" />
-        <intercept-url pattern="/cad_funcionario.xhtml" access="hasAnyRole('Administrador','Diretoria')" /> 
+        <intercept-url pattern="/manterMorador.xhtml" access="hasRole('Administrador')" />
+        <intercept-url pattern="/manterGuarda.xhtml" access="hasRole('Administrador')" />
+        <intercept-url pattern="/manterAdministrador.xhtml" access="hasRole('Administrador')" />
+        <intercept-url pattern="/manterOcorrencia.xhtml" access="hasAnyRole('Administrador','Morador')" /> 
     </http>
 
 

@@ -6,8 +6,11 @@
 package br.com.sgor.facade;
 
 import br.com.sgor.dao.OcorrenciaDAO;
+import br.com.sgor.dao.MoradorDAO;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -29,17 +32,17 @@ public class OcorrenciaDAOFacade extends AbstractFacade<OcorrenciaDAO> {
         super(OcorrenciaDAO.class);
     }
 
-//    public OcorrenciaDAO findByUsuario(Integer idUsuario) throws NoResultException {
-//        //log.debug("Obtendo Usuario com o nome: " + nmLogin);
-//
-//        getEntityManager();
-//        OcorrenciaDAO morador;
-//        try {
-//            morador = (OcorrenciaDAO) em.createNamedQuery("OcorrenciaDAO.findByUsuario")
-//                    .setParameter("idusuario", idUsuario).getSingleResult();
-//        } catch (NoResultException e) {
-//            throw new NoResultException("Morador não encontrado");
-//        }
-//        return morador;
-//    }
+    public List<OcorrenciaDAO> findByMorador(MoradorDAO morador) throws NoResultException{
+            //log.debug("Obtendo Usuario com o nome: " + nmLogin);
+
+        getEntityManager();
+        List<OcorrenciaDAO> ocorrencia;
+        try {
+                ocorrencia = (List<OcorrenciaDAO>) em.createNamedQuery("OcorrenciaDAO.findByMorador")
+                                .setParameter("morador", morador).getResultList();
+        }catch (NoResultException e){
+                throw new NoResultException("Morador não encontrado");
+        }
+        return ocorrencia;
+    }
 }

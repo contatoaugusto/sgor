@@ -11,6 +11,7 @@ import br.com.sgor.dao.UsuarioDAO;
 import br.com.sgor.facade.MoradorDAOFacade;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
@@ -27,13 +28,21 @@ import javax.faces.model.SelectItem;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+/***
+ * Os status de ocorrência podem ser
+ * Em Aberto
+ * Aceito
+ * Recusado 
+ * Finalizado
+ * @author prohgy
+ */
 @Named("ocorrenciaDAOController")
 @SessionScoped
 public class OcorrenciaDAOController implements Serializable {
 
     private OcorrenciaDAO current;
     private MoradorDAO currentMorador;
-    
+
     private DataModel items = null;
     @EJB
     private br.com.sgor.facade.OcorrenciaDAOFacade ejbFacade;
@@ -42,27 +51,25 @@ public class OcorrenciaDAOController implements Serializable {
 
     @EJB
     private ResidenciaDAOFacade ejbFacadeResidencia;
-    private ResidenciaDAO residencia; 
-    private Integer idResidencia; 
-    
+    private ResidenciaDAO residencia;
+    private Integer idResidencia;
+
     @EJB
     private MoradorDAOFacade ejbFacadeMorador;
-    
-    
+
     public OcorrenciaDAOController() {
     }
 
-    
     @PostConstruct
-    public void init() {        
+    public void init() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         UsuarioDAO usuario = (UsuarioDAO) attr.getRequest().getSession().getAttribute("usuario");
-        currentMorador = ejbFacadeMorador.findByUsuario(usuario);
+        setCurrentMorador(ejbFacadeMorador.findByUsuario(usuario));
 
         // Carregar os dados do morador logado
-        setResidencia(ejbFacadeResidencia.find(currentMorador.getIdresidencia().getIdresidencia()));
+        setResidencia(ejbFacadeResidencia.find(getCurrentMorador().getIdresidencia().getIdresidencia()));
     }
-    
+
     public OcorrenciaDAO getSelected() {
         if (current == null) {
             current = new OcorrenciaDAO();
@@ -86,8 +93,10 @@ public class OcorrenciaDAOController implements Serializable {
 
                 @Override
                 public DataModel createPageDataModel() {
-//                  return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    if (currentMorador == null)
+                        return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    else
+                        return new ListDataModel(getFacade().findByMorador(currentMorador));
                 }
             };
         }
@@ -113,11 +122,15 @@ public class OcorrenciaDAOController implements Serializable {
 
     public String create() {
         try {
+            current.setIdmorador(currentMorador);
+            current.setStatus("Em Aberto");
+            current.setData(new Date());
+            
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OcorrenciaDAOCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
             return prepareCreate();
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
             return null;
         }
     }
@@ -131,10 +144,10 @@ public class OcorrenciaDAOController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OcorrenciaDAOUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
             return "View";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
             return null;
         }
     }
@@ -263,7 +276,7 @@ public class OcorrenciaDAOController implements Serializable {
         }
 
     }
-    
+
     /**
      * @return the residencia
      */
@@ -292,4 +305,17 @@ public class OcorrenciaDAOController implements Serializable {
         this.idResidencia = idResidencia;
     }
 
+    /**
+     * @return the currentMorador
+     */
+    public MoradorDAO getCurrentMorador() {
+        return currentMorador;
+    }
+
+    /**
+     * @param currentMorador the currentMorador to set
+     */
+    public void setCurrentMorador(MoradorDAO currentMorador) {
+        this.currentMorador = currentMorador;
+    }
 }
