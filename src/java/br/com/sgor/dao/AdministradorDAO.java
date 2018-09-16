@@ -38,7 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "AdministradorDAO.findByDatanasc", query = "SELECT a FROM AdministradorDAO a WHERE a.datanasc = :datanasc")
     , @NamedQuery(name = "AdministradorDAO.findByCep", query = "SELECT a FROM AdministradorDAO a WHERE a.cep = :cep")
     , @NamedQuery(name = "AdministradorDAO.findByEndereco", query = "SELECT a FROM AdministradorDAO a WHERE a.endereco = :endereco")
-    , @NamedQuery(name = "AdministradorDAO.findBySexo", query = "SELECT a FROM AdministradorDAO a WHERE a.sexo = :sexo")})
+    , @NamedQuery(name = "AdministradorDAO.findBySexo", query = "SELECT a FROM AdministradorDAO a WHERE a.sexo = :sexo")
+    , @NamedQuery(name = "AdministradorDAO.findByUsuario", query = "SELECT a FROM AdministradorDAO a WHERE a.idusuario = :usuario")})
 public class AdministradorDAO implements Serializable {
 
     private static final long serialVersionUID = 1L;

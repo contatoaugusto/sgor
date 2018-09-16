@@ -41,7 +41,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "GuardaDAO.findByDatanasc", query = "SELECT g FROM GuardaDAO g WHERE g.datanasc = :datanasc")
     , @NamedQuery(name = "GuardaDAO.findBySexo", query = "SELECT g FROM GuardaDAO g WHERE g.sexo = :sexo")
     , @NamedQuery(name = "GuardaDAO.findByNome", query = "SELECT g FROM GuardaDAO g WHERE g.nome = :nome")
-    , @NamedQuery(name = "GuardaDAO.findByCpf", query = "SELECT g FROM GuardaDAO g WHERE g.cpf = :cpf")})
+    , @NamedQuery(name = "GuardaDAO.findByCpf", query = "SELECT g FROM GuardaDAO g WHERE g.cpf = :cpf")
+    , @NamedQuery(name = "GuardaDAO.findByUsuario", query = "SELECT g FROM GuardaDAO g WHERE g.idusuario = :usuario")})
 public class GuardaDAO implements Serializable {
 
     private static final long serialVersionUID = 1L;

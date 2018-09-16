@@ -1,6 +1,8 @@
 package br.com.sgor.bean;
 
 import br.com.sgor.dao.OcorrenciaDAO;
+import br.com.sgor.dao.AdministradorDAO;
+import br.com.sgor.dao.GuardaDAO;
 import br.com.sgor.bean.util.JsfUtil;
 import br.com.sgor.bean.util.PaginationHelper;
 import br.com.sgor.dao.ResidenciaDAO;
@@ -8,6 +10,8 @@ import br.com.sgor.facade.OcorrenciaDAOFacade;
 import br.com.sgor.facade.ResidenciaDAOFacade;
 import br.com.sgor.dao.MoradorDAO;
 import br.com.sgor.dao.UsuarioDAO;
+import br.com.sgor.facade.AdministradorDAOFacade;
+import br.com.sgor.facade.GuardaDAOFacade;
 import br.com.sgor.facade.MoradorDAOFacade;
 
 import java.io.Serializable;
@@ -28,12 +32,10 @@ import javax.faces.model.SelectItem;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-/***
- * Os status de ocorrência podem ser
- * Em Aberto
- * Aceito
- * Recusado 
- * Finalizado
+/**
+ * *
+ * Os status de ocorrência podem ser Em Aberto Aceito Recusado Finalizado
+ *
  * @author prohgy
  */
 @Named("ocorrenciaDAOController")
@@ -42,6 +44,8 @@ public class OcorrenciaDAOController implements Serializable {
 
     private OcorrenciaDAO current;
     private MoradorDAO currentMorador;
+    private AdministradorDAO currentAdministrador;
+    private GuardaDAO currentGuarda;
 
     private DataModel items = null;
     @EJB
@@ -56,6 +60,10 @@ public class OcorrenciaDAOController implements Serializable {
 
     @EJB
     private MoradorDAOFacade ejbFacadeMorador;
+    @EJB
+    private AdministradorDAOFacade ejbFacadeAdministrador;
+    @EJB
+    private GuardaDAOFacade ejbFacadeGuarda;
 
     public OcorrenciaDAOController() {
     }
@@ -64,10 +72,21 @@ public class OcorrenciaDAOController implements Serializable {
     public void init() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         UsuarioDAO usuario = (UsuarioDAO) attr.getRequest().getSession().getAttribute("usuario");
-        setCurrentMorador(ejbFacadeMorador.findByUsuario(usuario));
 
-        // Carregar os dados do morador logado
-        setResidencia(ejbFacadeResidencia.find(getCurrentMorador().getIdresidencia().getIdresidencia()));
+        setCurrentMorador(null);
+        setCurrentAdministrador(null);
+        setCurrentGuarda(null);
+
+        // Procura os perfis e configura a tela de ocorrências e monta a listagem de acordo
+        if (usuario.getIdperfil().getNmperfil().equalsIgnoreCase("Morador")) {
+            // Carregar os dados do morador logado
+            setResidencia(ejbFacadeResidencia.find(getCurrentMorador().getIdresidencia().getIdresidencia()));
+            setCurrentMorador(ejbFacadeMorador.findByUsuario(usuario));
+        } else if (usuario.getIdperfil().getNmperfil().equalsIgnoreCase("Administrador")) {
+            setCurrentAdministrador(ejbFacadeAdministrador.findByUsuario(usuario));
+        } else if (usuario.getIdperfil().getNmperfil().equalsIgnoreCase("Guarda")) {
+            setCurrentGuarda(ejbFacadeGuarda.findByUsuario(usuario));
+        }
     }
 
     public OcorrenciaDAO getSelected() {
@@ -93,10 +112,15 @@ public class OcorrenciaDAOController implements Serializable {
 
                 @Override
                 public DataModel createPageDataModel() {
-                    if (currentMorador == null)
-                        return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
-                    else
+                    if (currentMorador != null) {
                         return new ListDataModel(getFacade().findByMorador(currentMorador));
+                    } else if (currentAdministrador != null) {
+                        return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    } else if (currentGuarda != null) {
+                        return new ListDataModel(getFacade().findByMorador(currentMorador));
+                    } else {
+                        return new ListDataModel(null);
+                    }
                 }
             };
         }
@@ -125,7 +149,7 @@ public class OcorrenciaDAOController implements Serializable {
             current.setIdmorador(currentMorador);
             current.setStatus("Em Aberto");
             current.setData(new Date());
-            
+
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
             return prepareCreate();
@@ -317,5 +341,33 @@ public class OcorrenciaDAOController implements Serializable {
      */
     public void setCurrentMorador(MoradorDAO currentMorador) {
         this.currentMorador = currentMorador;
+    }
+
+    /**
+     * @return the currentAdministrador
+     */
+    public AdministradorDAO getCurrentAdministrador() {
+        return currentAdministrador;
+    }
+
+    /**
+     * @param currentAdministrador the currentAdministrador to set
+     */
+    public void setCurrentAdministrador(AdministradorDAO currentAdministrador) {
+        this.currentAdministrador = currentAdministrador;
+    }
+
+    /**
+     * @return the currentGuarda
+     */
+    public GuardaDAO getCurrentGuarda() {
+        return currentGuarda;
+    }
+
+    /**
+     * @param currentGuarda the currentGuarda to set
+     */
+    public void setCurrentGuarda(GuardaDAO currentGuarda) {
+        this.currentGuarda = currentGuarda;
     }
 }

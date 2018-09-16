@@ -37,12 +37,14 @@
                             <p:submenu label="MENU DE ACESSO">
                                 <p:menuitem value="" url="" disabled="true"/>  
                                 <p:menuitem value="Início" url="/index.xhtml" rendered="#{usuario == null}"/>   
-                                <p:menuitem value="Ocorrência" url="./manterOcorrencia.xhtml" rendered="true" disabled="#{!(usuario.getIdperfil().getNmperfil() == 'Morador')}"/>
+                                <p:menuitem value="Ocorrência" url="./manterOcorrencia.xhtml" rendered="true" disabled="#{usuario == null}"/>
                                 <p:menuitem value="Manter Residência" url="./manterResidencia.xhtml" rendered="true" disabled="#{!(usuario.getIdperfil().getNmperfil() == 'Administrador')}"/>
                                 <p:menuitem value="Manter Guarda" url="./manterGuarda.xhtml" rendered="true" disabled="#{!(usuario.getIdperfil().getNmperfil() == 'Administrador')}"/>
                                 <p:menuitem value="Manter Morador" url="./manterMorador.xhtml" rendered="true" disabled="#{!(usuario.getIdperfil().getNmperfil() == 'Administrador')}"/>
+                                <p:menuitem value="Manter Administrador" url="./manterAdministrador.xhtml" rendered="true" disabled="#{!(usuario.getIdperfil().getNmperfil() == 'Administrador')}"/>
                                 <p:menuitem value="Cadastro Usuário" url="./manterUsuario.xhtml" rendered="true" disabled="#{!(usuario.getIdperfil().getNmperfil() == 'Administrador')}"/>
                                 <p:menuitem value="Cadastro Perfil" url="./manterPerfil.xhtml" rendered="true" disabled="#{!(usuario.getIdperfil().getNmperfil() == 'Administrador')}"/>
+                                <p:menuitem value="Login" url="./controleacesso/login.xhtml" rendered="true" disabled="#{usuario != null}"/>
                             </p:submenu>
                         </p:menu>
                     </h:form>

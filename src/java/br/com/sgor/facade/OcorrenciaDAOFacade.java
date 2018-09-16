@@ -7,6 +7,7 @@ package br.com.sgor.facade;
 
 import br.com.sgor.dao.OcorrenciaDAO;
 import br.com.sgor.dao.MoradorDAO;
+import br.com.sgor.dao.GuardaDAO;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -41,7 +42,20 @@ public class OcorrenciaDAOFacade extends AbstractFacade<OcorrenciaDAO> {
                 ocorrencia = (List<OcorrenciaDAO>) em.createNamedQuery("OcorrenciaDAO.findByMorador")
                                 .setParameter("morador", morador).getResultList();
         }catch (NoResultException e){
-                throw new NoResultException("Morador não encontrado");
+                throw new NoResultException("Ocorrencia não encontrado");
+        }
+        return ocorrencia;
+    }
+    public List<OcorrenciaDAO> findByGuarda(GuardaDAO guarda) throws NoResultException{
+            //log.debug("Obtendo Usuario com o nome: " + nmLogin);
+
+        getEntityManager();
+        List<OcorrenciaDAO> ocorrencia;
+        try {
+                ocorrencia = (List<OcorrenciaDAO>) em.createNamedQuery("OcorrenciaDAO.findByGuarda")
+                                .setParameter("guarda", guarda).getResultList();
+        }catch (NoResultException e){
+                throw new NoResultException("Ocorrencia não encontrado");
         }
         return ocorrencia;
     }

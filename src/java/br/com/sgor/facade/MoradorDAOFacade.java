@@ -35,13 +35,13 @@ public class MoradorDAOFacade extends AbstractFacade<MoradorDAO> {
             //log.debug("Obtendo Usuario com o nome: " + nmLogin);
 
         getEntityManager();
-        MoradorDAO morador;
+        MoradorDAO retorno;
         try {
-                morador = (MoradorDAO) em.createNamedQuery("MoradorDAO.findByUsuario")
+                retorno = (MoradorDAO) em.createNamedQuery("MoradorDAO.findByUsuario")
                                 .setParameter("idusuario", usuario).getSingleResult();
         }catch (NoResultException e){
                 throw new NoResultException("Morador não encontrado");
         }
-        return morador;
+        return retorno;
     }
 }
