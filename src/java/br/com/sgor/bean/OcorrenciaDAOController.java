@@ -80,8 +80,8 @@ public class OcorrenciaDAOController implements Serializable {
         // Procura os perfis e configura a tela de ocorrências e monta a listagem de acordo
         if (usuario.getIdperfil().getNmperfil().equalsIgnoreCase("Morador")) {
             // Carregar os dados do morador logado
-            setResidencia(ejbFacadeResidencia.find(getCurrentMorador().getIdresidencia().getIdresidencia()));
             setCurrentMorador(ejbFacadeMorador.findByUsuario(usuario));
+            setResidencia(ejbFacadeResidencia.find(getCurrentMorador().getIdresidencia().getIdresidencia()));
         } else if (usuario.getIdperfil().getNmperfil().equalsIgnoreCase("Administrador")) {
             setCurrentAdministrador(ejbFacadeAdministrador.findByUsuario(usuario));
         } else if (usuario.getIdperfil().getNmperfil().equalsIgnoreCase("Guarda")) {

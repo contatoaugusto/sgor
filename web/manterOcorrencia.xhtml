@@ -8,42 +8,45 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
-        <p:panel header="Ocorrência Morador" style="border-style: none"> 
-            <center>
-                <h:form id="form_cadastro" >
-                    <p>Os campos destacados são de preenchimento obrigatório.</p>
-                    <p:panel id="usuario" header="Residência" style="width: 40%" >  
-                        <h:panelGrid id="pngMorador" columns="2">
-                            <p:outputLabel value="Morador:" />
-                            <p:outputLabel value="#{ocorrenciaDAOController.currentMorador.nome}" style="font-weight: bold;"/>
-                        </h:panelGrid>
-                        <h:panelGrid id="pngResidencia" columns="4">
-                            <p:outputLabel value="Modulo:"/>
-                            <p:outputLabel value="#{ocorrenciaDAOController.residencia.modulo}" style="font-weight: bold;"/>
-                            <p:outputLabel value="Casa:"/>
-                            <p:outputLabel value="#{ocorrenciaDAOController.residencia.numero}" style="font-weight: bold;"/>
-                        </h:panelGrid>
-                    </p:panel>
-                     <br></br>
-                    <h:panelGrid id="pngCadastro" columns="1">
-                       
-                        <p:outputLabel for="descricao" value="Descrição da Ocorrência:" />
-                        <p:inputTextarea id="descricao" required="true" value="#{ocorrenciaDAOController.selected.descricao}" 
-                                         cols="93" maxlength="1000"  rows="5" counter="display"  autoResize="false" 
-                                         counterTemplate="{0} caráteres restantes."/>
-                        <h:outputText id="display" />
-                        <p:message for="descricao" />
-                    </h:panelGrid> 
-                    <br></br>    
-                    <img src="resources/images/servicos.jpg" alt=""/>
-                    <br></br>
-                        <p:commandButton value="Cadastrar" icon="ui-icon-disk" actionListener="#{ocorrenciaDAOController.create()}"/>
-                        <p:commandButton value="Limpar" type="reset"/>
+        <p:tabView style="border-style: none">
+            <p:tab title="Ocorrência">
+                <p:panel header="Ocorrência Morador" style="border-style: none" toggleable="true" visible="#{!(usuario.getIdperfil().getNmperfil() != 'Morador')}"> 
+                    <center>
+                        <h:form id="form_cadastro" >
+                            <p>Os campos destacados são de preenchimento obrigatório.</p>
+                            <p:panel id="usuario" header="Residência" style="width: 40%" >  
+                                <h:panelGrid id="pngMorador" columns="2">
+                                    <p:outputLabel value="Morador:" />
+                                    <p:outputLabel value="#{ocorrenciaDAOController.currentMorador.nome}" style="font-weight: bold;"/>
+                                </h:panelGrid>
+                                <h:panelGrid id="pngResidencia" columns="4">
+                                    <p:outputLabel value="Modulo:"/>
+                                    <p:outputLabel value="#{ocorrenciaDAOController.residencia.modulo}" style="font-weight: bold;"/>
+                                    <p:outputLabel value="Casa:"/>
+                                    <p:outputLabel value="#{ocorrenciaDAOController.residencia.numero}" style="font-weight: bold;"/>
+                                </h:panelGrid>
+                            </p:panel>
+                            <br></br>
+                            <h:panelGrid id="pngCadastro" columns="1">
 
-                    <p:autoUpdate />
-                </h:form>
+                                <p:outputLabel for="descricao" value="Descrição da Ocorrência:" />
+                                <p:inputTextarea id="descricao" required="true" value="#{ocorrenciaDAOController.selected.descricao}" 
+                                                 cols="93" maxlength="1000"  rows="5" counter="display"  autoResize="false" 
+                                                 counterTemplate="{0} caráteres restantes."/>
+                                <h:outputText id="display" />
+                                <p:message for="descricao" />
+                            </h:panelGrid> 
+                            <br></br>    
+                            <img src="resources/images/servicos.jpg" alt=""/>
+                            <br></br>
+                            <p:commandButton value="Cadastrar" icon="ui-icon-disk" actionListener="#{ocorrenciaDAOController.create()}"/>
+                            <p:commandButton value="Limpar" type="reset"/>
 
-                <br></br><br></br>
+                            <p:autoUpdate />
+                        </h:form>
+                    </center>
+                </p:panel>
+
 
                 <p:dataTable 
                     value="#{ocorrenciaDAOController.items}"                      
@@ -54,23 +57,28 @@
                     rowsPerPageTemplate="6,12,16" >
 
                     <f:facet name="header">
-                        <h:outputText value="Lista de Ocorrências"/>
+                        <h:outputText value="#{usuario.getIdperfil().getNmperfil() == 'Morador' ? 'Ocorrências Enviadas' : 'Ocorrências Recebidas'}" />
                     </f:facet>
 
-                    <p:column headerText="" >
-                        <h:outputText value="Ocorrência"/>
+                    <p:column headerText="Morador" >
+                        <h:outputText value="#{lista.idmorador.nome}"/>
                     </p:column>
-
+                    <p:column headerText="Residência" >
+                        <h:outputText value="Módulo: #{lista.idmorador.idresidencia.modulo} Casa: #{lista.idmorador.idresidencia.numero}"/>
+                    </p:column>
                     <p:column headerText="Data" styleClass="col-button" >
                         <h:outputText value="#{lista.data}" />
                     </p:column>
 
                     <p:column headerText="Status">
-                         <h:outputText value="#{lista.status}" />
+                        <h:outputText value="#{lista.status}" />
                     </p:column>
                 </p:dataTable>
-            </center>
-        </p:panel>    
+            </p:tab>
+            <p:tab title="Relatórios">
+                
+            </p:tab>
+        </p:tabView>
     </ui:define>
 
 </ui:composition>
