@@ -44,6 +44,7 @@ CREATE TABLE `administrador` (
 
 LOCK TABLES `administrador` WRITE;
 /*!40000 ALTER TABLE `administrador` DISABLE KEYS */;
+INSERT INTO `administrador` VALUES ('555.555.555-55','Administrador do Sistema',NULL,'66666-666','N alto da Colina, rua 12 casa 33','Masculino',12),('64594033172','Antonio Teste','2018-09-15 16:41:04',NULL,'Teste','Masculino',2);
 /*!40000 ALTER TABLE `administrador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -157,7 +158,7 @@ DROP TABLE IF EXISTS `ocorrencia`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ocorrencia` (
   `idocorrencia` int(11) NOT NULL AUTO_INCREMENT,
-  `status` binary(1) DEFAULT NULL,
+  `status` varchar(20) DEFAULT NULL,
   `data` datetime DEFAULT CURRENT_TIMESTAMP,
   `descricao` varchar(500) DEFAULT NULL,
   `idguarda` int(11) DEFAULT NULL,
@@ -167,7 +168,7 @@ CREATE TABLE `ocorrencia` (
   KEY `ocorrencia_morador_idx` (`idmorador`),
   CONSTRAINT `ocorrencia_guarda` FOREIGN KEY (`idguarda`) REFERENCES `guarda` (`idguarda`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `ocorrencia_morador` FOREIGN KEY (`idmorador`) REFERENCES `morador` (`idmorador`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COMMENT='Os status possíveis podem se: \nEm Aberto\nAceito\nRecusado \nFinalizado';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -176,6 +177,7 @@ CREATE TABLE `ocorrencia` (
 
 LOCK TABLES `ocorrencia` WRITE;
 /*!40000 ALTER TABLE `ocorrencia` DISABLE KEYS */;
+INSERT INTO `ocorrencia` VALUES (1,'Recusado',NULL,'Preciso que pode as árvores',NULL,6),(2,'Aceito','2018-09-15 16:41:04','Mais um teste de ocorrência',NULL,6),(3,'Aceito','2018-09-15 17:04:10','Vamos ao teste',NULL,6),(4,'Recusado','2018-09-18 21:30:33',NULL,NULL,NULL),(5,'Em Aberto','2018-09-18 23:41:44','Varra a rua seus cabras',NULL,6),(6,'Em Aberto','2018-09-18 23:59:34','Peco que limpe a rua',NULL,6);
 /*!40000 ALTER TABLE `ocorrencia` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -244,7 +246,7 @@ CREATE TABLE `usuario` (
   PRIMARY KEY (`idusuario`),
   KEY `idperfil_idx` (`idperfil`),
   CONSTRAINT `idperfil` FOREIGN KEY (`idperfil`) REFERENCES `perfil` (`idperfil`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -253,7 +255,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'contatoaugusto@gmail.com',2,'123'),(2,'teste',2,'123'),(3,'morador',3,'123'),(4,'guarda',3,'123'),(5,'joao',1,'123'),(6,'lucas',1,'123'),(7,'henr',1,'123'),(8,'henrique',1,'123'),(9,'jo',1,'123'),(10,'malu',1,'123'),(11,'jaime',3,'123');
+INSERT INTO `usuario` VALUES (1,'contatoaugusto@gmail.com',2,'123'),(2,'teste',2,'123'),(3,'morador',3,'123'),(4,'guarda',3,'123'),(5,'joao',1,'123'),(6,'lucas',1,'123'),(7,'henr',1,'123'),(8,'henrique',1,'123'),(9,'jo',1,'123'),(10,'malu',1,'123'),(11,'jaime',3,'123'),(12,'admin',2,'123');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -266,4 +268,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-09-13 23:58:25
+-- Dump completed on 2018-09-19  0:10:03
