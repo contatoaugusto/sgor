@@ -39,7 +39,7 @@
                             <br></br>    
                             <img src="resources/images/servicos.jpg" alt=""/>
                             <br></br>
-                            <p:commandButton value="Cadastrar" icon="ui-icon-disk" actionListener="#{ocorrenciaDAOController.create()}"/>
+                            <p:commandButton value="Cadastrar" icon="ui-icon-disk" actionListener="#{ocorrenciaDAOController.create()}" update="@all" />
                             <p:commandButton value="Limpar" type="reset"/>
 
                             <p:autoUpdate />
@@ -47,36 +47,54 @@
                     </center>
                 </p:panel>
 
+                <h:form id="form_lista" >
+                    <p:dataTable 
+                        value="#{ocorrenciaDAOController.items}"                      
+                        var="lista"
+                        style="margin-bottom:20px"
+                        paginator="false" id="lista"
+                        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="6,12,16" >
 
-                <p:dataTable 
-                    value="#{ocorrenciaDAOController.items}"                      
-                    var="lista"
-                    style="margin-bottom:20px"
-                    paginator="false" id="lista"
-                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                    rowsPerPageTemplate="6,12,16" >
+                        <f:facet name="header">
+                            <h:outputText value="#{usuario.getIdperfil().getNmperfil() == 'Morador' ? 'Ocorrências Enviadas' : 'Ocorrências Recebidas'}" />
+                        </f:facet>
 
-                    <f:facet name="header">
-                        <h:outputText value="#{usuario.getIdperfil().getNmperfil() == 'Morador' ? 'Ocorrências Enviadas' : 'Ocorrências Recebidas'}" />
-                    </f:facet>
+                        <p:column headerText="Morador" >
+                            <h:outputText value="#{lista.idmorador.nome}"/>
+                        </p:column>
+                        <p:column headerText="Residência" >
+                            <h:outputText value="Módulo: #{lista.idmorador.idresidencia.modulo} Casa: #{lista.idmorador.idresidencia.numero}"/>
+                        </p:column>
+                        <p:column headerText="Data" styleClass="col-button" >
+                            <h:outputText value="#{lista.data}" />
+                        </p:column>
 
-                    <p:column headerText="Morador" >
-                        <h:outputText value="#{lista.idmorador.nome}"/>
-                    </p:column>
-                    <p:column headerText="Residência" >
-                        <h:outputText value="Módulo: #{lista.idmorador.idresidencia.modulo} Casa: #{lista.idmorador.idresidencia.numero}"/>
-                    </p:column>
-                    <p:column headerText="Data" styleClass="col-button" >
-                        <h:outputText value="#{lista.data}" />
-                    </p:column>
-
-                    <p:column headerText="Status">
-                        <h:outputText value="#{lista.status}" />
-                    </p:column>
-                </p:dataTable>
+                        <p:column headerText="Status">
+                            <h:outputText value="#{lista.status}" />
+                        </p:column>
+                        
+                        <p:column headerText="Ações" rendered="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}">
+                            <!--                        <p:button  value="Visualizar" icon="ui-icon-star">
+                                                        <f:param name="idOcorrencia" value="#{lista.idocorrencia}" />
+                                                    </p:button>-->
+                            <p:commandLink id="lnkVisualiza" update="lista" actionListener="#{ocorrenciaDAOController.updateStatus(lista.idocorrencia, 'Aceito')}">
+                                <h:outputText value="Visualizar" />
+                            </p:commandLink>
+                            <p:spacer width="5" />
+                            <p:commandLink id="lnkAceita" ajax="true" update="lista" actionListener="#{ocorrenciaDAOController.updateStatus(lista.idocorrencia, 'Aceito')}">
+                                <h:outputText value="Aceitar" />
+                            </p:commandLink>
+                            <p:spacer width="5" />
+                            <p:commandLink id="lnkRecusar" update="lista" actionListener="#{ocorrenciaDAOController.updateStatus(lista.idocorrencia, 'Recusado')}">
+                                <h:outputText value="Recusar" />
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
             </p:tab>
             <p:tab title="Relatórios">
-                
+
             </p:tab>
         </p:tabView>
     </ui:define>

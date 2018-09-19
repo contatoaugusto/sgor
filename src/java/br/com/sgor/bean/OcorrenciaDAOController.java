@@ -128,20 +128,22 @@ public class OcorrenciaDAOController implements Serializable {
     }
 
     public String prepareList() {
+        current = new OcorrenciaDAO();
+        selectedItemIndex = -1;
         recreateModel();
-        return "List";
+        return "manterOcorrencia";
     }
 
     public String prepareView() {
         current = (OcorrenciaDAO) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "View";
+        return "manterOcorrencia";
     }
 
     public String prepareCreate() {
         current = new OcorrenciaDAO();
         selectedItemIndex = -1;
-        return "Create";
+        return "manterOcorrencia";
     }
 
     public String create() {
@@ -152,7 +154,7 @@ public class OcorrenciaDAOController implements Serializable {
 
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
-            return prepareCreate();
+            return prepareList();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
             return null;
@@ -170,6 +172,19 @@ public class OcorrenciaDAOController implements Serializable {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
             return "View";
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
+            return null;
+        }
+    }
+
+    public String updateStatus(int idOcorrencia, String nmStatus) {
+        try {
+            current = ejbFacade.find(idOcorrencia);
+            current.setStatus(nmStatus);
+            getFacade().edit(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
+            return prepareList();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
             return null;

@@ -30,11 +30,12 @@ public class GuardaDAOController implements Serializable {
     private UsuarioDAOFacade usuarioDAOFacade;
     @EJB
     private PerfilDAOFacade ejbFacadePerfil;
-
-    private GuardaDAO current;
-    private DataModel items = null;
     @EJB
     private br.com.sgor.facade.GuardaDAOFacade ejbFacade;
+    
+    private GuardaDAO current;
+    private DataModel items = null;
+   
     
     private PaginationHelper pagination;
     private int selectedItemIndex;

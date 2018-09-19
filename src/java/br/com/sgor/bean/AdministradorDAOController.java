@@ -3,7 +3,10 @@ package br.com.sgor.bean;
 import br.com.sgor.dao.AdministradorDAO;
 import br.com.sgor.bean.util.JsfUtil;
 import br.com.sgor.bean.util.PaginationHelper;
+import br.com.sgor.dao.UsuarioDAO;
 import br.com.sgor.facade.AdministradorDAOFacade;
+import br.com.sgor.facade.PerfilDAOFacade;
+import br.com.sgor.facade.UsuarioDAOFacade;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -24,11 +27,20 @@ public class AdministradorDAOController implements Serializable {
 
     private AdministradorDAO current;
     private DataModel items = null;
+        
     @EJB
     private br.com.sgor.facade.AdministradorDAOFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
+    @EJB
+    private UsuarioDAOFacade usuarioDAOFacade;
+    @EJB
+    private PerfilDAOFacade ejbFacadePerfil;
+    private int idPerfil = 2;
+    private String nmUsuario = "";
+    private String deSenha = "";
+    
     public AdministradorDAOController() {
     }
 
@@ -81,11 +93,21 @@ public class AdministradorDAOController implements Serializable {
 
     public String create() {
         try {
+            // Cria o usuario
+            UsuarioDAO currentUsuario = new UsuarioDAO();
+            currentUsuario = new UsuarioDAO();
+            currentUsuario.setNmusuario(getNmUsuario());
+            currentUsuario.setDeSenha(getDeSenha());
+            // 2 = Administrador
+            currentUsuario.setIdperfil(ejbFacadePerfil.find(idPerfil));
+            usuarioDAOFacade.create(currentUsuario);
+            current.setIdusuario(currentUsuario);
+            
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("AdministradorDAOCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
             return prepareCreate();
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
             return null;
         }
     }
@@ -232,4 +254,31 @@ public class AdministradorDAOController implements Serializable {
 
     }
 
+        /**
+     * @return the nmUsuario
+     */
+    public String getNmUsuario() {
+        return nmUsuario;
+    }
+
+    /**
+     * @param nmUsuario the nmUsuario to set
+     */
+    public void setNmUsuario(String nmUsuario) {
+        this.nmUsuario = nmUsuario;
+    }
+
+    /**
+     * @return the deSenha
+     */
+    public String getDeSenha() {
+        return deSenha;
+    }
+
+    /**
+     * @param deSenha the deSenha to set
+     */
+    public void setDeSenha(String deSenha) {
+        this.deSenha = deSenha;
+    }
 }
