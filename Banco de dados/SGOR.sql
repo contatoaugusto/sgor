@@ -44,7 +44,7 @@ CREATE TABLE `administrador` (
 
 LOCK TABLES `administrador` WRITE;
 /*!40000 ALTER TABLE `administrador` DISABLE KEYS */;
-INSERT INTO `administrador` VALUES ('555.555.555-55','Administrador do Sistema',NULL,'66666-666','N alto da Colina, rua 12 casa 33','Masculino',12),('64594033172','Antonio Teste','2018-09-15 16:41:04',NULL,'Teste','Masculino',2);
+INSERT INTO `administrador` VALUES ('555.555.555-55','Administrador do Sistema',NULL,'66666-666','N alto da Colina, rua 12 casa 33','Masculino',12);
 /*!40000 ALTER TABLE `administrador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -77,7 +77,6 @@ CREATE TABLE `guarda` (
 
 LOCK TABLES `guarda` WRITE;
 /*!40000 ALTER TABLE `guarda` DISABLE KEYS */;
-INSERT INTO `guarda` VALUES (1,'(11) 1111-1111','Meu endereco','66666-666','1980-02-01 21:00:00',NULL,'Nome Guarda','999.999.999-99',4),(2,'(54) 5454-5454','Meu endereco','23232-323','1983-02-01 21:00:00',NULL,'Guarda Jaiminho','787.878.787-87',11);
 /*!40000 ALTER TABLE `guarda` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -145,7 +144,6 @@ CREATE TABLE `morador` (
 
 LOCK TABLES `morador` WRITE;
 /*!40000 ALTER TABLE `morador` DISABLE KEYS */;
-INSERT INTO `morador` VALUES (1,'888.888.888-88',NULL,NULL,'(55) 5555-5555',NULL,'Minha residencia','02/02/1980','Masculino','Morador teste',NULL,3),(2,'999.999.999-99',NULL,NULL,'(55) 5555-5555',NULL,NULL,'01/01/1972','Masculino','João Antonio',10,5),(3,'888.888.888-88',NULL,NULL,'(11) 1111-1111',NULL,NULL,'01/08/1973','Masculino','Antonio Augusto',3,6),(4,'488.888.888-88',NULL,NULL,'(22) 2222-2222',NULL,NULL,'03/07/1970','Masculino','Henrique Souza',7,7),(5,'787.877.887-78',NULL,NULL,'(89) 8989-8998',NULL,NULL,'03/04/1988','Feminino','Joana',1,9),(6,'777.777.777-77',NULL,NULL,'(11) 1111-1111',NULL,NULL,'03/05/1977','Masculino','Maria Lucia',1,10);
 /*!40000 ALTER TABLE `morador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -177,7 +175,6 @@ CREATE TABLE `ocorrencia` (
 
 LOCK TABLES `ocorrencia` WRITE;
 /*!40000 ALTER TABLE `ocorrencia` DISABLE KEYS */;
-INSERT INTO `ocorrencia` VALUES (1,'Recusado',NULL,'Preciso que pode as árvores',NULL,6),(2,'Aceito','2018-09-15 16:41:04','Mais um teste de ocorrência',NULL,6),(3,'Aceito','2018-09-15 17:04:10','Vamos ao teste',NULL,6),(4,'Recusado','2018-09-18 21:30:33',NULL,NULL,NULL),(5,'Em Aberto','2018-09-18 23:41:44','Varra a rua seus cabras',NULL,6),(6,'Em Aberto','2018-09-18 23:59:34','Peco que limpe a rua',NULL,6);
 /*!40000 ALTER TABLE `ocorrencia` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -227,7 +224,6 @@ CREATE TABLE `residencia` (
 
 LOCK TABLES `residencia` WRITE;
 /*!40000 ALTER TABLE `residencia` DISABLE KEYS */;
-INSERT INTO `residencia` VALUES (1,'B',23,'Casa Voltada pros fundos'),(2,'Tess',33,'qweqwe'),(3,'Modulo L',225,'Essa é mais uma residência'),(4,'Mod ww',87,'Teste'),(5,'dew',45,'Vamos ao teste'),(6,'we',22,'ewerwer'),(7,'TModulo Teste',888,'Mais um modulo de teste e residenia'),(8,'Estamos modulo 3',444,'Isso de novo'),(9,'assss',333,'ddddddddddddddddddddddddddddd'),(10,'Modulo 555',233,'So um teste');
 /*!40000 ALTER TABLE `residencia` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -255,7 +251,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'contatoaugusto@gmail.com',2,'123'),(2,'teste',2,'123'),(3,'morador',3,'123'),(4,'guarda',3,'123'),(5,'joao',1,'123'),(6,'lucas',1,'123'),(7,'henr',1,'123'),(8,'henrique',1,'123'),(9,'jo',1,'123'),(10,'malu',1,'123'),(11,'jaime',3,'123'),(12,'admin',2,'123');
+INSERT INTO `usuario` VALUES (12,'admin',2,'123');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -268,4 +264,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-09-19  0:10:03
+-- Dump completed on 2018-09-20  0:18:12
