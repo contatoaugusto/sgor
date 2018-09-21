@@ -8,10 +8,12 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
+
+        <link href="resources/css/tabelas.css" rel="stylesheet" type="text/css"/>
         <p:panel header="Manter Morador" style="border-style: none"> 
             <center>
                 <h:form id="form_cadastro">
-                     <p>Os campos destacados são de preenchimento obrigatório.</p>
+                    <p>Os campos destacados são de preenchimento obrigatório.</p>
                     <h:panelGrid id="pngCadastro" columns="6">
 
                         <p:outputLabel for="nome" value="Nome Completo:" />
@@ -21,28 +23,28 @@
                         <p:outputLabel for="cpf" value="CPF:" />
                         <p:inputMask id="cpf" value="#{moradorDAOController.selected.cpf}" mask="999.999.999-99"/>
                         <p:message for="cpf" />
-                        
+
                         <p:outputLabel for="sexo" value="Sexo:" />
                         <p:selectOneRadio id="sexo" value="#{moradorDAOController.selected.sexo}">
                             <f:selectItem itemLabel="Masculino" itemValue="Masculino" />
                             <f:selectItem itemLabel="Feminino" itemValue="Feminino" />
                         </p:selectOneRadio>
                         <p:message for="sexo" />
-                        
+
                         <p:outputLabel for="datanascimento" value="Nascimento:" />
                         <p:inputMask id="datanascimento" value="#{moradorDAOController.selected.datanasc}" mask="99/99/9999"/>
                         <p:message for="datanascimento" />
-                        
+
                         <p:outputLabel for="telefone" value="Telefone:" />
                         <p:inputMask id="telefone" value="#{moradorDAOController.selected.telefone}" mask="(99) 9999-9999"/>
                         <p:message for="telefone" />
-                        
+
                         <p:outputLabel for="residencia" value="Residência:" />
                         <p:selectOneMenu id="residencia" value="#{moradorDAOController.idResidencia}">
                             <f:selectItems value="#{moradorDAOController.residencias}" var="residencia" itemValue="#{residencia.idresidencia}" itemLabel="#{residencia.modulo} - #{residencia.numero}" />
                         </p:selectOneMenu>
                         <p:message for="residencia" />
-                        
+
                     </h:panelGrid>   
                     <br></br>    
                     <p:panel id="usuario" header="Usuário" style="width: 20%">  
@@ -57,10 +59,8 @@
                         </h:panelGrid>
                     </p:panel>
                     <br></br>
-                    <p:commandButton value="Cadastrar" icon="ui-icon-disk" actionListener="#{moradorDAOController.create()}" update="@all"/>
-                        <p:commandButton value="Limpar" type="reset"/>
-
-                    <p:autoUpdate />
+                    <p:commandButton value="Cadastrar" icon="ui-icon-disk" actionListener="#{moradorDAOController.createUpdate()}" update=":lista" ajax="false"/>
+                    <p:commandButton value="Limpar" type="reset"/>                    
                 </h:form>
 
                 <br></br><br></br>
@@ -71,7 +71,9 @@
                     style="margin-bottom:20px"
                     paginator="false" id="lista"
                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                    rowsPerPageTemplate="6,12,16" >
+                    rowsPerPageTemplate="6,12,16"
+                    rowIndexVar="indiceLinha"
+                    rowStyleClass="#{(indiceLinha mod 2) eq 0 ? 'highlight' : 'highlight2'}" >
 
                     <f:facet name="header">
                         <h:outputText value="Lista de Residências"/>
@@ -81,25 +83,35 @@
                         <h:outputText value="#{lista.nome}"/>
                     </p:column>
 
-                    <p:column headerText="E-mail" >
-                        <h:outputText value="#{lista.email}" />
+                    <p:column headerText="E-mail/Usuário" >
+                        <h:outputText value="#{lista.idusuario.nmusuario}" />
                     </p:column>
 
                     <p:column headerText="Telefone">
-                         <h:outputText value="#{lista.telefone}" />
-                    </p:column>
-                    
-                    <p:column headerText="CEP">
-                         <h:outputText value="#{lista.cep}" />
-                    </p:column>
-                    
-                    <p:column headerText="Modulo">
-                         <h:outputText value="#{lista.idresidencia.modulo}" />
-                    </p:column>
-                    <p:column headerText="Numero">
-                         <h:outputText value="#{lista.idresidencia.numero}" />
+                        <h:outputText value="#{lista.telefone}" />
                     </p:column>
 
+                    <p:column headerText="CEP">
+                        <h:outputText value="#{lista.cep}" />
+                    </p:column>
+
+                    <p:column headerText="Modulo">
+                        <h:outputText value="#{lista.idresidencia.modulo}" />
+                    </p:column>
+                    <p:column headerText="Numero">
+                        <h:outputText value="#{lista.idresidencia.numero}" />
+                    </p:column>
+                    
+                    <p:column headerText="Ações" rendered="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}">
+                        <p:commandLink id="lnkEdit" update="lista form_cadastro" ajax="true" actionListener="#{moradorDAOController.prepareEdit}">
+                            <h:outputText value="Editar" />
+                        </p:commandLink>
+                        <p:spacer width="5" />
+                        <p:commandLink id="lnkAceita" ajax="true" update="lista" actionListener="#{moradorDAOController.destroy()}">
+                            <h:outputText value="Excluir" />
+                        </p:commandLink>
+                    </p:column>
+                    
                 </p:dataTable>
             </center>
         </p:panel>    

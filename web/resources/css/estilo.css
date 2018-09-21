@@ -131,7 +131,7 @@ label.mensagem {
 .login{
 	top: 10px;
 	width:320px;
-	position: relative; /* propriedade top acima é definida em relação à div anterior (acesso_restrito)*/
+	position: relative; /* propriedade top acima ï¿½ definida em relaï¿½ï¿½o ï¿½ div anterior (acesso_restrito)*/
 	margin: 0 auto;
 	font-weight: bold;
 }
@@ -246,7 +246,7 @@ div.autorais {
 	text-transform: uppercase;
 }
 
-			/*** PERSONALIZAÇÃO DO INPUT FILE *****/
+			/*** PERSONALIZAï¿½ï¿½O DO INPUT FILE *****/
 .file-wrapper {
   cursor: pointer;
   display: inline-block;

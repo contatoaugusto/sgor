@@ -39,19 +39,18 @@ public class MoradorDAOController implements Serializable {
     private int idPerfil = 1;
     private String nmUsuario = "";
     private String deSenha = "";
-    
+
     @EJB
     private UsuarioDAOFacade usuarioDAOFacade;
     @EJB
     private PerfilDAOFacade ejbFacadePerfil;
-    
+
     @EJB
     private ResidenciaDAOFacade ejbFacadeResidencia;
-    
-    private List<ResidenciaDAO> residencias; 
-    private Integer idResidencia; 
-    
-    
+
+    private List<ResidenciaDAO> residencias;
+    private Integer idResidencia;
+
     public MoradorDAOController() {
     }
 
@@ -59,7 +58,7 @@ public class MoradorDAOController implements Serializable {
         if (current == null) {
             current = new MoradorDAO();
             selectedItemIndex = -1;
-            
+
             residencias = ejbFacadeResidencia.findAll();
         }
         return current;
@@ -89,44 +88,53 @@ public class MoradorDAOController implements Serializable {
 
     public String prepareList() {
         recreateModel();
+        current = new MoradorDAO();
         return "manterMorador";
     }
 
     public String prepareView() {
         current = (MoradorDAO) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "View";
+        return "manterMorador";
     }
 
     public String prepareCreate() {
         current = new MoradorDAO();
         selectedItemIndex = -1;
-        return "Create";
+        return "manterMorador";
+    }
+
+    private void usuarioHandle() {
+        // Cria o usuario
+        UsuarioDAO currentUsuario = new UsuarioDAO();
+        currentUsuario = new UsuarioDAO();
+        currentUsuario.setNmusuario(getNmUsuario());
+        currentUsuario.setDeSenha(getDeSenha());
+        // 1 = Perfil Morador
+        currentUsuario.setIdperfil(ejbFacadePerfil.find(idPerfil));
+        usuarioDAOFacade.create(currentUsuario);
+        current.setIdusuario(currentUsuario);
+        current.setIdresidencia(ejbFacadeResidencia.find(idResidencia));
+    }
+
+    public String createUpdate() {
+        
+        usuarioHandle();
+        
+        if (current.getIdmorador() == 0) {
+            return create();
+        } else {
+            return update();
+        }
     }
 
     public String create() {
         try {
-            
-            // Cria o usuario
-            UsuarioDAO currentUsuario = new UsuarioDAO();
-            currentUsuario = new UsuarioDAO();
-            currentUsuario.setNmusuario(getNmUsuario());
-            currentUsuario.setDeSenha(getDeSenha());
-            // 1 = Perfil Morador
-            currentUsuario.setIdperfil(ejbFacadePerfil.find(idPerfil));
-            usuarioDAOFacade.create(currentUsuario);
-            current.setIdusuario(currentUsuario);
-            current.setIdresidencia(ejbFacadeResidencia.find(idResidencia));
-            
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
-            
-            current = new MoradorDAO();
-            selectedItemIndex = -1;
-            
-            items = new ListDataModel<MoradorDAO>(ejbFacade.findAll());
-            
-            return "manterMorador";
+
+            return prepareList();
+
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
             return null;
@@ -135,17 +143,20 @@ public class MoradorDAOController implements Serializable {
 
     public String prepareEdit() {
         current = (MoradorDAO) getItems().getRowData();
+        setNmUsuario(current.getIdusuario().getNmusuario());
+        setDeSenha(current.getIdusuario().getDeSenha());
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "Edit";
+        //return "manterMorador?faces-redirect=true";
+        return "manterMorador";
     }
 
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MoradorDAOUpdated"));
-            return "View";
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
+            return prepareList();
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
             return null;
         }
     }
@@ -156,7 +167,7 @@ public class MoradorDAOController implements Serializable {
         performDestroy();
         recreatePagination();
         recreateModel();
-        return "List";
+        return "manterMorador";
     }
 
     public String destroyAndView() {

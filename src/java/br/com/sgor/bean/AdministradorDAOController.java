@@ -76,19 +76,20 @@ public class AdministradorDAOController implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        return "List";
+        current = new AdministradorDAO();
+        return "manterAdministrador";
     }
 
     public String prepareView() {
         current = (AdministradorDAO) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "View";
+        return "manterAdministrador";
     }
 
     public String prepareCreate() {
         current = new AdministradorDAO();
         selectedItemIndex = -1;
-        return "Create";
+        return "manterAdministrador";
     }
 
     public String create() {
@@ -105,7 +106,7 @@ public class AdministradorDAOController implements Serializable {
             
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
-            return prepareCreate();
+            return prepareList();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
             return null;

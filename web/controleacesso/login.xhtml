@@ -10,24 +10,27 @@
     </h:head>
 
     <h:body style="background-image:url('../resources/images/Tools-icon.png');background-position: 50% -60%;background-repeat: no-repeat">
-
+        
         <p:dialog header="Login" visible="true" closable="false" draggable="true" resizable="false" width="500" height="200">
             <p:growl id="mensagens" autoUpdate="true"  sticky="false" life="5000"/>    
             <center>
                 <h:outputText value="Usuário ou senha incorretos!" rendered="#{param.erro}" style="color: darkred"/>
                 <p:growl id="msg" showDetail="true" escape="false" /> 
-
+                
             </center>
+            <form action="#{facesContext.externalContext.requestContextPath}/j_spring_security_check" method="post">
+                <h:panelGrid columns="2" cellpadding="5" width="100%" style="font-weight: bold">
+                    <h:outputLabel value="Usuários teste: admin  morador  guarda"/> <h:outputLabel value="Senha: 123"/>
+                </h:panelGrid>
             <h:panelGrid columns="2" cellpadding="5" width="100%">
-                <form action="#{facesContext.externalContext.requestContextPath}/j_spring_security_check" method="post">
                     <h:outputLabel for="j_username" value="Usuário:" /> 
-                    <h:inputText id="j_username" required="true" size="40"/>
+                    <h:inputText id="j_username" required="true" size="30"/>
                     <h:outputLabel for="j_password" value="Senha:" />
-                    <h:inputSecret id="j_password" required="true" size="40"/>
+                    <h:inputSecret id="j_password" required="true" size="30"/>
                     <h:commandButton  value="Login"/> 
-                </form>
+                
             </h:panelGrid>
-
+            </form>
             <br/><br/>
             <right>
 

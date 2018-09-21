@@ -79,19 +79,20 @@ public class GuardaDAOController implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        return "List";
+        current = new GuardaDAO();
+        return "manterGuarda";
     }
 
     public String prepareView() {
         current = (GuardaDAO) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "View";
+        return "manterGuarda";
     }
 
     public String prepareCreate() {
         current = new GuardaDAO();
         selectedItemIndex = -1;
-        return "Create";
+        return "manterGuarda";
     }
 
     public String create() {
@@ -108,7 +109,7 @@ public class GuardaDAOController implements Serializable {
             
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
-            return prepareCreate();
+            return prepareList();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
             return null;
@@ -118,16 +119,16 @@ public class GuardaDAOController implements Serializable {
     public String prepareEdit() {
         current = (GuardaDAO) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "Edit";
+        return "manterGuarda";
     }
 
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("GuardaDAOUpdated"));
-            return "View";
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
+            return "manterGuarda";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
             return null;
         }
     }
@@ -157,9 +158,9 @@ public class GuardaDAOController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("GuardaDAODeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
         }
     }
 
