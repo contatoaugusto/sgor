@@ -8,6 +8,7 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
+        <link href="resources/css/tabelas.css" rel="stylesheet" type="text/css"/>
         <p:panel header="Manter Residência">
             <center>
                 <h:form id="form_cadastro">
@@ -28,8 +29,8 @@
 
                     </h:panelGrid>
 
-                        <p:commandButton value="Cadastrar" icon="ui-icon-disk" actionListener="#{residenciaDAOController.create()}" update="@all"/>
-                        <p:commandButton value="Limpar" type="reset"/>
+                    <p:commandButton value="Cadastrar" icon="ui-icon-disk" actionListener="#{residenciaDAOController.create()}" update=":lista"/>
+                    <p:commandButton value="Limpar" type="reset"/>
 
                     <p:autoUpdate />
                 </h:form>
@@ -42,7 +43,8 @@
                     style="margin-bottom:20px"
                     paginator="false" id="lista"
                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                    rowsPerPageTemplate="6,12,16" >
+                    rowsPerPageTemplate="6,12,16" rowIndexVar="indiceLinha"
+                    rowStyleClass="#{(indiceLinha mod 2) eq 0 ? 'highlight' : 'highlight2'}">
 
                     <f:facet name="header">
                         <h:outputText value="Lista de Residências"/>
@@ -57,9 +59,18 @@
                     </p:column>
 
                     <p:column headerText="Descrição" width="50%">
-                         <h:outputText value="#{lista.descricao}" />
-                     </p:column>
-
+                        <h:outputText value="#{lista.descricao}" />
+                    </p:column>
+                    
+                    <p:column headerText="Ações" rendered="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}">
+                        <p:commandLink id="lnkEdit" update="lista form_cadastro" ajax="true" actionListener="#{residenciaDAOController.prepareEdit}">
+                            <h:outputText value="Editar" />
+                        </p:commandLink>
+                        <p:spacer width="5" />
+                        <p:commandLink id="lnkAceita" ajax="true" update="lista" actionListener="#{residenciaDAOController.destroy()}">
+                            <h:outputText value="Excluir" />
+                        </p:commandLink>
+                    </p:column>
                 </p:dataTable>
 
             </center>

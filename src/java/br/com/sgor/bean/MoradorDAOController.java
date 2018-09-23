@@ -3,7 +3,6 @@ package br.com.sgor.bean;
 import br.com.sgor.dao.MoradorDAO;
 import br.com.sgor.bean.util.JsfUtil;
 import br.com.sgor.bean.util.PaginationHelper;
-import br.com.sgor.dao.PerfilDAO;
 import br.com.sgor.dao.UsuarioDAO;
 import br.com.sgor.facade.MoradorDAOFacade;
 import br.com.sgor.facade.PerfilDAOFacade;
@@ -24,6 +23,7 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import java.util.List;
+import javax.annotation.PostConstruct;
 
 @Named("moradorDAOController")
 @SessionScoped
@@ -52,6 +52,13 @@ public class MoradorDAOController implements Serializable {
     private Integer idResidencia;
 
     public MoradorDAOController() {
+    }
+
+    @PostConstruct
+    public void init() {
+        current = new MoradorDAO();
+        setNmUsuario("");
+        residencias = ejbFacadeResidencia.findAll();
     }
 
     public MoradorDAO getSelected() {
@@ -118,10 +125,10 @@ public class MoradorDAOController implements Serializable {
     }
 
     public String createUpdate() {
-        
+
         usuarioHandle();
-        
-        if (current.getIdmorador() == 0) {
+
+        if (current.getIdmorador() == null) {
             return create();
         } else {
             return update();
@@ -186,9 +193,9 @@ public class MoradorDAOController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MoradorDAODeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
         }
     }
 

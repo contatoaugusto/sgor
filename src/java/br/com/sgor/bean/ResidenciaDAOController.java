@@ -7,6 +7,7 @@ import br.com.sgor.facade.ResidenciaDAOFacade;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -32,6 +33,11 @@ public class ResidenciaDAOController implements Serializable {
     public ResidenciaDAOController() {
     }
 
+    @PostConstruct
+    public void init() {
+        current = new ResidenciaDAO();
+    }
+    
     public ResidenciaDAO getSelected() {
         if (current == null) {
             current = new ResidenciaDAO();

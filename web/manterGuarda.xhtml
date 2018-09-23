@@ -8,6 +8,7 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
+        <link href="resources/css/tabelas.css" rel="stylesheet" type="text/css"/>
         <p:panel header="Manter Guarda" style="border-style: none"> 
             <center>
                 <h:form id="form_cadastro">
@@ -64,7 +65,7 @@
                         </h:panelGrid>
                     </p:panel>
                     <br></br>
-                        <p:commandButton value="Cadastrar" icon="ui-icon-disk" actionListener="#{guardaDAOController.create()}"/>
+                        <p:commandButton value="Cadastrar" icon="ui-icon-disk" actionListener="#{guardaDAOController.create()}" update=":lista"/>
                         <p:commandButton value="Limpar" type="reset"/>
 
                     <p:autoUpdate />
@@ -78,7 +79,8 @@
                     style="margin-bottom:20px"
                     paginator="false" id="lista"
                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                    rowsPerPageTemplate="6,12,16" >
+                    rowsPerPageTemplate="6,12,16"  rowIndexVar="indiceLinha"
+                    rowStyleClass="#{(indiceLinha mod 2) eq 0 ? 'highlight' : 'highlight2'}">
 
                     <f:facet name="header">
                         <h:outputText value="Lista de Guardas"/>

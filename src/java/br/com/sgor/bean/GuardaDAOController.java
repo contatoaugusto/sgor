@@ -11,6 +11,7 @@ import br.com.sgor.facade.UsuarioDAOFacade;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -32,19 +33,23 @@ public class GuardaDAOController implements Serializable {
     private PerfilDAOFacade ejbFacadePerfil;
     @EJB
     private br.com.sgor.facade.GuardaDAOFacade ejbFacade;
-    
+
     private GuardaDAO current;
     private DataModel items = null;
-   
-    
+
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
     private int idPerfil = 3;
     private String nmUsuario = "";
     private String deSenha = "";
-    
+
     public GuardaDAOController() {
+    }
+
+    @PostConstruct
+    public void init() {
+        current = new GuardaDAO();
     }
 
     public GuardaDAO getSelected() {
@@ -106,7 +111,7 @@ public class GuardaDAOController implements Serializable {
             currentUsuario.setIdperfil(ejbFacadePerfil.find(idPerfil));
             usuarioDAOFacade.create(currentUsuario);
             current.setIdusuario(currentUsuario);
-            
+
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
             return prepareList();
@@ -258,7 +263,7 @@ public class GuardaDAOController implements Serializable {
 
     }
 
-       /**
+    /**
      * @return the idPerfil
      */
     public int getIdPerfil() {

@@ -6,7 +6,16 @@
 package br.com.sgor.facade;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 
 /**
  *
@@ -33,8 +42,11 @@ public abstract class AbstractFacade<T> {
     }
 
     public void remove(T entity) {
-        getEntityManager().remove(getEntityManager().merge(entity));
-        getEntityManager().refresh(entity);
+            T target = getEntityManager().merge(entity);
+            getEntityManager().flush();
+            getEntityManager().remove(target);
+            getEntityManager().flush();
+        //getEntityManager().refresh(entity);
     }
 
     public T find(Object id) {
@@ -63,5 +75,5 @@ public abstract class AbstractFacade<T> {
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
-    
+
 }

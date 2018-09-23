@@ -21,27 +21,27 @@
                         <p:outputLabel for="cpf" value="CPF:" />
                         <p:inputMask id="cpf" required="true" value="#{administradorDAOController.selected.cpf}" mask="999.999.999-99"/>
                         <p:message for="cpf" />
-                        
+
                         <p:outputLabel for="endereco" value="Endereço:" />
                         <p:inputText id="endereco" required="true" value="#{administradorDAOController.selected.endereco}" size="60"/>
                         <p:message for="endereco" />
-                        
-                        
+
+
                         <p:outputLabel for="cep" value="CEP:" />
                         <p:inputMask id="cep" value="#{administradorDAOController.selected.cep}" mask="99999-999"/>
                         <p:message for="cep" />
-                        
-                        
+
+
                         <p:outputLabel for="sexo" value="Sexo:" />
                         <p:selectOneRadio id="sexo" value="#{administradorDAOController.selected.sexo}">
                             <f:selectItem itemLabel="Masculino" itemValue="Masculino" />
                             <f:selectItem itemLabel="Feminino" itemValue="Feminino" />
                         </p:selectOneRadio>
                         <p:message for="sexo" />
-                        
+
                     </h:panelGrid>   
                     <br></br>    
-                     <p:panel id="usuario" header="Usuário" style="width: 20%">
+                    <p:panel id="usuario" header="Usuário" style="width: 20%">
                         <h:panelGrid id="pngUsuario">
                             <p:outputLabel for="email" value="Email/Usuário:" />
                             <p:inputText id="email" required="true" value="#{administradorDAOController.nmUsuario}" size="20"/>
@@ -53,8 +53,8 @@
                         </h:panelGrid>
                     </p:panel>
                     <br></br>
-                        <p:commandButton value="Cadastrar" icon="ui-icon-disk" actionListener="#{administradorDAOController.create()}"/>
-                        <p:commandButton value="Limpar" type="reset"/>
+                    <p:commandButton value="Cadastrar" icon="ui-icon-disk" actionListener="#{administradorDAOController.create()}"/>
+                    <p:commandButton value="Limpar" type="reset"/>
 
                     <p:autoUpdate />
                 </h:form>
@@ -67,7 +67,8 @@
                     style="margin-bottom:20px"
                     paginator="false" id="lista"
                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                    rowsPerPageTemplate="6,12,16" >
+                    rowsPerPageTemplate="6,12,16" rowIndexVar="indiceLinha"
+                    rowStyleClass="#{(indiceLinha mod 2) eq 0 ? 'highlight' : 'highlight2'}">
 
                     <f:facet name="header">
                         <h:outputText value="Lista de Administradores"/>
@@ -82,12 +83,21 @@
                     </p:column>
 
                     <p:column headerText="Endereço">
-                         <h:outputText value="#{lista.endereco}" />
+                        <h:outputText value="#{lista.endereco}" />
                     </p:column>
                     <p:column headerText="CEP">
-                         <h:outputText value="#{lista.cep}" />
+                        <h:outputText value="#{lista.cep}" />
                     </p:column>
 
+                    <p:column headerText="Ações" rendered="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}">
+                        <p:commandLink id="lnkEdit" update="lista form_cadastro" ajax="true" actionListener="#{administradorDAOController.prepareEdit}">
+                            <h:outputText value="Editar" />
+                        </p:commandLink>
+                        <p:spacer width="5" />
+                        <p:commandLink id="lnkAceita" ajax="true" update="lista" actionListener="#{administradorDAOController.destroy()}">
+                            <h:outputText value="Excluir" />
+                        </p:commandLink>
+                    </p:column>
                 </p:dataTable>
             </center>
         </p:panel>    

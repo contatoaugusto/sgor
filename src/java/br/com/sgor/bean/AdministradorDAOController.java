@@ -10,6 +10,7 @@ import br.com.sgor.facade.UsuarioDAOFacade;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -27,7 +28,7 @@ public class AdministradorDAOController implements Serializable {
 
     private AdministradorDAO current;
     private DataModel items = null;
-        
+
     @EJB
     private br.com.sgor.facade.AdministradorDAOFacade ejbFacade;
     private PaginationHelper pagination;
@@ -40,8 +41,13 @@ public class AdministradorDAOController implements Serializable {
     private int idPerfil = 2;
     private String nmUsuario = "";
     private String deSenha = "";
-    
+
     public AdministradorDAOController() {
+    }
+
+    @PostConstruct
+    public void init() {
+        current = new AdministradorDAO();
     }
 
     public AdministradorDAO getSelected() {
@@ -103,7 +109,7 @@ public class AdministradorDAOController implements Serializable {
             currentUsuario.setIdperfil(ejbFacadePerfil.find(idPerfil));
             usuarioDAOFacade.create(currentUsuario);
             current.setIdusuario(currentUsuario);
-            
+
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
             return prepareList();
@@ -255,7 +261,7 @@ public class AdministradorDAOController implements Serializable {
 
     }
 
-        /**
+    /**
      * @return the nmUsuario
      */
     public String getNmUsuario() {

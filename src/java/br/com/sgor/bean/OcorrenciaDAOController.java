@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -39,7 +40,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * @author prohgy
  */
 @Named("ocorrenciaDAOController")
-@SessionScoped
+@RequestScoped
 public class OcorrenciaDAOController implements Serializable {
 
     private OcorrenciaDAO current;
@@ -76,6 +77,7 @@ public class OcorrenciaDAOController implements Serializable {
         setCurrentMorador(null);
         setCurrentAdministrador(null);
         setCurrentGuarda(null);
+        current = new OcorrenciaDAO();
 
         // Procura os perfis e configura a tela de ocorrências e monta a listagem de acordo
         if (usuario.getIdperfil().getNmperfil().equalsIgnoreCase("Morador")) {
@@ -164,14 +166,17 @@ public class OcorrenciaDAOController implements Serializable {
     public String prepareEdit() {
         current = (OcorrenciaDAO) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "Edit";
+        
+        //init();
+        
+        return "manterOcorrencia";
     }
 
     public String update() {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
-            return "View";
+            return "manterOcorrencia";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
             return null;
