@@ -7,6 +7,7 @@
     <class>br.com.sgor.dao.GuardaDAO</class>
     <class>br.com.sgor.dao.ResidenciaDAO</class>
     <class>br.com.sgor.dao.MoradorDAO</class>
+    <class>br.com.sgor.dao.InfracaoNivelDAO</class>
     <class>br.com.sgor.dao.InfracaoDAO</class>
     <class>br.com.sgor.dao.OcorrenciaDAO</class>
     <class>br.com.sgor.dao.PerfilDAO</class>

@@ -2,9 +2,11 @@ package br.com.sgor.bean;
 
 import br.com.sgor.dao.OcorrenciaDAO;
 import br.com.sgor.dao.AdministradorDAO;
+import br.com.sgor.dao.InfracaoDAO;
 import br.com.sgor.dao.GuardaDAO;
 import br.com.sgor.bean.util.JsfUtil;
 import br.com.sgor.bean.util.PaginationHelper;
+import br.com.sgor.dao.InfracaoNivelDAO;
 import br.com.sgor.dao.ResidenciaDAO;
 import br.com.sgor.facade.OcorrenciaDAOFacade;
 import br.com.sgor.facade.ResidenciaDAOFacade;
@@ -12,6 +14,8 @@ import br.com.sgor.dao.MoradorDAO;
 import br.com.sgor.dao.UsuarioDAO;
 import br.com.sgor.facade.AdministradorDAOFacade;
 import br.com.sgor.facade.GuardaDAOFacade;
+import br.com.sgor.facade.InfracaoDAOFacade;
+import br.com.sgor.facade.InfracaoNivelDAOFacade;
 import br.com.sgor.facade.MoradorDAOFacade;
 
 import java.io.Serializable;
@@ -22,7 +26,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -66,6 +69,16 @@ public class OcorrenciaDAOController implements Serializable {
     @EJB
     private GuardaDAOFacade ejbFacadeGuarda;
 
+    // Infração
+    @EJB
+    private InfracaoNivelDAOFacade ejbFacadeInfracaoNivel;
+    @EJB
+    private InfracaoDAOFacade ejbFacadeInfracao;
+    private List<InfracaoNivelDAO> infracaoNivel;
+    private Integer idNivelInfracao;
+    private String deInfracao;
+    private InfracaoDAO currentInfracao;
+
     public OcorrenciaDAOController() {
     }
 
@@ -78,6 +91,8 @@ public class OcorrenciaDAOController implements Serializable {
         setCurrentAdministrador(null);
         setCurrentGuarda(null);
         current = new OcorrenciaDAO();
+
+        infracaoNivel = ejbFacadeInfracaoNivel.findAll();
 
         // Procura os perfis e configura a tela de ocorrências e monta a listagem de acordo
         if (usuario.getIdperfil().getNmperfil().equalsIgnoreCase("Morador")) {
@@ -163,12 +178,29 @@ public class OcorrenciaDAOController implements Serializable {
         }
     }
 
+    public String atribuirInfracao() {
+        try {
+            
+            currentInfracao = new InfracaoDAO();
+            currentInfracao.setIdinfracao(idNivelInfracao);
+            currentInfracao.setCpf(currentAdministrador);
+            currentInfracao.setDescricao(deInfracao);
+
+            ejbFacadeInfracao.create(currentInfracao);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
+            return prepareList();
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
+            return null;
+        }
+    }
+
+    
     public String prepareEdit() {
         current = (OcorrenciaDAO) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        
+
         //init();
-        
         return "manterOcorrencia";
     }
 
@@ -389,5 +421,58 @@ public class OcorrenciaDAOController implements Serializable {
      */
     public void setCurrentGuarda(GuardaDAO currentGuarda) {
         this.currentGuarda = currentGuarda;
+    }
+
+    /**
+     * @return the infracaoNivel
+     */
+    public List<InfracaoNivelDAO> getInfracaoNivel() {
+        return infracaoNivel;
+    }
+
+    /**
+     * @param infracaoNivel the infracaoNivel to set
+     */
+    public void setInfracaoNivel(List<InfracaoNivelDAO> infracaoNivel) {
+        this.infracaoNivel = infracaoNivel;
+    }
+
+    /**
+     * @return the idNivelInfracao
+     */
+    public Integer getIdNivelInfracao() {
+        return idNivelInfracao;
+    }
+
+    /**
+     * @param idNivelInfracao the idNivelInfracao to set
+     */
+    public void setIdNivelInfracao(Integer idNivelInfracao) {
+        this.idNivelInfracao = idNivelInfracao;
+    }
+
+    /**
+     * @return the idNivelInfracao
+     */
+    public String getDeInfracao() {
+        return deInfracao;
+    }
+
+    public void setDeInfracao(String deInfracao) {
+        this.deInfracao = deInfracao;
+    }
+
+    /**
+     * @return the currentInfracao
+     */
+    public InfracaoDAO getCurrentInfracao() {
+        return currentInfracao;
+    }
+
+    /**
+     * @param currentInfracao the currentInfracao to set
+     */
+    public void setCurrentInfracao(InfracaoDAO currentInfracao) {
+        this.currentInfracao = currentInfracao;
     }
 }
