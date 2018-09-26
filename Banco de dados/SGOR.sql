@@ -90,11 +90,10 @@ DROP TABLE IF EXISTS `infracao`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `infracao` (
   `idinfracao` int(11) NOT NULL AUTO_INCREMENT,
-  `idinfracao_nivel` int(11) DEFAULT NULL,
+  `idinfracao_nivel` int(11) NOT NULL,
   `descricao` varchar(500) DEFAULT NULL,
-  `idocorrencia` int(11) DEFAULT NULL,
-  `cpf` varchar(15) DEFAULT NULL,
-  `nivel` varchar(45) DEFAULT NULL,
+  `idocorrencia` int(11) NOT NULL,
+  `cpf` varchar(15) NOT NULL COMMENT 'CPF do Administrador do sistema que atribuiu essa multa pra ocorrência em questão',
   PRIMARY KEY (`idinfracao`),
   KEY `infracao_ocorrencia_idx` (`idocorrencia`),
   KEY `infracao_administrador_idx` (`cpf`),
@@ -102,7 +101,7 @@ CREATE TABLE `infracao` (
   CONSTRAINT `infracao_administrador` FOREIGN KEY (`cpf`) REFERENCES `administrador` (`cpf`),
   CONSTRAINT `infracao_nivel_infracao` FOREIGN KEY (`idinfracao_nivel`) REFERENCES `infracao_nivel` (`idinfracao_nivel`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `infracao_ocorrencia` FOREIGN KEY (`idocorrencia`) REFERENCES `ocorrencia` (`idocorrencia`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -111,6 +110,7 @@ CREATE TABLE `infracao` (
 
 LOCK TABLES `infracao` WRITE;
 /*!40000 ALTER TABLE `infracao` DISABLE KEYS */;
+INSERT INTO `infracao` VALUES (1,1,NULL,3,'555.555.555-55'),(2,3,NULL,3,'555.555.555-55');
 /*!40000 ALTER TABLE `infracao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -127,7 +127,7 @@ CREATE TABLE `infracao_nivel` (
   `deinfracao_nivel` varchar(200) DEFAULT NULL,
   `vrmulta` decimal(5,2) DEFAULT NULL,
   PRIMARY KEY (`idinfracao_nivel`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COMMENT='Cadastro dos níveis de infração a serem aplicadas as ocorrências geradas pelos moradores';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COMMENT='Cadastro dos níveis de infração a serem aplicadas as ocorrências geradas pelos moradores';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,7 +165,7 @@ CREATE TABLE `morador` (
   KEY `morador_usuario_idx` (`idusuario`),
   CONSTRAINT `morador_residencia` FOREIGN KEY (`idresidencia`) REFERENCES `residencia` (`idresidencia`),
   CONSTRAINT `morador_usuario` FOREIGN KEY (`idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,7 +206,7 @@ CREATE TABLE `ocorrencia` (
 
 LOCK TABLES `ocorrencia` WRITE;
 /*!40000 ALTER TABLE `ocorrencia` DISABLE KEYS */;
-INSERT INTO `ocorrencia` VALUES (1,'Recusado','2018-09-23 13:55:59','Quero que limpe a rua',NULL,7),(2,'Recusado','2018-09-23 14:31:23','Mais uma',NULL,7),(3,'Aceito','2018-09-23 14:41:46','Vaaaaaaaaaa   aad',NULL,7),(4,'Em Aberto','2018-09-23 20:01:35','I have a p:accordionPanel which represents a list of items and in each tab there is a form. Upon submitting any of the repeating forms, it is possible that extra data in needed, which is when a p:dialog is popped up prompting the user to enter some more data. That dialog is defined outside the accordion panel because, unlike the items from the accordion, only one of them can be showing at a time so there is no need to augment the HTML served by repeating it in each tab of the accordion.',NULL,13);
+INSERT INTO `ocorrencia` VALUES (1,'Recusado','2018-09-23 13:55:59','Quero que limpe a rua',NULL,7),(2,'Aceito','2018-09-23 14:31:23','Mais uma',NULL,7),(3,'Aceito','2018-09-23 14:41:46','Vaaaaaaaaaa   aad',NULL,7),(4,'Em Aberto','2018-09-23 20:01:35','I have a p:accordionPanel which represents a list of items and in each tab there is a form. Upon submitting any of the repeating forms, it is possible that extra data in needed, which is when a p:dialog is popped up prompting the user to enter some more data. That dialog is defined outside the accordion panel because, unlike the items from the accordion, only one of them can be showing at a time so there is no need to augment the HTML served by repeating it in each tab of the accordion.',NULL,13);
 /*!40000 ALTER TABLE `ocorrencia` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -275,7 +275,7 @@ CREATE TABLE `usuario` (
   PRIMARY KEY (`idusuario`),
   KEY `idperfil_idx` (`idperfil`),
   CONSTRAINT `idperfil` FOREIGN KEY (`idperfil`) REFERENCES `perfil` (`idperfil`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -297,4 +297,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-09-23 21:39:49
+-- Dump completed on 2018-09-25 23:52:41
