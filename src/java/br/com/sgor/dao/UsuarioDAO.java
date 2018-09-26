@@ -37,7 +37,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "UsuarioDAO.findByDeSenha", query = "SELECT u FROM UsuarioDAO u WHERE u.deSenha = :deSenha")})
 public class UsuarioDAO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -50,6 +49,10 @@ public class UsuarioDAO implements Serializable {
     @NotNull
     @Size(min = 1, max = 20)
     private String deSenha;
+    @OneToMany(mappedBy = "idusuario")
+    private Collection<AdministradorDAO> administradorDAOCollection;
+
+    private static final long serialVersionUID = 1L;
     @OneToMany(mappedBy = "idusuario")
     private Collection<MoradorDAO> moradorDAOCollection;
     @JoinColumn(name = "idperfil", referencedColumnName = "idperfil")
@@ -145,5 +148,15 @@ public class UsuarioDAO implements Serializable {
     public String toString() {
         return "br.com.sgor.dao.UsuarioDAO[ idusuario=" + idusuario + " ]";
     }
-    
+
+
+    @XmlTransient
+    public Collection<AdministradorDAO> getAdministradorDAOCollection() {
+        return administradorDAOCollection;
+    }
+
+    public void setAdministradorDAOCollection(Collection<AdministradorDAO> administradorDAOCollection) {
+        this.administradorDAOCollection = administradorDAOCollection;
+    }
+ 
 }

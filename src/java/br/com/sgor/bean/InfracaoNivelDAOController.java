@@ -1,12 +1,8 @@
 package br.com.sgor.bean;
 
-import br.com.sgor.dao.InfracaoDAO;
-import br.com.sgor.dao.OcorrenciaDAO;
 import br.com.sgor.dao.InfracaoNivelDAO;
-import br.com.sgor.dao.AdministradorDAO;
-import br.com.sgor.bean.util.JsfUtil;
-import br.com.sgor.bean.util.PaginationHelper;
-import br.com.sgor.facade.InfracaoDAOFacade;
+import br.com.sgor.facade.util.JsfUtil;
+import br.com.sgor.facade.util.PaginationHelper;
 import br.com.sgor.facade.InfracaoNivelDAOFacade;
 
 import java.io.Serializable;
@@ -21,48 +17,30 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
-import java.util.List;
 
-@Named("infracaoDAOController")
+@Named("infracaoNivelDAOController")
 @SessionScoped
-public class InfracaoDAOController implements Serializable {
+public class InfracaoNivelDAOController implements Serializable {
 
-    private InfracaoDAO current;
+    private InfracaoNivelDAO current;
     private DataModel items = null;
     @EJB
-    private br.com.sgor.facade.InfracaoDAOFacade ejbFacade;
-    @EJB
-    private br.com.sgor.facade.OcorrenciaDAOFacade ejbFacadeOcorrencia;
-    @EJB
-    private br.com.sgor.facade.AdministradorDAOFacade ejbFacadeAdministrador;
-
-    // Nivel Infração
-    @EJB
-    private InfracaoNivelDAOFacade ejbFacadeInfracaoNivel;
-    @EJB
-    private InfracaoDAOFacade ejbFacadeInfracao;
-    private List<InfracaoNivelDAO> infracaoNivelList;
-    private Integer idNivelInfracao;
-    private String deInfracao;
-
+    private br.com.sgor.facade.InfracaoNivelDAOFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
-    public InfracaoDAOController() {
-
+    public InfracaoNivelDAOController() {
     }
 
-    public InfracaoDAO getSelected() {
-        infracaoNivelList = ejbFacadeInfracaoNivel.findAll();
-        // if (current == null) {
-        current = new InfracaoDAO();
-        current.setIdinfracaoNivel(new InfracaoNivelDAO());
-        selectedItemIndex = -1;
-        // }
+    public InfracaoNivelDAO getSelected() {
+        if (current == null) {
+            current = new InfracaoNivelDAO();
+            selectedItemIndex = -1;
+        }
         return current;
     }
 
-    private InfracaoDAOFacade getFacade() {
+    private InfracaoNivelDAOFacade getFacade() {
         return ejbFacade;
     }
 
@@ -90,13 +68,13 @@ public class InfracaoDAOController implements Serializable {
     }
 
     public String prepareView() {
-        current = (InfracaoDAO) getItems().getRowData();
+        current = (InfracaoNivelDAO) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
 
     public String prepareCreate() {
-        current = new InfracaoDAO();
+        current = new InfracaoNivelDAO();
         selectedItemIndex = -1;
         return "Create";
     }
@@ -104,42 +82,16 @@ public class InfracaoDAOController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("InfracaoDAOCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleTeste").getString("InfracaoNivelDAOCreated"));
             return prepareCreate();
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
-        }
-    }
-
-    public String atribuirInfracao(Integer idOcorrencia, String CPFAdministrador) {
-        try {
-            OcorrenciaDAO currentOcorrencia = new OcorrenciaDAO();
-            AdministradorDAO currentAdministrador = new AdministradorDAO();
-
-            currentOcorrencia = ejbFacadeOcorrencia.find(idOcorrencia);
-            currentAdministrador = ejbFacadeAdministrador.find(CPFAdministrador);
-
-            //InfracaoDAO currentInfracao = new InfracaoDAO();
-            InfracaoNivelDAO currenteInfracaoNivel = new InfracaoNivelDAO();
-            currenteInfracaoNivel = ejbFacadeInfracaoNivel.find(idNivelInfracao);
-            
-            current.setIdocorrencia(currentOcorrencia);
-            //currentInfracao.setIdinfracaoNivel(currenteInfracaoNivel);
-            current.setCpf(currentAdministrador);
-            //currentInfracao.setDescricao(deInfracao);
-
-            ejbFacadeInfracao.create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
-            return prepareList();
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleTeste").getString("PersistenceErrorOccured"));
             return null;
         }
     }
 
     public String prepareEdit() {
-        current = (InfracaoDAO) getItems().getRowData();
+        current = (InfracaoNivelDAO) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
@@ -147,16 +99,16 @@ public class InfracaoDAOController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("InfracaoDAOUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleTeste").getString("InfracaoNivelDAOUpdated"));
             return "View";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleTeste").getString("PersistenceErrorOccured"));
             return null;
         }
     }
 
     public String destroy() {
-        current = (InfracaoDAO) getItems().getRowData();
+        current = (InfracaoNivelDAO) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
@@ -180,9 +132,9 @@ public class InfracaoDAOController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("InfracaoDAODeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/BundleTeste").getString("InfracaoNivelDAODeleted"));
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/BundleTeste").getString("PersistenceErrorOccured"));
         }
     }
 
@@ -236,21 +188,21 @@ public class InfracaoDAOController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    public InfracaoDAO getInfracaoDAO(java.lang.Integer id) {
+    public InfracaoNivelDAO getInfracaoNivelDAO(java.lang.Integer id) {
         return ejbFacade.find(id);
     }
 
-    @FacesConverter(forClass = InfracaoDAO.class)
-    public static class InfracaoDAOControllerConverter implements Converter {
+    @FacesConverter(forClass = InfracaoNivelDAO.class, value="infracaoNivelConverter")
+    public static class InfracaoNivelDAOControllerConverter implements Converter {
 
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            InfracaoDAOController controller = (InfracaoDAOController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "infracaoDAOController");
-            return controller.getInfracaoDAO(getKey(value));
+            InfracaoNivelDAOController controller = (InfracaoNivelDAOController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "infracaoNivelDAOController");
+            return controller.getInfracaoNivelDAO(getKey(value));
         }
 
         java.lang.Integer getKey(String value) {
@@ -270,52 +222,14 @@ public class InfracaoDAOController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof InfracaoDAO) {
-                InfracaoDAO o = (InfracaoDAO) object;
-                return getStringKey(o.getIdinfracao());
+            if (object instanceof InfracaoNivelDAO) {
+                InfracaoNivelDAO o = (InfracaoNivelDAO) object;
+                return getStringKey(o.getIdinfracaoNivel());
             } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + InfracaoDAO.class.getName());
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + InfracaoNivelDAO.class.getName());
             }
         }
 
     }
 
-    /**
-     * @return the infracaoNivel
-     */
-    public List<InfracaoNivelDAO> getInfracaoNivelList() {
-        return infracaoNivelList;
-    }
-
-    /**
-     * @param infracaoNivelList the infracaoNivel to set
-     */
-    public void setInfracaoNivel(List<InfracaoNivelDAO> infracaoNivelList) {
-        this.infracaoNivelList = infracaoNivelList;
-    }
-
-    /**
-     * @return the idNivelInfracao
-     */
-    public Integer getIdNivelInfracao() {
-        return idNivelInfracao;
-    }
-
-    /**
-     * @param idNivelInfracao the idNivelInfracao to set
-     */
-    public void setIdNivelInfracao(Integer idNivelInfracao) {
-        this.idNivelInfracao = idNivelInfracao;
-    }
-
-    /**
-     * @return the idNivelInfracao
-     */
-    public String getDeInfracao() {
-        return deInfracao;
-    }
-
-    public void setDeInfracao(String deInfracao) {
-        this.deInfracao = deInfracao;
-    }
 }

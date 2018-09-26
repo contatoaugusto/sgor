@@ -45,7 +45,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "MoradorDAO.findByUsuario", query = "SELECT m FROM MoradorDAO m WHERE m.idusuario = :idusuario")})
 public class MoradorDAO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -71,6 +70,9 @@ public class MoradorDAO implements Serializable {
     private String sexo;
     @Size(max = 45)
     private String nome;
+
+    private static final long serialVersionUID = 1L;
+ 
     @JoinColumn(name = "idresidencia", referencedColumnName = "idresidencia")
     @ManyToOne
     private ResidenciaDAO idresidencia;
@@ -221,5 +223,5 @@ public class MoradorDAO implements Serializable {
     public String toString() {
         return "br.com.sgor.dao.MoradorDAO[ idmorador=" + idmorador + " ]";
     }
-    
+
 }

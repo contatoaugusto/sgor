@@ -7,7 +7,9 @@ package br.com.sgor.dao;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,9 +17,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,6 +37,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "InfracaoNivelDAO.findByDeinfracaoNivel", query = "SELECT i FROM InfracaoNivelDAO i WHERE i.deinfracaoNivel = :deinfracaoNivel")
     , @NamedQuery(name = "InfracaoNivelDAO.findByVrmulta", query = "SELECT i FROM InfracaoNivelDAO i WHERE i.vrmulta = :vrmulta")})
 public class InfracaoNivelDAO implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idinfracaoNivel")
+    private Collection<InfracaoDAO> infracaoDAOCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -112,6 +119,15 @@ public class InfracaoNivelDAO implements Serializable {
     @Override
     public String toString() {
         return "br.com.sgor.dao.InfracaoNivelDAO[ idinfracaoNivel=" + idinfracaoNivel + " ]";
+    }
+
+    @XmlTransient
+    public Collection<InfracaoDAO> getInfracaoDAOCollection() {
+        return infracaoDAOCollection;
+    }
+
+    public void setInfracaoDAOCollection(Collection<InfracaoDAO> infracaoDAOCollection) {
+        this.infracaoDAOCollection = infracaoDAOCollection;
     }
     
 }

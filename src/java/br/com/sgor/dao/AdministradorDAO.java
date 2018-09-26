@@ -42,7 +42,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "AdministradorDAO.findByUsuario", query = "SELECT a FROM AdministradorDAO a WHERE a.idusuario = :usuario")})
 public class AdministradorDAO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
@@ -58,6 +57,9 @@ public class AdministradorDAO implements Serializable {
     private String endereco;
     @Size(max = 10)
     private String sexo;
+
+    private static final long serialVersionUID = 1L;
+  
     @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
     @ManyToOne
     private UsuarioDAO idusuario;
@@ -160,5 +162,5 @@ public class AdministradorDAO implements Serializable {
     public String toString() {
         return "br.com.sgor.dao.AdministradorDAO[ cpf=" + cpf + " ]";
     }
-    
+
 }

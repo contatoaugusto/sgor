@@ -35,7 +35,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "ResidenciaDAO.findByDescricao", query = "SELECT r FROM ResidenciaDAO r WHERE r.descricao = :descricao")})
 public class ResidenciaDAO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -45,6 +44,9 @@ public class ResidenciaDAO implements Serializable {
     private Integer numero;
     @Size(max = 100)
     private String descricao;
+
+    private static final long serialVersionUID = 1L;
+ 
     @OneToMany(mappedBy = "idresidencia")
     private Collection<MoradorDAO> moradorDAOCollection;
 
@@ -120,5 +122,4 @@ public class ResidenciaDAO implements Serializable {
     public String toString() {
         return "br.com.sgor.dao.ResidenciaDAO[ idresidencia=" + idresidencia + " ]";
     }
-    
 }

@@ -7,7 +7,6 @@ package br.com.sgor.dao;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,28 +29,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "InfracaoDAO.findAll", query = "SELECT i FROM InfracaoDAO i")
     , @NamedQuery(name = "InfracaoDAO.findByIdinfracao", query = "SELECT i FROM InfracaoDAO i WHERE i.idinfracao = :idinfracao")
-    , @NamedQuery(name = "InfracaoDAO.findByNivel", query = "SELECT i FROM InfracaoDAO i WHERE i.idinfracao_nivel = :nivel")
     , @NamedQuery(name = "InfracaoDAO.findByDescricao", query = "SELECT i FROM InfracaoDAO i WHERE i.descricao = :descricao")})
 public class InfracaoDAO implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idinfracao")
     private Integer idinfracao;
     @Size(max = 500)
-    @Column(name = "descricao")
     private String descricao;
-    @JoinColumn(name = "idinfracao_nivel", referencedColumnName = "idinfracao_nivel")
-    @ManyToOne
-    private InfracaoNivelDAO idinfracao_nivel;
-
-    private static final long serialVersionUID = 1L;
     @JoinColumn(name = "cpf", referencedColumnName = "cpf")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private AdministradorDAO cpf;
+    @JoinColumn(name = "idinfracao_nivel", referencedColumnName = "idinfracao_nivel")
+    @ManyToOne(optional = false)
+    private InfracaoNivelDAO idinfracaoNivel;
     @JoinColumn(name = "idocorrencia", referencedColumnName = "idocorrencia")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private OcorrenciaDAO idocorrencia;
 
     public InfracaoDAO() {
@@ -69,14 +64,6 @@ public class InfracaoDAO implements Serializable {
         this.idinfracao = idinfracao;
     }
 
-    public InfracaoNivelDAO getIdinfracao_nivel() {
-        return idinfracao_nivel;
-    }
-
-    public void setNivel(InfracaoNivelDAO idinfracao_nivel) {
-        this.idinfracao_nivel = idinfracao_nivel;
-    }
-
     public String getDescricao() {
         return descricao;
     }
@@ -91,6 +78,14 @@ public class InfracaoDAO implements Serializable {
 
     public void setCpf(AdministradorDAO cpf) {
         this.cpf = cpf;
+    }
+
+    public InfracaoNivelDAO getIdinfracaoNivel() {
+        return idinfracaoNivel;
+    }
+
+    public void setIdinfracaoNivel(InfracaoNivelDAO idinfracaoNivel) {
+        this.idinfracaoNivel = idinfracaoNivel;
     }
 
     public OcorrenciaDAO getIdocorrencia() {
@@ -124,5 +119,6 @@ public class InfracaoDAO implements Serializable {
     @Override
     public String toString() {
         return "br.com.sgor.dao.InfracaoDAO[ idinfracao=" + idinfracao + " ]";
-    }   
+    }
+    
 }

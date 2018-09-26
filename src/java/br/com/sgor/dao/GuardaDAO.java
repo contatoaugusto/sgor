@@ -45,7 +45,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "GuardaDAO.findByUsuario", query = "SELECT g FROM GuardaDAO g WHERE g.idusuario = :usuario")})
 public class GuardaDAO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -64,6 +63,9 @@ public class GuardaDAO implements Serializable {
     private String nome;
     @Size(max = 15)
     private String cpf;
+
+    private static final long serialVersionUID = 1L;
+    
     @OneToMany(mappedBy = "idguarda")
     private Collection<OcorrenciaDAO> ocorrenciaDAOCollection;
     @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
@@ -182,5 +184,6 @@ public class GuardaDAO implements Serializable {
     public String toString() {
         return "br.com.sgor.dao.GuardaDAO[ idguarda=" + idguarda + " ]";
     }
-    
+
+ 
 }

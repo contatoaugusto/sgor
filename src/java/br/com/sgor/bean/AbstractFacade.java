@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.sgor.facade;
+package br.com.sgor.bean;
 
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -24,20 +24,14 @@ public abstract class AbstractFacade<T> {
 
     public void create(T entity) {
         getEntityManager().persist(entity);
-        getEntityManager().refresh(entity);
     }
 
     public void edit(T entity) {
         getEntityManager().merge(entity);
-        getEntityManager().flush();
     }
 
     public void remove(T entity) {
-        T target = getEntityManager().merge(entity);
-        getEntityManager().flush();
-        getEntityManager().remove(target);
-        getEntityManager().flush();
-        //getEntityManager().refresh(entity);
+        getEntityManager().remove(getEntityManager().merge(entity));
     }
 
     public T find(Object id) {
@@ -66,5 +60,5 @@ public abstract class AbstractFacade<T> {
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
-
+    
 }

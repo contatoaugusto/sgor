@@ -6,8 +6,10 @@
 package br.com.sgor.dao;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,11 +20,13 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -40,17 +44,21 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "OcorrenciaDAO.findByGuarda", query = "SELECT o FROM OcorrenciaDAO o WHERE o.idguarda = :guarda")})
 public class OcorrenciaDAO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     private Integer idocorrencia;
-    @Lob
+    @Size(max = 20)
     private String status;
     @Temporal(TemporalType.TIMESTAMP)
     private Date data;
     @Size(max = 500)
     private String descricao;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idocorrencia")
+    private Collection<InfracaoDAO> infracaoDAOCollection;
+
+    private static final long serialVersionUID = 1L;
+   
     @JoinColumn(name = "idguarda", referencedColumnName = "idguarda")
     @ManyToOne (fetch = FetchType.EAGER)
     private GuardaDAO idguarda;
@@ -137,5 +145,16 @@ public class OcorrenciaDAO implements Serializable {
     public String toString() {
         return "br.com.sgor.dao.OcorrenciaDAO[ idocorrencia=" + idocorrencia + " ]";
     }
-    
+
+ 
+    @XmlTransient
+    public Collection<InfracaoDAO> getInfracaoDAOCollection() {
+        return infracaoDAOCollection;
+    }
+
+    public void setInfracaoDAOCollection(Collection<InfracaoDAO> infracaoDAOCollection) {
+        this.infracaoDAOCollection = infracaoDAOCollection;
+    }
+
+  
 }

@@ -10,7 +10,7 @@
     <ui:define name="content">
         <link href="resources/css/tabelas.css" rel="stylesheet" type="text/css"/>
         <p:tabView style="border-style: none" id="tabViewOcorrencia">
-            <p:tab title="Ocorrência" id="tabOcorrencia">
+            <p:tab title="Ocorrência" id="tabOcorrencia"> #{ocorrenciaDAOController.selected.idocorrencia}
                 <p:panel header="Ocorrência Morador" style="border-style: none" toggleable="true" visible="#{!(usuario.getIdperfil().getNmperfil() != 'Morador') || ocorrenciaDAOController.selected.idocorrencia != null}" id="pnlOcorrencia"> 
                     <center>
                         <h:form id="form_cadastro" >
@@ -44,13 +44,13 @@
                             <p:panel id="pnlInfracao" header="Infração" style="width: 60%">  
                                 <h:panelGrid id="pngInfracao" columns="1">
                                     <p:outputLabel for="infracao" value="Nível Infração:" />
-                                    <p:selectOneMenu id="infracao" value="#{ocorrenciaDAOController.idNivelInfracao}" disabled="#{usuario.getIdperfil().getNmperfil() != 'Administrador'}">
-                                        <f:selectItems value="#{ocorrenciaDAOController.infracaoNivel}" var="infracao" itemValue="#{infracao.idinfracaoNivel}" itemLabel="#{infracao.nminfracaoNivel}" />
+                                    <p:selectOneMenu converter="infracaoNivelConverter" id="infracao" value="#{infracaoDAOController.selected.idinfracaoNivel}" disabled="#{usuario.getIdperfil().getNmperfil() != 'Administrador'}">
+                                        <f:selectItems value="#{infracaoDAOController.infracaoNivelList}" var="infracao" itemValue="#{infracao}" itemLabel="#{infracao.nminfracaoNivel}" />
                                     </p:selectOneMenu>
                                     <p:message for="infracao" />
                                 </h:panelGrid>
                                 
-                                <p:inputTextarea id="descricaoInfracao" value="#{ocorrenciaDAOController.deInfracao}" 
+                                <p:inputTextarea id="descricaoInfracao" value="#{infracaoDAOController.selected.descricao}" 
                                                  cols="116" maxlength="1000"  rows="5" counter="displayInfracao"  autoResize="true" label="Infração"
                                                  counterTemplate="{0} caráteres restantes."
                                                  disabled="#{usuario.getIdperfil().getNmperfil() != 'Administrador'}"/>
@@ -58,7 +58,7 @@
                                 <p:message for="descricaoInfracao" />
                                 
                                 <br></br>
-                                <p:commandButton value="Atribuir" icon="ui-icon-disk" actionListener="#{ocorrenciaDAOController.atribuirInfracao()}" disabled="#{usuario.getIdperfil().getNmperfil() != 'Administrador'}"/>
+                                <p:commandButton value="Atribuir" icon="ui-icon-disk" actionListener="#{infracaoDAOController.atribuirInfracao(3, '555.555.555-55')}" disabled="#{usuario.getIdperfil().getNmperfil() != 'Administrador'}"/>
                             </p:panel>
 
                             <br></br>

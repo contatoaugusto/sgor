@@ -35,7 +35,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "PerfilDAO.findByNmperfil", query = "SELECT p FROM PerfilDAO p WHERE p.nmperfil = :nmperfil")})
 public class PerfilDAO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -44,6 +43,9 @@ public class PerfilDAO implements Serializable {
     @NotNull
     @Size(min = 1, max = 100)
     private String nmperfil;
+
+    private static final long serialVersionUID = 1L;
+ 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idperfil")
     private Collection<UsuarioDAO> usuarioDAOCollection;
 
@@ -108,5 +110,6 @@ public class PerfilDAO implements Serializable {
     public String toString() {
         return "br.com.sgor.dao.PerfilDAO[ idperfil=" + idperfil + " ]";
     }
-    
+
+  
 }
