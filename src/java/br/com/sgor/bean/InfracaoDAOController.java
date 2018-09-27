@@ -6,6 +6,7 @@ import br.com.sgor.dao.InfracaoNivelDAO;
 import br.com.sgor.dao.AdministradorDAO;
 import br.com.sgor.bean.util.JsfUtil;
 import br.com.sgor.bean.util.PaginationHelper;
+import br.com.sgor.dao.UsuarioDAO;
 import br.com.sgor.facade.InfracaoDAOFacade;
 import br.com.sgor.facade.InfracaoNivelDAOFacade;
 
@@ -22,6 +23,10 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import java.util.List;
+import java.util.Map;
+import javax.faces.bean.ManagedProperty;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Named("infracaoDAOController")
 @SessionScoped
@@ -48,17 +53,19 @@ public class InfracaoDAOController implements Serializable {
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
-    public InfracaoDAOController() {
+    @ManagedProperty(value = "#{ocorrenciaDAOController}")
+    OcorrenciaDAOController currentOcorrencia;
 
+    public InfracaoDAOController() {
     }
 
     public InfracaoDAO getSelected() {
         infracaoNivelList = ejbFacadeInfracaoNivel.findAll();
-        // if (current == null) {
-        current = new InfracaoDAO();
-        current.setIdinfracaoNivel(new InfracaoNivelDAO());
-        selectedItemIndex = -1;
-        // }
+        if (current == null) {
+            current = new InfracaoDAO();
+            //current.setIdinfracaoNivel(new InfracaoNivelDAO());
+            selectedItemIndex = -1;
+        }
         return current;
     }
 
@@ -112,22 +119,19 @@ public class InfracaoDAOController implements Serializable {
         }
     }
 
-    public String atribuirInfracao(Integer idOcorrencia, String CPFAdministrador) {
+    public String atribuirInfracao() {
         try {
-            OcorrenciaDAO currentOcorrencia = new OcorrenciaDAO();
-            AdministradorDAO currentAdministrador = new AdministradorDAO();
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 
-            currentOcorrencia = ejbFacadeOcorrencia.find(idOcorrencia);
-            currentAdministrador = ejbFacadeAdministrador.find(CPFAdministrador);
+            // Recuperar a ocorrência
+            //OcorrenciaDAO currentOcorrencia = new OcorrenciaDAO();
+            //currentOcorrencia = ejbFacadeOcorrencia.find(currentOcorrencia.getIdocorrencia());
+            //currentOcorrencia = (OcorrenciaDAO)attr.getRequest().getSession().getAttribute("Ocorrencia");
+            current.setIdocorrencia((OcorrenciaDAO) attr.getRequest().getSession().getAttribute("Ocorrencia"));
 
-            //InfracaoDAO currentInfracao = new InfracaoDAO();
-            InfracaoNivelDAO currenteInfracaoNivel = new InfracaoNivelDAO();
-            currenteInfracaoNivel = ejbFacadeInfracaoNivel.find(idNivelInfracao);
-            
-            current.setIdocorrencia(currentOcorrencia);
-            //currentInfracao.setIdinfracaoNivel(currenteInfracaoNivel);
-            current.setCpf(currentAdministrador);
-            //currentInfracao.setDescricao(deInfracao);
+            // Recuperar o administrador logado no sistema
+            UsuarioDAO usuario = (UsuarioDAO) attr.getRequest().getSession().getAttribute("usuario");
+            current.setCpf(ejbFacadeAdministrador.findByUsuario(usuario));
 
             ejbFacadeInfracao.create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));

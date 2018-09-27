@@ -197,8 +197,12 @@ public class OcorrenciaDAOController implements Serializable {
     
     public String prepareEdit() {
         current = (OcorrenciaDAO) getItems().getRowData();
+        setCurrentMorador(current.getIdmorador());
+        setResidencia(current.getIdmorador().getIdresidencia());
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
 
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Ocorrencia", current);
+        
         //init();
         return "manterOcorrencia";
     }
