@@ -37,7 +37,7 @@
                                 <h:outputText id="display" />
                                 <p:message for="descricao" />
                             </h:panelGrid> 
-                            
+
                             <img src="resources/images/servicos.jpg" alt="" />
 
                             <br></br>
@@ -61,6 +61,13 @@
                                 <br></br>
                                 <p:commandButton value="Atribuir" icon="ui-icon-disk" actionListener="#{infracaoDAOController.atribuirInfracao}" disabled="#{usuario.getIdperfil().getNmperfil() != 'Administrador'}">
                                 </p:commandButton>              
+                            </p:panel>
+                            <p:panel id="pnlGuarda" header="Guarda" style="width: 60%">  
+                                <p:outputLabel for="guarda" value="Guarda:" />
+                                <p:selectOneMenu converter="guardaConverter" id="guarda" value="#{ocorrenciaDAOController.selected.idguarda}" disabled="#{usuario.getIdperfil().getNmperfil() != 'Administrador'}">
+                                    <f:selectItems value="#{guardaDAOController.items}" var="guarda" itemValue="#{guarda}" itemLabel="#{guarda.nome}" />
+                                </p:selectOneMenu>
+                                <p:message for="guarda" />
                             </p:panel>
 
                             <br></br>

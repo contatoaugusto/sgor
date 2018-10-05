@@ -22,6 +22,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import java.util.List;
 
 @Named("guardaDAOController")
 @SessionScoped
@@ -44,6 +45,9 @@ public class GuardaDAOController implements Serializable {
     private String nmUsuario = "";
     private String deSenha = "";
 
+    private List<GuardaDAO> guardaList;
+    private Integer idGuarda;
+    
     public GuardaDAOController() {
     }
 
@@ -53,6 +57,7 @@ public class GuardaDAOController implements Serializable {
     }
 
     public GuardaDAO getSelected() {
+        //infracaoNivelList = ejbFacadeInfracaoNivel.findAll();
         if (current == null) {
             current = new GuardaDAO();
             selectedItemIndex = -1;
@@ -223,7 +228,7 @@ public class GuardaDAOController implements Serializable {
         return ejbFacade.find(id);
     }
 
-    @FacesConverter(forClass = GuardaDAO.class)
+    @FacesConverter(forClass = GuardaDAO.class, value="guardaConverter")
     public static class GuardaDAOControllerConverter implements Converter {
 
         @Override
@@ -303,5 +308,26 @@ public class GuardaDAOController implements Serializable {
      */
     public void setDeSenha(String deSenha) {
         this.deSenha = deSenha;
+    }
+
+    /**
+     * @return the guardaList
+     */
+    public List<GuardaDAO> getGuardaList() {
+        return guardaList;
+    }
+
+    /**
+     * @param guardaList the guardaList to set
+     */
+    public void setGuardaList(List<GuardaDAO> guardaList) {
+        this.guardaList = guardaList;
+    }
+
+    /**
+     * @return the idGuarda
+     */
+    public Integer getIdGuarda() {
+        return idGuarda;
     }
 }
