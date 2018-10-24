@@ -2,11 +2,9 @@ package br.com.sgor.bean;
 
 import br.com.sgor.dao.OcorrenciaDAO;
 import br.com.sgor.dao.AdministradorDAO;
-import br.com.sgor.dao.InfracaoDAO;
 import br.com.sgor.dao.GuardaDAO;
 import br.com.sgor.bean.util.JsfUtil;
 import br.com.sgor.bean.util.PaginationHelper;
-import br.com.sgor.dao.InfracaoNivelDAO;
 import br.com.sgor.dao.ResidenciaDAO;
 import br.com.sgor.facade.OcorrenciaDAOFacade;
 import br.com.sgor.facade.ResidenciaDAOFacade;
@@ -14,16 +12,14 @@ import br.com.sgor.dao.MoradorDAO;
 import br.com.sgor.dao.UsuarioDAO;
 import br.com.sgor.facade.AdministradorDAOFacade;
 import br.com.sgor.facade.GuardaDAOFacade;
-import br.com.sgor.facade.InfracaoDAOFacade;
-import br.com.sgor.facade.InfracaoNivelDAOFacade;
 import br.com.sgor.facade.MoradorDAOFacade;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.el.ELContext;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.faces.component.UIComponent;
@@ -68,16 +64,6 @@ public class OcorrenciaDAOController implements Serializable {
     private AdministradorDAOFacade ejbFacadeAdministrador;
     @EJB
     private GuardaDAOFacade ejbFacadeGuarda;
-
-//    // Infração
-//    @EJB
-//    private InfracaoNivelDAOFacade ejbFacadeInfracaoNivel;
-//    @EJB
-//    private InfracaoDAOFacade ejbFacadeInfracao;
-//    private List<InfracaoNivelDAO> infracaoNivel;
-//    private Integer idNivelInfracao;
-//    private String deInfracao;
-//    private InfracaoDAO currentInfracao;
 
     public OcorrenciaDAOController() {
     }
@@ -193,8 +179,6 @@ public class OcorrenciaDAOController implements Serializable {
 //            return null;
 //        }
 //    }
-
-    
     public String prepareEdit() {
         current = (OcorrenciaDAO) getItems().getRowData();
         setCurrentMorador(current.getIdmorador());
@@ -202,6 +186,17 @@ public class OcorrenciaDAOController implements Serializable {
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Ocorrencia", current);
+
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        
+        GuardaDAOController guardaDAOController = 
+                (GuardaDAOController) FacesContext.getCurrentInstance().getApplication().getELResolver().getValue(elContext, null, "guardaDAOController");
+        guardaDAOController.setGuarda(current.getIdguarda());
+        
+InfracaoDAOController infracaoDAOController = 
+                (InfracaoDAOController) FacesContext.getCurrentInstance().getApplication().getELResolver().getValue(elContext, null, "infracaoDAOController");
+        infracaoDAOController.setInfracaoCurrentByOcorrencia(current);
+        
         
         //init();
         return "manterOcorrencia";

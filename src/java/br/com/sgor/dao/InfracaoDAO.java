@@ -29,7 +29,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "InfracaoDAO.findAll", query = "SELECT i FROM InfracaoDAO i")
     , @NamedQuery(name = "InfracaoDAO.findByIdinfracao", query = "SELECT i FROM InfracaoDAO i WHERE i.idinfracao = :idinfracao")
-    , @NamedQuery(name = "InfracaoDAO.findByDescricao", query = "SELECT i FROM InfracaoDAO i WHERE i.descricao = :descricao")})
+    , @NamedQuery(name = "InfracaoDAO.findByDescricao", query = "SELECT i FROM InfracaoDAO i WHERE i.descricao = :descricao")
+    , @NamedQuery(name = "InfracaoDAO.findByOcorrencia", query = "SELECT i FROM InfracaoDAO i WHERE i.idocorrencia = :ocorrencia")})
 public class InfracaoDAO implements Serializable {
 
     private static final long serialVersionUID = 1L;

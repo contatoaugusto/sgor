@@ -44,8 +44,8 @@ public class InfracaoDAOController implements Serializable {
     // Nivel Infração
     @EJB
     private InfracaoNivelDAOFacade ejbFacadeInfracaoNivel;
-    @EJB
-    private InfracaoDAOFacade ejbFacadeInfracao;
+//    @EJB
+//    private InfracaoDAOFacade ejbFacadeInfracao;
     private List<InfracaoNivelDAO> infracaoNivelList;
     private Integer idNivelInfracao;
     private String deInfracao;
@@ -122,24 +122,33 @@ public class InfracaoDAOController implements Serializable {
     public String atribuirInfracao() {
         try {
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-
+            OcorrenciaDAO ocorrencia = new OcorrenciaDAO();
+            ocorrencia = (OcorrenciaDAO) attr.getRequest().getSession().getAttribute("Ocorrencia");
+                    
+            // Exclui a infracao anterior, se existir
+            InfracaoDAO infracao = ejbFacade.findByOcorrencia(ocorrencia);
+            if (infracao != null)
+                ejbFacade.remove(infracao);
+            
             // Recuperar a ocorrência
-            //OcorrenciaDAO currentOcorrencia = new OcorrenciaDAO();
-            //currentOcorrencia = ejbFacadeOcorrencia.find(currentOcorrencia.getIdocorrencia());
-            //currentOcorrencia = (OcorrenciaDAO)attr.getRequest().getSession().getAttribute("Ocorrencia");
-            current.setIdocorrencia((OcorrenciaDAO) attr.getRequest().getSession().getAttribute("Ocorrencia"));
+            current.setIdocorrencia(ocorrencia);
 
             // Recuperar o administrador logado no sistema
             UsuarioDAO usuario = (UsuarioDAO) attr.getRequest().getSession().getAttribute("usuario");
             current.setCpf(ejbFacadeAdministrador.findByUsuario(usuario));
 
-            ejbFacadeInfracao.create(current);
+            //ejbFacadeInfracao.create(current);
+            ejbFacade.create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
             return prepareList();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
             return null;
         }
+    }
+
+    public void setInfracaoCurrentByOcorrencia(OcorrenciaDAO ocorrencia) {
+        current =  ejbFacade.findByOcorrencia(ocorrencia);
     }
 
     public String prepareEdit() {

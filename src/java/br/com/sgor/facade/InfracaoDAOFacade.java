@@ -6,8 +6,10 @@
 package br.com.sgor.facade;
 
 import br.com.sgor.dao.InfracaoDAO;
+import br.com.sgor.dao.OcorrenciaDAO;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -28,5 +30,18 @@ public class InfracaoDAOFacade extends AbstractFacade<InfracaoDAO> {
     public InfracaoDAOFacade() {
         super(InfracaoDAO.class);
     }
-    
+
+    public InfracaoDAO findByOcorrencia(OcorrenciaDAO ocorrencia) {
+
+        getEntityManager();
+        InfracaoDAO infracao;
+        try {
+            infracao = (InfracaoDAO) em.createNamedQuery("InfracaoDAO.findByOcorrencia")
+                    .setParameter("ocorrencia", ocorrencia).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+        return infracao;
+    }
+
 }

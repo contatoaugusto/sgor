@@ -46,6 +46,7 @@
                                 <h:panelGrid id="pngInfracao" columns="1">
                                     <p:outputLabel for="infracao" value="Nível Infração:" />
                                     <p:selectOneMenu converter="infracaoNivelConverter" id="infracao" value="#{infracaoDAOController.selected.idinfracaoNivel}" disabled="#{usuario.getIdperfil().getNmperfil() != 'Administrador'}">
+                                        <f:selectItem itemLabel="Selecione" itemValue="" />
                                         <f:selectItems value="#{infracaoDAOController.infracaoNivelList}" var="infracao" itemValue="#{infracao}" itemLabel="#{infracao.nminfracaoNivel}" />
                                     </p:selectOneMenu>
                                     <p:message for="infracao" />
@@ -62,12 +63,20 @@
                                 <p:commandButton value="Atribuir" icon="ui-icon-disk" actionListener="#{infracaoDAOController.atribuirInfracao}" disabled="#{usuario.getIdperfil().getNmperfil() != 'Administrador'}">
                                 </p:commandButton>              
                             </p:panel>
+
+                            <br></br>
+
                             <p:panel id="pnlGuarda" header="Guarda" style="width: 60%">  
+                                <!--Hidden apenas para que execute o método getSelected-->
+                                <h:inputHidden id="idGuarda" value="#{guardaDAOController.selected.idguarda}"/>
                                 <p:outputLabel for="guarda" value="Guarda:" />
-                                <p:selectOneMenu converter="guardaConverter" id="guarda" value="#{ocorrenciaDAOController.selected.idguarda}" disabled="#{usuario.getIdperfil().getNmperfil() != 'Administrador'}">
-                                    <f:selectItems value="#{guardaDAOController.items}" var="guarda" itemValue="#{guarda}" itemLabel="#{guarda.nome}" />
+                                <p:selectOneMenu converter="guardaConverter" id="guarda" value="#{guardaDAOController.guarda}" disabled="#{usuario.getIdperfil().getNmperfil() != 'Administrador'}">
+                                    <f:selectItem itemLabel="Selecione" itemValue="" />
+                                    <f:selectItems value="#{guardaDAOController.guardaList}" var="guarda" itemValue="#{guarda}" itemLabel="#{guarda.nome}" />
                                 </p:selectOneMenu>
                                 <p:message for="guarda" />
+                                <br></br>
+                                <p:commandButton ajax="true" value="Adicionar Guarda" icon="ui-icon-disk" actionListener="#{guardaDAOController.adicionaGuardaOcorrencia()}" update=":tabViewOcorrencia" disabled="#{usuario.getIdperfil().getNmperfil() != 'Administrador'}"/>
                             </p:panel>
 
                             <br></br>
@@ -104,7 +113,9 @@
                     <p:column headerText="Data" styleClass="col-button" >
                         <h:outputText value="#{lista.data}" />
                     </p:column>
-
+                    <p:column headerText="Guarda" styleClass="col-button" >
+                        <h:outputText value="#{lista.idguarda.nome}" />
+                    </p:column>
                     <p:column headerText="Status">
                         <h:outputText value="#{lista.status}" />
                     </p:column>

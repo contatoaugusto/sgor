@@ -2,6 +2,7 @@ package br.com.sgor.bean;
 
 import br.com.sgor.dao.GuardaDAO;
 import br.com.sgor.dao.UsuarioDAO;
+import br.com.sgor.dao.OcorrenciaDAO;
 import br.com.sgor.bean.util.JsfUtil;
 import br.com.sgor.bean.util.PaginationHelper;
 import br.com.sgor.dao.PerfilDAO;
@@ -23,6 +24,8 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import java.util.List;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Named("guardaDAOController")
 @SessionScoped
@@ -34,8 +37,12 @@ public class GuardaDAOController implements Serializable {
     private PerfilDAOFacade ejbFacadePerfil;
     @EJB
     private br.com.sgor.facade.GuardaDAOFacade ejbFacade;
+    @EJB
+    private br.com.sgor.facade.OcorrenciaDAOFacade ejbFacadeOcorrencia;
 
     private GuardaDAO current;
+    // Para que funcione selectOneMenu juntamente com o converter. Melhorar
+    private GuardaDAO guarda;
     private DataModel items = null;
 
     private PaginationHelper pagination;
@@ -47,7 +54,7 @@ public class GuardaDAOController implements Serializable {
 
     private List<GuardaDAO> guardaList;
     private Integer idGuarda;
-    
+
     public GuardaDAOController() {
     }
 
@@ -57,7 +64,7 @@ public class GuardaDAOController implements Serializable {
     }
 
     public GuardaDAO getSelected() {
-        //infracaoNivelList = ejbFacadeInfracaoNivel.findAll();
+        guardaList = ejbFacade.findAll();
         if (current == null) {
             current = new GuardaDAO();
             selectedItemIndex = -1;
@@ -120,6 +127,26 @@ public class GuardaDAOController implements Serializable {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
             return prepareList();
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
+            return null;
+        }
+    }
+
+    public String adicionaGuardaOcorrencia() {
+        try {
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+            // Recuperar a ocorrência
+            OcorrenciaDAO currentOcorrencia = new OcorrenciaDAO();
+            currentOcorrencia = (OcorrenciaDAO) attr.getRequest().getSession().getAttribute("Ocorrencia");
+
+            //GuardaDAO guarda = ejbFacade.find(current.getIdguarda());
+            currentOcorrencia.setIdguarda(guarda);
+
+            ejbFacadeOcorrencia.edit(currentOcorrencia);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("OperacaoSucesso"));
+            return null;
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("OperacaoErro"));
             return null;
@@ -228,7 +255,7 @@ public class GuardaDAOController implements Serializable {
         return ejbFacade.find(id);
     }
 
-    @FacesConverter(forClass = GuardaDAO.class, value="guardaConverter")
+    @FacesConverter(forClass = GuardaDAO.class, value = "guardaConverter")
     public static class GuardaDAOControllerConverter implements Converter {
 
         @Override
@@ -261,6 +288,8 @@ public class GuardaDAOController implements Serializable {
             if (object instanceof GuardaDAO) {
                 GuardaDAO o = (GuardaDAO) object;
                 return getStringKey(o.getIdguarda());
+            } else if (object instanceof Integer) {
+                return getStringKey((Integer)object);
             } else {
                 throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + GuardaDAO.class.getName());
             }
@@ -329,5 +358,19 @@ public class GuardaDAOController implements Serializable {
      */
     public Integer getIdGuarda() {
         return idGuarda;
+    }
+
+    /**
+     * @return the guarda
+     */
+    public GuardaDAO getGuarda() {
+        return guarda;
+    }
+
+    /**
+     * @param guarda the guarda to set
+     */
+    public void setGuarda(GuardaDAO guarda) {
+        this.guarda = guarda;
     }
 }
