@@ -3,30 +3,34 @@ package br.com.sgor.bean.relatorio;
 import br.com.sgor.dao.OcorrenciaDAO;
 import br.com.sgor.facade.OcorrenciaDAOFacade;
 import java.io.IOException;
-import javax.annotation.PostConstruct;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
+
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.CartesianChartModel;
-import org.primefaces.model.chart.HorizontalBarChartModel;
 import org.primefaces.model.chart.ChartSeries;
 
 /**
  *
  * @author prohgy
  */
-@ManagedBean
+@Named("relatorioOcorrenciaController")
+@RequestScoped
 public class RelatorioOcorrenciaPorGuarda implements Serializable {
 
     @EJB
     private br.com.sgor.facade.OcorrenciaDAOFacade ejbFacade;
 
-    private CartesianChartModel relatorioModel;
+    private BarChartModel relatorioModel;
 
     public OcorrenciaDAOFacade getEjbFacade() {
         return ejbFacade;
@@ -36,29 +40,54 @@ public class RelatorioOcorrenciaPorGuarda implements Serializable {
         this.ejbFacade = ejbFacade;
     }
 
-    public CartesianChartModel getRelatorioModel() {
+    public BarChartModel getRelatorioModel() {
         return relatorioModel;
     }
 
-    public void setRelatorioModel(CartesianChartModel relatorioModel) {
+    public void setRelatorioModel(BarChartModel relatorioModel) {
         this.relatorioModel = relatorioModel;
     }
 
-    public void emitir() throws IOException {
+    @PostConstruct
+    public void init() {
+        emitir();
+    }
 
-        ChartSeries ocorrenciaPorGuarda = new ChartSeries();
-        relatorioModel = new CartesianChartModel();
-
+    public void emitir() {
         List<OcorrenciaDAO> ocorrencias = ejbFacade.findAll();
 
-        //finalizados.set(mesAnoAuxiliar, quantidadeDeTratamentosFinalizadosPorMes);
-        //        ChartSeries boys = new ChartSeries();
-        //        boys.setLabel("Boys");
-        //        boys.set("2004", 120);
-        //        boys.set("2005", 100);
-        //        boys.set("2006", 44);
-        //        boys.set("2007", 150);
-        //        boys.set("2008", 25);
-        //        model.addSeries(boys);
+        HashMap<String, Integer> guardaOcorrencia = new HashMap<String, Integer>();
+
+        for (OcorrenciaDAO item : ocorrencias) {
+            if (item.getIdguarda() != null) {
+                String nomeGuarda = item.getIdguarda().getNome();
+                if (guardaOcorrencia.containsKey(nomeGuarda)) {
+                    guardaOcorrencia.put(nomeGuarda, guardaOcorrencia.get(nomeGuarda) + 1);
+                } else {
+                    guardaOcorrencia.put(nomeGuarda, 1);
+                }
+            }
+        }
+        
+        relatorioModel = new BarChartModel();
+        
+        for (Map.Entry pair : guardaOcorrencia.entrySet()) {
+            ChartSeries ocorrenciasSeries = new ChartSeries();
+            ocorrenciasSeries.set(pair.getKey(), (Number) pair.getValue());
+            ocorrenciasSeries.setLabel(pair.getKey().toString());
+            relatorioModel.addSeries(ocorrenciasSeries);
+        }
+        
+        relatorioModel.setTitle("Ocorrência por guarda");
+        relatorioModel.setLegendPosition("ne");
+
+        Axis xAxis = relatorioModel.getAxis(AxisType.X);
+        xAxis.setLabel("Guardas");
+
+        Axis yAxis = relatorioModel.getAxis(AxisType.Y);
+        yAxis.setLabel("Ocorrências");
+        yAxis.setMin(0);
+        yAxis.setMax(guardaOcorrencia.size() + 2);
+       
     }
 }

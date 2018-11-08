@@ -9,7 +9,7 @@
 
     <ui:define name="content">
         <link href="resources/css/tabelas.css" rel="stylesheet" type="text/css"/>
-        <p:tabView style="border-style: none" id="tabViewOcorrencia">
+        <p:tabView style="border-style: none" id="tabViewOcorrencia" prependId="false" dynamic="true" >
             <p:tab title="Ocorrência" id="tabOcorrencia">
                 <p:panel header="Ocorrência Morador" style="border-style: none" toggleable="true" visible="#{!(usuario.getIdperfil().getNmperfil() != 'Morador') || ocorrenciaDAOController.selected.idocorrencia != null}" id="pnlOcorrencia"> 
                     <center>
@@ -136,7 +136,7 @@
                 </p:dataTable>
             </p:tab>
             <p:tab title="Relatórios">
-
+                <p:chart type="bar" model="#{relatorioOcorrenciaController.relatorioModel}" style="height:300px;width: 60%"  />
             </p:tab>
         </p:tabView>
     </ui:define>
