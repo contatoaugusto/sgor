@@ -8,9 +8,13 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
-        <h:form id="inicio">
+        <p:panel header="" style="border-style: none" toggleable="true" visible="#{usuario.getIdperfil().getNmperfil() == 'Guarda'}" id="pnlGuardaIndex"> 
+            <p:chart type="bar" model="#{relatorioOcorrenciaController.relOcorrenciaPorGuardaMensal}" style="height:300px;width: 60%"  />
+
+        </p:panel>
+        <p:panel header="" style="border-style: none" toggleable="true" visible="#{usuario == null}" id="pnlGeralIndex">
             Seja Bem Vindo!
-        </h:form>        
+        </p:panel>      
     </ui:define>
 
 </ui:composition>
