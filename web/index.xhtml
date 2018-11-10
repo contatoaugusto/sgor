@@ -9,13 +9,17 @@
 
     <ui:define name="content">
         <h:form>
-            <p:panel header="" style="border-style: none" toggleable="true" visible="#{usuario.getIdperfil().getNmperfil() == 'Guarda'}" id="pnlGuardaIndex"> 
-                <p:chart type="bar" model="#{relatorioOcorrenciaController.relOcorrenciaPorGuardaMensal}" style="height:300px;width: 60%"  />
-
-            </p:panel>
-            <p:panel header="" style="border-style: none" toggleable="true" visible="#{usuario == null}" id="pnlGeralIndex">
-                Seja Bem Vindo!
-            </p:panel>
+            <center>
+                <p:panel header="" style="border-style: none" toggleable="true" visible="#{usuario.getIdperfil().getNmperfil() == 'Guarda'}" id="pnlGuardaIndex"> 
+                    <p:chart type="bar" model="#{relatorioOcorrenciaController.relOcorrenciaPorGuardaMensal}" style="height:300px;width: 60%"  />
+                    <br></br>
+                    <p:commandButton value="Iniciar Turno"/> <p:spacer width="50"/>
+                    <p:commandButton value="Finalizar Turno"/>
+                </p:panel>
+                <p:panel header="" style="border-style: none" toggleable="true" visible="#{usuario == null}" id="pnlGeralIndex">
+                    Seja Bem Vindo!
+                </p:panel>
+            </center>
         </h:form>
     </ui:define>
 

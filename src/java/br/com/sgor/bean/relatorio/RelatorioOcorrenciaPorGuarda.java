@@ -172,7 +172,7 @@ public class RelatorioOcorrenciaPorGuarda implements Serializable {
         Axis yAxis = relOcorrenciaPorGuardaMensal.getAxis(AxisType.Y);
         yAxis.setLabel("Ocorrência");
         yAxis.setMin(0);
-        yAxis.setMax(mesOcorrencia.size() + 2);
+        yAxis.setMax(15);
     }
 
     /**
