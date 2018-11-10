@@ -8,13 +8,15 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
-        <p:panel header="" style="border-style: none" toggleable="true" visible="#{usuario.getIdperfil().getNmperfil() == 'Guarda'}" id="pnlGuardaIndex"> 
-            <p:chart type="bar" model="#{relatorioOcorrenciaController.relOcorrenciaPorGuardaMensal}" style="height:300px;width: 60%"  />
+        <h:form>
+            <p:panel header="" style="border-style: none" toggleable="true" visible="#{usuario.getIdperfil().getNmperfil() == 'Guarda'}" id="pnlGuardaIndex"> 
+                <p:chart type="bar" model="#{relatorioOcorrenciaController.relOcorrenciaPorGuardaMensal}" style="height:300px;width: 60%"  />
 
-        </p:panel>
-        <p:panel header="" style="border-style: none" toggleable="true" visible="#{usuario == null}" id="pnlGeralIndex">
-            Seja Bem Vindo!
-        </p:panel>      
+            </p:panel>
+            <p:panel header="" style="border-style: none" toggleable="true" visible="#{usuario == null}" id="pnlGeralIndex">
+                Seja Bem Vindo!
+            </p:panel>
+        </h:form>
     </ui:define>
 
 </ui:composition>

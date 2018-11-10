@@ -57,7 +57,7 @@ public class RelatorioOcorrenciaPorGuarda implements Serializable {
 
         relOcorrenciaPorGuarda = new BarChartModel();
         relOcorrenciaPorGuardaMensal = new BarChartModel();
-
+        
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         usuario = (UsuarioDAO) attr.getRequest().getSession().getAttribute("usuario");
 
@@ -97,23 +97,23 @@ public class RelatorioOcorrenciaPorGuarda implements Serializable {
 
         relOcorrenciaPorGuarda = new BarChartModel();
 
+        ChartSeries ocorrenciasSeries = new ChartSeries();
+        ocorrenciasSeries.setLabel("Guarda");
         for (Map.Entry pair : guardaOcorrencia.entrySet()) {
-            ChartSeries ocorrenciasSeries = new ChartSeries();
-            ocorrenciasSeries.set(pair.getKey(), (Number) pair.getValue());
-            ocorrenciasSeries.setLabel(pair.getKey().toString());
-            relOcorrenciaPorGuarda.addSeries(ocorrenciasSeries);
+            ocorrenciasSeries.set(pair.getKey().toString(), (Number) pair.getValue());
         }
+        relOcorrenciaPorGuarda.addSeries(ocorrenciasSeries);
 
         relOcorrenciaPorGuarda.setTitle("Ocorrência por guarda");
         relOcorrenciaPorGuarda.setLegendPosition("ne");
 
         Axis xAxis = relOcorrenciaPorGuarda.getAxis(AxisType.X);
-        xAxis.setLabel("Guardas");
+        xAxis.setLabel("");
 
         Axis yAxis = relOcorrenciaPorGuarda.getAxis(AxisType.Y);
         yAxis.setLabel("Ocorrências");
         yAxis.setMin(0);
-        yAxis.setMax(guardaOcorrencia.size() + 2);
+        yAxis.setMax(20);
     }
 
     /**
@@ -139,10 +139,10 @@ public class RelatorioOcorrenciaPorGuarda implements Serializable {
 
         // Graficos por Guarda
         HashMap<String, Integer> mesOcorrencia = new HashMap<String, Integer>();
-
+        String nmGuarda = "";
         for (OcorrenciaDAO item : ocorrencias) {
             if (item.getIdguarda() != null) {
-                //int mes = item.getData().getMonth();
+                nmGuarda = item.getIdguarda().getNome();
                 int mes = new DateTime(item.getData().getTime()).getMonthOfYear();
                 String mesExtenso = meses.get(mes);
                 if (mesOcorrencia.containsKey(mesExtenso)) {
@@ -153,14 +153,15 @@ public class RelatorioOcorrenciaPorGuarda implements Serializable {
             }
         }
 
-        relOcorrenciaPorGuardaMensal = new BarChartModel();
+        relOcorrenciaPorGuardaMensal = new BarChartModel(); 
 
+        ChartSeries ocorrenciasSeries = new ChartSeries();  
+        ocorrenciasSeries.setLabel(nmGuarda);
         for (Map.Entry pair : mesOcorrencia.entrySet()) {
-            ChartSeries ocorrenciasSeries = new ChartSeries();
             ocorrenciasSeries.set(pair.getKey().toString(), (Number) pair.getValue());
-            ocorrenciasSeries.setLabel(pair.getKey().toString());
-            relOcorrenciaPorGuardaMensal.addSeries(ocorrenciasSeries);
         }
+        relOcorrenciaPorGuardaMensal.addSeries(ocorrenciasSeries);
+
 
         relOcorrenciaPorGuardaMensal.setTitle("Suas Ocorrências");
         relOcorrenciaPorGuardaMensal.setLegendPosition("ne");
