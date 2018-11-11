@@ -136,7 +136,9 @@
                 </p:dataTable>
             </p:tab>
             <p:tab title="Relatórios">
-                <p:chart type="bar" model="#{relatorioOcorrenciaController.relOcorrenciaPorGuarda}" style="height:300px"  />
+                <p:chart type="bar" model="#{relatorioOcorrenciaController.relOcorrenciaPorGuarda}" style="height:300px;width: 60%"  />
+                <br/><br/>
+                <p:chart type="bar" model="#{relatorioOcorrenciaController.relOcorrenciaPorGuardaMensal}" style="height:300px;width: 60%"  />
             </p:tab>
         </p:tabView>
     </ui:define>

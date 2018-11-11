@@ -36,13 +36,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "ocorrencia")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "OcorrenciaDAO.findAll", query = "SELECT o FROM OcorrenciaDAO o")
+    @NamedQuery(name = "OcorrenciaDAO.findAll", query = "SELECT o FROM OcorrenciaDAO o ORDER BY o.data ASC")
     , @NamedQuery(name = "OcorrenciaDAO.findByIdocorrencia", query = "SELECT o FROM OcorrenciaDAO o WHERE o.idocorrencia = :idocorrencia")
     , @NamedQuery(name = "OcorrenciaDAO.findByData", query = "SELECT o FROM OcorrenciaDAO o WHERE o.data = :data")
     , @NamedQuery(name = "OcorrenciaDAO.findByDescricao", query = "SELECT o FROM OcorrenciaDAO o WHERE o.descricao = :descricao")
     , @NamedQuery(name = "OcorrenciaDAO.findByMorador", query = "SELECT o FROM OcorrenciaDAO o WHERE o.idmorador = :morador")
     , @NamedQuery(name = "OcorrenciaDAO.findByGuarda", query = "SELECT o FROM OcorrenciaDAO o WHERE o.idguarda = :guarda")})
-public class OcorrenciaDAO implements Serializable {
+public class OcorrenciaDAO implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,14 +58,14 @@ public class OcorrenciaDAO implements Serializable {
     private Collection<InfracaoDAO> infracaoDAOCollection;
 
     private static final long serialVersionUID = 1L;
-   
+
     @JoinColumn(name = "idguarda", referencedColumnName = "idguarda")
-    @ManyToOne (fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private GuardaDAO idguarda;
     @JoinColumn(name = "idmorador", referencedColumnName = "idmorador")
-    @ManyToOne (fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private MoradorDAO idmorador;
-    
+
     public OcorrenciaDAO() {
     }
 
@@ -146,7 +146,6 @@ public class OcorrenciaDAO implements Serializable {
         return "br.com.sgor.dao.OcorrenciaDAO[ idocorrencia=" + idocorrencia + " ]";
     }
 
- 
     @XmlTransient
     public Collection<InfracaoDAO> getInfracaoDAOCollection() {
         return infracaoDAOCollection;
@@ -155,6 +154,4 @@ public class OcorrenciaDAO implements Serializable {
     public void setInfracaoDAOCollection(Collection<InfracaoDAO> infracaoDAOCollection) {
         this.infracaoDAOCollection = infracaoDAOCollection;
     }
-
-  
 }
