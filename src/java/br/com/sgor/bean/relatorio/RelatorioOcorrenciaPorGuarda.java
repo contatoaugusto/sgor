@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -152,16 +153,36 @@ public class RelatorioOcorrenciaPorGuarda implements Serializable {
 
         // Graficos por Guarda
         HashMap<String, Integer> mesOcorrencia = new HashMap<String, Integer>();
+        List<String> nomesGuardas = new ArrayList<String>();
         String nmGuarda = "";
         for (OcorrenciaDAO item : ocorrencias) {
             if (item.getIdguarda() != null) {
                 nmGuarda = item.getIdguarda().getNome();
+
+                if (!nomesGuardas.contains(nmGuarda)) {
+                    nomesGuardas.add(nmGuarda);
+                }
+
                 int mes = new DateTime(item.getData().getTime()).getMonthOfYear();
                 String mesExtensoGuarda = meses.get(mes) + ":" + nmGuarda;
                 if (mesOcorrencia.containsKey(mesExtensoGuarda)) {
                     mesOcorrencia.put(mesExtensoGuarda, mesOcorrencia.get(mesExtensoGuarda) + 1);
                 } else {
                     mesOcorrencia.put(mesExtensoGuarda, 1);
+                }
+            }
+        }
+
+        // Ajuste para que sempre todos os guardas encontrados tenha ocorrência em todos os meses de ocorrências.
+        // Por exemplo, se algum guarda tiver ocorrência em Abril e um guarda X não, deve criar uma entrada 0 para este guarda ()
+        HashMap<String, Integer> mesOcorrenciaTemp = (HashMap<String, Integer>) mesOcorrencia.clone();
+        for (Map.Entry pairGuardaMes : mesOcorrenciaTemp.entrySet()) {
+            String mes = pairGuardaMes.getKey().toString().split(":")[0];
+
+            for (Iterator<String> iterator = nomesGuardas.iterator(); iterator.hasNext();) {
+                String guarda = iterator.next();
+                if (!mesOcorrencia.containsKey(mes + ":" + guarda)) {
+                    mesOcorrencia.put(mes + ":" + guarda, 0);
                 }
             }
         }
@@ -192,20 +213,6 @@ public class RelatorioOcorrenciaPorGuarda implements Serializable {
                     }
                 }
 
-                //This comparator sorts by HashMap values.
-                Comparator<Map.Entry<String, Integer>> sortCompare
-                        = (Map.Entry<String, Integer> firstValue, Map.Entry<String, Integer> secondValue)
-                        -> secondValue.getValue().compareTo(firstValue.getValue());
-
-                //This is the list that will hold each entry from the map.
-                List<Map.Entry<String, Integer>> orderedList = new ArrayList<>();
-
-                //Pulls the data from the existing map.
-                orderedList.addAll(mesOcorrenciaFiltrado.entrySet());
-
-                //Now all that is left to do is sort with the comparator we made.
-                Collections.sort(orderedList, sortCompare);
-
                 if (mesOcorrenciaFiltrado.size() > 0) {
                     ChartSeries ocorrenciasSeries = new ChartSeries();
                     ocorrenciasSeries.setLabel(nomeGuardaInterno);
@@ -226,7 +233,7 @@ public class RelatorioOcorrenciaPorGuarda implements Serializable {
         Axis yAxis = relOcorrenciaPorGuardaMensal.getAxis(AxisType.Y);
         yAxis.setLabel("Ocorrência");
         yAxis.setMin(0);
-        yAxis.setMax(15);
+        yAxis.setMax(20);
     }
 
     /**
