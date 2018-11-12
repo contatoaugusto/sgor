@@ -187,6 +187,7 @@ public class RelatorioOcorrenciaPorGuarda implements Serializable {
             }
         }
 
+        
         relOcorrenciaPorGuardaMensal = new BarChartModel();
 
         for (Map.Entry pairGuarda : mesOcorrencia.entrySet()) {
