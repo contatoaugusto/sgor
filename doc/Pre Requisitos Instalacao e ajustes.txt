@@ -1,0 +1,10 @@
+MySql - Versao 5.1.72
+https://downloads.mysql.com/archives/community/
+
+WorkBench
+https://downloads.mysql.com/archives/workbench/
+
+Configurar o jndi-name="jdbc/sgorJNDI" na instância do Glass Fish em:
+http://localhost:4848/
+Resources > Add Resources > Importar o arquivo glassfish-resources.xml que está n projeto
+Dai o recurso criado aparecerá em: JDBC Resources

@@ -18,7 +18,7 @@
         <intercept-url pattern="/manterMorador.xhtml" access="hasRole('Administrador')" />
         <intercept-url pattern="/manterGuarda.xhtml" access="hasRole('Administrador')" />
         <intercept-url pattern="/manterAdministrador.xhtml" access="hasRole('Administrador')" />
-        <intercept-url pattern="/manterOcorrencia.xhtml" access="hasAnyRole('Administrador','Morador')" /> 
+        <intercept-url pattern="/manterOcorrencia.xhtml" access="hasAnyRole('Administrador','Morador', 'Guarda')" /> 
     </http>
 
 

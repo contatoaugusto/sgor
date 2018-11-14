@@ -118,7 +118,7 @@ public class OcorrenciaDAOController implements Serializable {
                     } else if (currentAdministrador != null) {
                         return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
                     } else if (currentGuarda != null) {
-                        return new ListDataModel(getFacade().findByMorador(currentMorador));
+                        return new ListDataModel(getFacade().findByGuarda(currentGuarda));
                     } else {
                         return new ListDataModel(null);
                     }

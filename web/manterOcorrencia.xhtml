@@ -133,10 +133,19 @@
                             <h:outputText value="Recusar" />
                         </p:commandLink>
                     </p:column>
+                    
+                    <p:column headerText="Ações" rendered="#{usuario.getIdperfil().getNmperfil() == 'Guarda'}">
+                        <p:commandLink id="lnkFinaliza" ajax="true" update="lista" actionListener="#{ocorrenciaDAOController.updateStatus(lista.idocorrencia, 'Finalizado')}">
+                            <h:outputText value="Finalizar" />
+                        </p:commandLink>
+                    </p:column>
+                    
                 </p:dataTable>
             </p:tab>
             <p:tab title="Relatórios">
-                <p:chart type="bar" model="#{relatorioOcorrenciaController.relOcorrenciaPorGuarda}" style="height:300px;width: 60%"  />
+                <p:chart type="bar" model="#{relatorioOcorrenciaController.relProjecaoProximaSemana}" style="height:300px;width: 60%"/>
+                <br/><br/>
+                <p:chart type="bar" model="#{relatorioOcorrenciaController.relOcorrenciaPorGuarda}" style="height:300px;width: 60%" rendered="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}"/>
                 <br/><br/>
                 <p:chart type="bar" model="#{relatorioOcorrenciaController.relOcorrenciaPorGuardaMensal}" style="height:300px;width: 60%"  />
             </p:tab>

@@ -41,8 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "OcorrenciaDAO.findByData", query = "SELECT o FROM OcorrenciaDAO o WHERE o.data = :data")
     , @NamedQuery(name = "OcorrenciaDAO.findByDescricao", query = "SELECT o FROM OcorrenciaDAO o WHERE o.descricao = :descricao")
     , @NamedQuery(name = "OcorrenciaDAO.findByMorador", query = "SELECT o FROM OcorrenciaDAO o WHERE o.idmorador = :morador")
-    , @NamedQuery(name = "OcorrenciaDAO.findByGuarda", query = "SELECT o FROM OcorrenciaDAO o WHERE o.idguarda = :guarda")})
-public class OcorrenciaDAO implements Serializable{
+    , @NamedQuery(name = "OcorrenciaDAO.findByGuarda", query = "SELECT o FROM OcorrenciaDAO o WHERE o.idguarda = :guarda")
+    , @NamedQuery(name = "OcorrenciaDAO.findByDataInicoFim", query = "SELECT o FROM OcorrenciaDAO o WHERE o.data BETWEEN :dataInicio AND :dataFim")})
+public class OcorrenciaDAO implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

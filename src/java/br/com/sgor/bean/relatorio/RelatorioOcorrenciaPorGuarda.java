@@ -6,6 +6,7 @@ import br.com.sgor.dao.OcorrenciaDAO;
 import br.com.sgor.dao.UsuarioDAO;
 import br.com.sgor.facade.OcorrenciaDAOFacade;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -21,6 +22,8 @@ import javax.inject.Named;
 import javax.persistence.ElementCollection;
 import javax.persistence.OrderBy;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormatter;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 
@@ -46,6 +49,7 @@ public class RelatorioOcorrenciaPorGuarda implements Serializable {
 
     private BarChartModel relOcorrenciaPorGuarda;
     private BarChartModel relOcorrenciaPorGuardaMensal;
+    private BarChartModel relProjecaoProximaSemana;
 
     UsuarioDAO usuario;
     String nomePerfil;
@@ -56,6 +60,10 @@ public class RelatorioOcorrenciaPorGuarda implements Serializable {
 
     public BarChartModel getRelOcorrenciaPorGuardaMensal() {
         return relOcorrenciaPorGuardaMensal;
+    }
+
+    public BarChartModel getRelProjecaoProximaSemana() {
+        return relProjecaoProximaSemana;
     }
 
     @ElementCollection
@@ -69,6 +77,7 @@ public class RelatorioOcorrenciaPorGuarda implements Serializable {
 
         relOcorrenciaPorGuarda = new BarChartModel();
         relOcorrenciaPorGuardaMensal = new BarChartModel();
+        relProjecaoProximaSemana = new BarChartModel();
 
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         usuario = (UsuarioDAO) attr.getRequest().getSession().getAttribute("usuario");
@@ -80,6 +89,7 @@ public class RelatorioOcorrenciaPorGuarda implements Serializable {
                 titleGraficoPorGuardaSemanal = "Ocorrências Mensal por Guarda";
                 emitirOcorrenciaPorGuarda();
                 emitirOcorrenciaPorGuardaMensal();
+                emitirProjecaoProximaSemana();
             } else if (nomePerfil.equalsIgnoreCase("Guarda")) {
                 emitirOcorrenciaPorGuardaMensal();
             } else if (nomePerfil.equalsIgnoreCase("Morador")) {
@@ -187,7 +197,6 @@ public class RelatorioOcorrenciaPorGuarda implements Serializable {
             }
         }
 
-        
         relOcorrenciaPorGuardaMensal = new BarChartModel();
 
         for (Map.Entry pairGuarda : mesOcorrencia.entrySet()) {
@@ -257,5 +266,68 @@ public class RelatorioOcorrenciaPorGuarda implements Serializable {
         }
 
         return ocorrencias;
+    }
+
+    /**
+     * Monta o relatório por guarda da semana passada, semana atual e a semana
+     * seguinte
+     */
+    public void emitirProjecaoProximaSemana() {
+
+        HashMap<String, Integer> semanaPassada = new HashMap<String, Integer>();
+
+        LocalDate newDate = new LocalDate();
+        int diaSemanaHoje = newDate.getDayOfWeek();
+        
+        LocalDate semanaPassadaDataInicio = newDate.minusDays((diaSemanaHoje - (diaSemanaHoje - 1)+ 7));
+        LocalDate semanaPassadaDataFim = newDate.minusDays((diaSemanaHoje - (diaSemanaHoje - 1)+ 1));
+        
+        LocalDate semanaAtualDataInicio = newDate.minusDays(diaSemanaHoje - (diaSemanaHoje - 1));
+        LocalDate semanaAtualDataFim = newDate.plusDays(7 - diaSemanaHoje);
+        
+        SimpleDateFormat dateParser = new SimpleDateFormat("dd-MM-yyyy");
+        
+        
+        List<OcorrenciaDAO> ocorrenciasSemanaPassada = ejbFacade.findByDataInicoFim(semanaPassadaDataInicio.toDate(), semanaPassadaDataFim.toDate());
+        List<OcorrenciaDAO> ocorrenciasSemanaAtual = ejbFacade.findByDataInicoFim  (semanaAtualDataInicio.toDate(), semanaAtualDataFim.toDate());
+        String semanaPassadaText = "Semana Passada ";
+        String semanaAtualText = "Semana Atual";
+        String semanaSeguinteText = "Semana Seguinte";
+        
+        ChartSeries semanaPassadaSeries = new ChartSeries();
+        semanaPassadaSeries.setLabel(semanaPassadaText);
+        semanaPassadaSeries.set(semanaPassadaText, ocorrenciasSemanaPassada.size());
+        semanaPassadaSeries.set(semanaAtualText, 0);
+        semanaPassadaSeries.set(semanaSeguinteText, 0);
+        relProjecaoProximaSemana.addSeries(semanaPassadaSeries);
+
+        ChartSeries semanaAtualSeries = new ChartSeries();
+        semanaAtualSeries.setLabel(semanaAtualText);
+        semanaAtualSeries.set(semanaPassadaText, 0);
+        semanaAtualSeries.set(semanaAtualText, ocorrenciasSemanaAtual.size());
+        semanaAtualSeries.set(semanaSeguinteText, 0);
+        relProjecaoProximaSemana.addSeries(semanaAtualSeries);
+
+        int qtdeSemanaPassada = ocorrenciasSemanaPassada.isEmpty() ? 1 : ocorrenciasSemanaPassada.size();
+        int qtdeSemanaAtual = ocorrenciasSemanaAtual.isEmpty() ? 1 : ocorrenciasSemanaAtual.size();
+        int mediaSemanaSeguinte = (qtdeSemanaPassada + qtdeSemanaAtual) / 2;
+
+        ChartSeries semanaSequinteSeries = new ChartSeries();
+        semanaSequinteSeries.setLabel(semanaSeguinteText);
+        semanaSequinteSeries.set(semanaPassadaText, 0);
+        semanaSequinteSeries.set(semanaAtualText, 0);
+        semanaSequinteSeries.set(semanaSeguinteText, mediaSemanaSeguinte);
+        relProjecaoProximaSemana.addSeries(semanaSequinteSeries);
+
+        relProjecaoProximaSemana.setTitle("Ocorrências esperadas pra semana seguinte");
+        relProjecaoProximaSemana.setLegendPosition("ne");
+
+        Axis xAxis = relProjecaoProximaSemana.getAxis(AxisType.X);
+        xAxis.setLabel("");
+
+        Axis yAxis = relProjecaoProximaSemana.getAxis(AxisType.Y);
+        yAxis.setLabel("Ocorrências");
+        yAxis.setMin(0);
+        yAxis.setMax(20);
     }
 }
