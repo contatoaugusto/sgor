@@ -8,9 +8,18 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="content">
-        <h:form>
-            <center>
 
+        <h:form>
+            <h1 class="title  ui-corner-all">As seguintes ações preventivas estão configuradas para o sistema:</h1>
+            <ul>
+                <li>
+                    Exibe alerta para os módulos que atingirem mais de 50% do total das ocorrências do mês e recomenda 3 rondas a cada 1 hora durante 7 dias
+                </li>
+                <li>Informa se houve diminuição das ocorrências naqueles módulos após as rondas preventivas</li>
+                <li>Sugere rotas passando por módulos com maior quantidade de ocorrências, caso um módulo ultrapasse 20% das ocorrências semanais, exibe alerta sugerindo rondas passando pelo módulo.</li>
+            </ul>
+
+            <center>
                 <!-- Guarda -->
                 <p:panel header="" style="border-style: none" toggleable="true" visible="#{usuario.getIdperfil().getNmperfil() == 'Guarda'}" id="pnlGuardaIndex"> 
                     <p:chart type="bar" model="#{relatorioOcorrenciaController.relOcorrenciaPorGuardaMensal}" style="height:300px;width: 60%"  />
@@ -21,25 +30,26 @@
             </center>
 
             <!-- Administrador -->
-            <p:panel header="" style="border-style: none"  toggleable="false" visible="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}" id="pnlAdministradorIndex"> 
-                <h1 class="title  ui-corner-all">As seguintes ações preventivas estão configuradas para o sistema:</h1>
-                <ul>
-                    <li>
-                        Exibe alerta para os módulos que atingirem mais de 50% do total das ocorrências do mês e recomenda 3 rondas a cada 1 hora durante 7 dias
-                    </li>
-                    <li>Informa se houve diminuição das ocorrências naqueles módulos após as rondas preventivas</li>
-                    <li>Sugere rotas passando por módulos com maior quantidade de ocorrências, caso um módulo ultrapasse 20% das ocorrências semanais, exibe alerta sugerindo rondas passando pelo módulo.</li>
-                </ul>
+            <p:panel header="" style="border-style: none"  toggleable="false" visible="#{usuario.getIdperfil().getNmperfil() == 'Administrador' || usuario.getIdperfil().getNmperfil() == 'Guarda'}" id="pnlAdministradorIndex"> 
                 
-                <p:commandButton value="Modal" type="button" onclick="PF('dlg2').show();"/>
-                <p:dialog header="Ações Preventivas" widgetVar="dlgAlertasPreventiva" id="dlgAlertasPreventiva" modal="false" height="100">
+                <!--<p:growl id="growl" showDetail="true" sticky="true" />--> 
+                <!--<p:commandButton value="Modal" type="button" onclick="PF('dlg2').show();"/>-->
+                
+                <!-- Módulos acima de 50% das ocorrências-->
+                <p:messages for="msgAcoesPreventivas" showDetail="true" autoUpdate="true" closable="false"></p:messages>
+                <p:messages for="msgAcoesPreventivas3" showDetail="true" autoUpdate="true" closable="false"></p:messages>
+
+                <!--Sugestão de rotas módulos acima de 20% das ocorrências-->
+                <p:messages for="msgAcoesPreventivas2" showDetail="true" autoUpdate="true" closable="false"></p:messages>
+
+                <p:dialog header="Ações Preventivas" widgetVar="dlgAlertasPreventivaVar" id="dlgAlertasPreventiva" modal="false" height="100">
                     <h:outputText value="#{relatorioAcaoPreventiva.modulo50PercentTexto}" style="color: red"/>
                 </p:dialog> 
             </p:panel>
 
-            <p:panel header="" style="border-style: none" toggleable="true" visible="#{usuario == null}" id="pnlGeralIndex">
-                Seja Bem Vindo!
-            </p:panel>
+            <p:panel header="" style="border-style: none" toggleable="false"  visible="#{usuario == null}" id="pnlGeralIndex">Bem Vindo</p:panel>
+
+
         </h:form>
     </ui:define>
 
