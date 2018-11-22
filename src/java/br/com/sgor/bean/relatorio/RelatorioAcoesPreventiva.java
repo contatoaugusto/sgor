@@ -184,7 +184,7 @@ public class RelatorioAcoesPreventiva implements Serializable {
         try {
             retorno = SendMessage.simpleSend(sms);
 
-            JsfUtil.addSuccessMessage("SMS agendado para envio pro número " + nuTelefoneDestino + "/n" + retorno.getMensagem());
+            JsfUtil.addSuccessMessage("SMS agendado para envio pro número " + nuTelefoneDestino + "  " + retorno.getMensagem());
             System.out.println("Codigo:" + retorno.getCodigo());
             System.out.println("Descricao:" + retorno.getMensagem());
 
