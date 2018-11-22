@@ -133,13 +133,13 @@
                             <h:outputText value="Recusar" />
                         </p:commandLink>
                     </p:column>
-                    
+
                     <p:column headerText="Ações" rendered="#{usuario.getIdperfil().getNmperfil() == 'Guarda'}">
                         <p:commandLink id="lnkFinaliza" ajax="true" update="lista" actionListener="#{ocorrenciaDAOController.updateStatus(lista.idocorrencia, 'Finalizado')}">
                             <h:outputText value="Finalizar" />
                         </p:commandLink>
                     </p:column>
-                    
+
                 </p:dataTable>
             </p:tab>
             <p:tab title="Relatórios">
@@ -148,6 +148,30 @@
                 <p:chart type="bar" model="#{relatorioOcorrenciaController.relOcorrenciaPorGuarda}" style="height:300px;width: 60%" rendered="#{usuario.getIdperfil().getNmperfil() == 'Administrador'}"/>
                 <br/><br/>
                 <p:chart type="bar" model="#{relatorioOcorrenciaController.relOcorrenciaPorGuardaMensal}" style="height:300px;width: 60%"  />
+            </p:tab>
+
+            <p:tab title="Ações Preventivas">
+                <!-- Administrador -->
+                <h:inputHidden id="loadController" value="#{relatorioAcaoPreventiva.modulo50PercentTexto}"/>
+                <!--<p:growl id="growl" showDetail="true" sticky="true" />--> 
+                <!--<p:commandButton value="Modal" type="button" onclick="PF('dlg2').show();"/>-->
+
+                <!-- Módulos acima de 50% das ocorrências-->
+                <p:messages for="msgAcoesPreventivas" showDetail="true" autoUpdate="false" closable="false" ></p:messages>
+
+                <!--Sugestão de rotas módulos acima de 20% das ocorrências-->
+                <p:messages for="msgAcoesPreventivas2" showDetail="true" autoUpdate="true" closable="false"></p:messages>
+
+                <br></br>
+                <h:outputText value="Pra facilitar os testes e economizar SMS, foi desabilitado o envio automático." style="color: indianred"/>
+                <br></br>
+                <h:panelGrid id="pngEnviaSMS" columns="3">
+
+                    <p:outputLabel for="telefone" value="Telefone:" />
+                    <p:inputMask id="telefone" value="#{relatorioAcaoPreventiva.nuTelefoneDestino}" mask="(99) 99999-9999"/>
+
+                    <p:commandButton value="Enviar SMS" icon="ui-icon-disk" actionListener="#{relatorioAcaoPreventiva.enviaSMS}" disabled="#{usuario.getIdperfil().getNmperfil() != 'Administrador'}"></p:commandButton>   
+                </h:panelGrid>
             </p:tab>
         </p:tabView>
     </ui:define>
