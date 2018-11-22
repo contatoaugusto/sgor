@@ -17,7 +17,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -48,16 +47,7 @@ public class RelatorioAcoesPreventiva implements Serializable {
     public void openDialog() {
 
         if (!modulo50PercentTexto.isEmpty()) {
-//            //requestContext.openDialog("/dlgAlertasPreventiva");
-//            PrimeFaces current = PrimeFaces.current();
-//            current.executeScript("PF('dlgAlertasPreventivaVar').show();");
-//            RequestContext context = RequestContext.getCurrentInstance();
-//            context.execute("PF('dlgAlertasPreventivaVar').show()");
-
             FacesContext.getCurrentInstance().addMessage("msgAcoesPreventivas", new FacesMessage(FacesMessage.SEVERITY_INFO, "Atenção!", modulo50PercentTexto));
-
-//            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "What we do in life", "Echoes in eternity.");
-//            PrimeFaces.current().dialog().showMessageDynamic(message);
         }
         if (!modulo20PercentTexto.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage("msgAcoesPreventivas2", new FacesMessage(FacesMessage.SEVERITY_INFO, "Atenção!", modulo20PercentTexto));
@@ -65,8 +55,7 @@ public class RelatorioAcoesPreventiva implements Serializable {
     }
 
     /**
-     * Verifica o modulo com mais ocorrencia e emite alerta, envia mensagens,
-     * toca sirenes, etc
+     * Verifica os modulos que tenham atingido 50% das ocorrências e emite alertas, envia SMS, toca sirenes, etc
      */
     public void moduloOcorrencia50Percent() {
 
@@ -96,8 +85,7 @@ public class RelatorioAcoesPreventiva implements Serializable {
     }
 
     /**
-     * Verifica o modulo com mais ocorrencia e emite alerta, envia mensagens,
-     * toca sirenes, etc
+     * Verifica os modulos que tenham atingido 20% das ocorrências e emite alertas, envia SMS, toca sirenes, etc
      */
     public void moduloOcorrencia20Percent() {
 
@@ -128,6 +116,10 @@ public class RelatorioAcoesPreventiva implements Serializable {
         // O sistema exibe se houve uma diminuição das ocorrências naqueles módulos após as rondas preventivas.
     }
 
+    /**
+     * Prepara as ocorrências por módulos
+     * @return 
+     */
     private HashMap<String, Integer> listOcorrenciasByModulo() {
         HashMap<String, Integer> modulos = new HashMap<String, Integer>();
         modulos.put("A", 0);
@@ -175,12 +167,14 @@ public class RelatorioAcoesPreventiva implements Serializable {
     public String enviaSMS() {
         // Simple Send
         SmsSimples sms = new SmsSimples();
-        sms.setUser("prohgy");
-        sms.setPassword("kdsoiw1");
+        sms.setUser("vitorsienna");
+        sms.setPassword("291098");
         sms.setDestinatario(nuTelefoneDestino.replace(" ", "").replace("(", "").replace(")", "").replace("-", ""));
         sms.setMessage(modulo20PercentTexto.replace("õ", "o").replace("ó", "o").replace("ê", "e").replace("ç", "c").replace("í", "i"));
         //sms.setAno(2015);
+        
         Retorno retorno = new Retorno();
+        
         try {
             retorno = SendMessage.simpleSend(sms);
 
