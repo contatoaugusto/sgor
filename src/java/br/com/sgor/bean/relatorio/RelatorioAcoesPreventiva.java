@@ -3,6 +3,7 @@ package br.com.sgor.bean.relatorio;
 import br.com.facilitamovel.bean.Retorno;
 import br.com.facilitamovel.bean.SmsSimples;
 import br.com.facilitamovel.service.SendMessage;
+import br.com.sgor.bean.util.JsfUtil;
 import br.com.sgor.dao.OcorrenciaDAO;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -176,18 +177,21 @@ public class RelatorioAcoesPreventiva implements Serializable {
         SmsSimples sms = new SmsSimples();
         sms.setUser("prohgy");
         sms.setPassword("kdsoiw1");
-        sms.setDestinatario(nuTelefoneDestino.replace(" ","").replace("(","").replace(")","").replace("-",""));
-        sms.setMessage(modulo20PercentTexto.replace("õ","o").replace("ó","o").replace("ê","e").replace("ç","c").replace("í","i"));
+        sms.setDestinatario(nuTelefoneDestino.replace(" ", "").replace("(", "").replace(")", "").replace("-", ""));
+        sms.setMessage(modulo20PercentTexto.replace("õ", "o").replace("ó", "o").replace("ê", "e").replace("ç", "c").replace("í", "i"));
         //sms.setAno(2015);
         Retorno retorno = new Retorno();
         try {
             retorno = SendMessage.simpleSend(sms);
+
+            JsfUtil.addSuccessMessage("SMS agendado para envio pro número " + nuTelefoneDestino + "/n" + retorno.getMensagem());
+            System.out.println("Codigo:" + retorno.getCodigo());
+            System.out.println("Descricao:" + retorno.getMensagem());
+
+            return null;
         } catch (Exception ex) {
             Logger.getLogger(RelatorioAcoesPreventiva.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
-        System.out.println("Codigo:" + retorno.getCodigo());
-        System.out.println("Descricao:" + retorno.getMensagem());
-
-        return null;
     }
 }
